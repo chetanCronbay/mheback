@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Role(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -142,3 +143,11 @@ class ContactForm(models.Model):
     phone = models.CharField(max_length=20, blank=True, null=True)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Reviews(models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='reviews')
+    stars = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    review = models.TextField(blank=True, null=True)
+
+class Banner(models.Model):
+    banner = models.CharField(max_length=255)

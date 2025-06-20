@@ -20,7 +20,7 @@ from rest_framework.routers import DefaultRouter
 from django.urls import path, include
 from api.views import (
     RoleViewSet, UserViewSet, CategoryViewSet, SubcategoryViewSet, ProductViewSet,
-    CartViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet, ContactFormViewSet
+    CartViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet, ContactFormViewSet, ReviewViewSet, BannerViewSet
 )
 
 router = DefaultRouter()
@@ -34,6 +34,8 @@ router.register(r'wishlist', WishlistViewSet, basename='wishlist')
 router.register(r'quotes', QuoteViewSet, basename='quote')
 router.register(r'rentals', RentalViewSet, basename='rental')
 router.register(r'contact-forms', ContactFormViewSet, basename='contactform')
+router.register(r'banners', BannerViewSet, basename='banner') 
+router.register(r'reviews', ReviewViewSet, basename='review')  
 
 urlpatterns = [
     path('admin/', admin.site.urls),

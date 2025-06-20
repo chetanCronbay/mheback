@@ -186,3 +186,41 @@ class ContactFormViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [filters.SearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'company_name']
+
+
+class BannerViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for managing Banners.
+    - Anyone can read banners (SAFE_METHODS)
+    - Only admin users can create, update, or delete banners.
+    """
+    queryset = Banner.objects.all()
+    serializer_class = BannerSerializer
+    permission_classes = [IsAdminOrReadOnly]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['banner']
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for managing Reviews.
+    - Authenticated users can create reviews for products.
+    - Users can edit or delete only their own reviews.
+    - Admins can manage all reviews.
+    """
+    serializer_class = ReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        """
+        - If the user is admin, return all reviews.
+        - Otherwise, return all reviews (publicly readable),
+          but users can only modify their own reviews.
+        """
+        return Reviews.objects.all()
+
+    def perform_create(self, serializer):
+        """
+        Automatically associate the logged-in user with the review.
+        """
+        serializer.save(user=self.request.user)

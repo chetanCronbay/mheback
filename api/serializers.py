@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from .models import (
     User, Role, Category, Subcategory, Product,
-    Cart, Wishlist, Quote, Rental, ContactForm
+    Cart, Wishlist, Quote, Rental, ContactForm, Reviews, Banner
 )
 
 class RoleSerializer(serializers.ModelSerializer):
@@ -116,3 +116,38 @@ class ContactFormSerializer(serializers.ModelSerializer):
         if not value:
             raise serializers.ValidationError("Email is required")
         return value
+
+class ReviewSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Reviews model.
+    Handles conversion between Review model instances and JSON data.
+    """
+    # Read-only user info: returns the user's username instead of just an ID.
+    user_name = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = Reviews
+        # Include all model fields plus the computed user_name.
+        fields = ['id', 'user', 'user_name', 'stars', 'review']
+        # Make user_name read-only; user must still supply user ID (or can be set in view).
+        read_only_fields = ['user_name']
+
+    def validate_stars(self, value):
+        """
+        Validate that the stars field is within the expected range (1 to 5).
+        """
+        if value < 1 or value > 5:
+            raise serializers.ValidationError("Stars must be between 1 and 5.")
+        return value
+
+
+class BannerSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Banner model.
+    Simple serializer because the model has only one field.
+    """
+
+    class Meta:
+        model = Banner
+        # Serialize all fields; here it's just 'id' and 'banner' (the image or file path).
+        fields = '__all__'
