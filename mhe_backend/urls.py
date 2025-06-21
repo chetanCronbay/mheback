@@ -18,10 +18,9 @@ Including another URLconf
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
-from api.views import (
-    RoleViewSet, UserViewSet, CategoryViewSet, SubcategoryViewSet, ProductViewSet,
-    CartViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet, ContactFormViewSet, ReviewViewSet, BannerViewSet
-)
+from banners.views import BannerViewSet
+from products.views import ( CategoryViewSet, SubcategoryViewSet, ProductViewSet, CartViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet)
+from users.views import (RoleViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet)
 
 router = DefaultRouter()
 router.register(r'roles', RoleViewSet, basename='role')
