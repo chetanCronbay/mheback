@@ -1,14 +1,25 @@
 from django.db import models
 from django.conf import settings
 
-# Create your models here.
+def category_image_upload_path(instance, filename):
+    return f'category/{instance.name}/{filename}'
+
+def subcategory_image_upload_path(instance, filename):
+    return f'subcategory/{instance.name}/{filename}'
+
+def product_image_upload_path(instance, filename):
+    return f'products/{instance.product.name}/{filename}'
+
+def product_brochure_upload_path(instance, filename):
+    return f'products/{instance.name}/brochure/{filename}'
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     meta_title = models.CharField(max_length=255, blank=True, null=True)
     meta_description = models.TextField(blank=True, null=True)
-    prod_image = models.CharField(max_length=255, blank=True, null=True)
-    banner = models.CharField(max_length=255, blank=True, null=True)
+    cat_image = models.ImageField(upload_to=category_image_upload_path, blank=True, null=True)
+    cat_banner = models.ImageField(upload_to=category_image_upload_path, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -18,8 +29,8 @@ class Subcategory(models.Model):
     description = models.TextField(blank=True, null=True)
     meta_title = models.CharField(max_length=255, blank=True, null=True)
     meta_description = models.TextField(blank=True, null=True)
-    prod_image = models.CharField(max_length=255, blank=True, null=True)
-    banner = models.CharField(max_length=255, blank=True, null=True)
+    sub_image = models.ImageField(upload_to=subcategory_image_upload_path, blank=True, null=True)
+    sub_banner = models.ImageField(upload_to=subcategory_image_upload_path, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -37,13 +48,11 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     meta_title = models.CharField(max_length=255, blank=True, null=True)
     meta_description = models.TextField(blank=True, null=True)
-    prod_image = models.CharField(max_length=255, blank=True, null=True)
-    prod_images = models.TextField(blank=True, null=True)  # store JSON or comma-separated
     manufacturer = models.CharField(max_length=255, blank=True, null=True)
     model = models.CharField(max_length=255, blank=True, null=True)
     product_details = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    brochure = models.CharField(max_length=255, blank=True, null=True)
+    brochure = models.FileField(upload_to=product_brochure_upload_path, blank=True, null=True)
     type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='new')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -53,6 +62,16 @@ class Product(models.Model):
             models.Index(fields=['name']),
             models.Index(fields=['model']),
         ]
+
+    def __str__(self):
+        return self.name
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to=product_image_upload_path)
+
+    def __str__(self):
+        return f"Image for {self.product.name}"
 
 class Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='cart_items')

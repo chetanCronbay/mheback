@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import *
 from .serializers import *
@@ -24,6 +25,33 @@ class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description']
+    parser_classes = [MultiPartParser, FormParser]
+
+    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    def upload_Image(self, request, pk=None):
+        """
+        Upload or replace category Image.
+        """
+        category = self.get_object()
+        image = request.FILES.get('cat_image')
+        if image:
+            category.cat_image = image
+            category.save()
+        serializer = self.get_serializer(category)
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    def upload_Banner(self, request, pk=None):
+        """
+        Upload or replace category Banner.
+        """
+        category = self.get_object()
+        banner = request.FILES.get('cat_banner')
+        if banner:
+            category.cat_banner = banner
+            category.save()
+        serializer = self.get_serializer(product)
+        return Response(serializer.data)
 
 class SubcategoryViewSet(viewsets.ModelViewSet):
     queryset = Subcategory.objects.all()
@@ -32,6 +60,33 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['category']
     search_fields = ['name', 'description']
+    parser_classes = [MultiPartParser, FormParser]
+
+    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    def upload_Image(self, request, pk=None):
+        """
+        Upload or replace subcategory Image.
+        """
+        subcategory = self.get_object()
+        image = request.FILES.get('sub_image')
+        if image:
+            subcategory.sub_image = image
+            subcategory.save()
+        serializer = self.get_serializer(subcategory)
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    def upload_Banner(self, request, pk=None):
+        """
+        Upload or replace category Banner.
+        """
+        subcategory = self.get_object()
+        banner = request.FILES.get('sub_banner')
+        if banner:
+            subcategory.banner = sub_banner
+            subcategory.save()
+        serializer = self.get_serializer(subcategory)
+        return Response(serializer.data)
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
@@ -40,7 +95,33 @@ class ProductViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['category', 'subcategory', 'type', 'user']
     search_fields = ['name', 'description', 'manufacturer', 'model']
+    parser_classes = [MultiPartParser, FormParser]
 
+    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    def upload_images(self, request, pk=None):
+        """
+        Upload multiple images for this product.
+        """
+        product = self.get_object()
+        images = request.FILES.getlist('images')
+        for image in images:
+            ProductImage.objects.create(product=product, image=image)
+        serializer = self.get_serializer(product)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    def upload_brochure(self, request, pk=None):
+        """
+        Upload or replace the brochure file for this product.
+        """
+        product = self.get_object()
+        brochure = request.FILES.get('brochure')
+        if brochure:
+            product.brochure = brochure
+            product.save()
+        serializer = self.get_serializer(product)
+        return Response(serializer.data)
+    
     @action(detail=True, methods=['post'])
     def add_to_cart(self, request, pk=None):
         product = self.get_object()

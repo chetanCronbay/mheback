@@ -1,26 +1,31 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
-from .models import (
-    User, Role, ContactForm, Reviews
-)
+from .models import User, UserBanner, Role, ContactForm, Reviews, ReviewImages
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Role
         fields = '__all__'
 
+class UserBannerSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=True)
+
+    class Meta:
+        model = UserBanner
+        fields = ['id', 'image', 'user']
+        read_only_fields = ['user']
+
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
     role = RoleSerializer(read_only=True)
     role_id = serializers.PrimaryKeyRelatedField(queryset=Role.objects.all(), write_only=True, source='role')
+    user_banner = UserBannerSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password', 'password2', 'role', 'role_id', 'phone', 'address']
-        extra_kwargs = {
-            'email': {'required': True}
-        }
+        fields = ['id', 'username', 'email', 'password', 'password2', 'role', 'role_id', 'phone', 'address', 'user_banner']
+        extra_kwargs = {'email': {'required': True}}
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -37,31 +42,24 @@ class ContactFormSerializer(serializers.ModelSerializer):
         model = ContactForm
         fields = '__all__'
 
-    def validate_email(self, value):
-        if not value:
-            raise serializers.ValidationError("Email is required")
-        return value
+class ReviewsImageSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=True)
+
+    class Meta:
+        model = ReviewImages
+        fields = ['id', 'image', 'review']
+        read_only_fields = ['review']
 
 class ReviewSerializer(serializers.ModelSerializer):
-    """
-    Serializer for the Reviews model.
-    Handles conversion between Review model instances and JSON data.
-    """
-    # Read-only user info: returns the user's username instead of just an ID.
     user_name = serializers.CharField(source='user.username', read_only=True)
+    review_images = ReviewsImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Reviews
-        # Include all model fields plus the computed user_name.
-        fields = ['id', 'user', 'user_name', 'stars', 'review']
-        # Make user_name read-only; user must still supply user ID (or can be set in view).
+        fields = ['id', 'user', 'user_name', 'stars', 'review', 'review_images']
         read_only_fields = ['user_name']
 
     def validate_stars(self, value):
-        """
-        Validate that the stars field is within the expected range (1 to 5).
-        """
-        if value < 1 or value > 5:
+        if not (1 <= value <= 5):
             raise serializers.ValidationError("Stars must be between 1 and 5.")
         return value
-    

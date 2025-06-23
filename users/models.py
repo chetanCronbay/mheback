@@ -1,22 +1,33 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
-# from products.models import Product
 
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return f'user_{instance.user.id}/{filename}'
 
-# Create your models here.
+def review_image_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/review_<review_id>/<filename>
+    return f'review_{instance.review.id}/{filename}'
+
 class Role(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class UserBanner(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='user_banner')
+    image = models.ImageField(upload_to=user_directory_path)
+
+    def __str__(self):
+        return f"Image for {self.user.username}"
+
 class User(AbstractUser):
     role = models.ForeignKey(Role, on_delete=models.RESTRICT, related_name='users')
     phone = models.CharField(max_length=20, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
-    
-    # Add related_name to resolve conflicts
+    profile_photo = models.ImageField(upload_to=user_directory_path, blank=True, null=True)
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='custom_user_set',
@@ -32,7 +43,6 @@ class User(AbstractUser):
         verbose_name='user permissions',
     )
 
-
 class ContactForm(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -42,6 +52,13 @@ class ContactForm(models.Model):
     phone = models.CharField(max_length=20, blank=True, null=True)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+class ReviewImages(models.Model):
+    review = models.ForeignKey('Reviews', on_delete=models.DO_NOTHING, related_name='review_images')
+    image = models.ImageField(upload_to=review_image_path)
+
+    def __str__(self):
+        return f"Image for {self.review}"
 
 class Reviews(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='reviews')
@@ -56,8 +73,7 @@ class Reviews(models.Model):
         verbose_name = 'Review'
         verbose_name_plural = 'Reviews'
         ordering = ['-created_at']
-        unique_together = ('user', 'product')  # Optional: only 1 review per user-product
+        unique_together = ('user', 'product')
 
     def __str__(self):
         return f"{self.user.username} - {self.stars} stars"
-

@@ -2,6 +2,7 @@ from rest_framework import viewsets, permissions, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.parsers import MultiPartParser, FormParser
 from .models import *
 from .serializers import *
 
@@ -30,8 +31,28 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
     filter_backends = [filters.SearchFilter]
     search_fields = ['username', 'email', 'phone']
+    parser_classes = [MultiPartParser, FormParser]
 
-    @action(detail=False, methods=['get'])
+    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    def upload_banner(self, request, pk=None):
+        """
+        Upload multiple banner images to a specific user.
+        """
+        user = self.get_object()
+        images = request.FILES.getlist('user_banner')
+
+        if not images:
+            return Response({"detail": "No images uploaded."}, status=status.HTTP_400_BAD_REQUEST)
+
+        banners = []
+        for image in images:
+            banner = UserBanner.objects.create(user=user, image=image)
+            banners.append(banner)
+
+        serializer = UserBannerSerializer(banners, many=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def me(self, request):
         serializer = self.get_serializer(request.user)
         return Response(serializer.data)
@@ -44,25 +65,31 @@ class ContactFormViewSet(viewsets.ModelViewSet):
     search_fields = ['first_name', 'last_name', 'email', 'company_name']
 
 class ReviewViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet for managing Reviews.
-    - Authenticated users can create reviews for products.
-    - Users can edit or delete only their own reviews.
-    - Admins can manage all reviews.
-    """
     serializer_class = ReviewSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    parser_classes = [MultiPartParser, FormParser]
 
     def get_queryset(self):
-        """
-        - If the user is admin, return all reviews.
-        - Otherwise, return all reviews (publicly readable),
-          but users can only modify their own reviews.
-        """
         return Reviews.objects.all()
 
     def perform_create(self, serializer):
-        """
-        Automatically associate the logged-in user with the review.
-        """
         serializer.save(user=self.request.user)
+
+    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    def upload_images(self, request, pk=None):
+        """
+        Upload images for a specific review.
+        """
+        review = self.get_object()
+        images = request.FILES.getlist('images')
+
+        if not images:
+            return Response({"detail": "No images uploaded."}, status=status.HTTP_400_BAD_REQUEST)
+
+        review_images = []
+        for image in images:
+            img = ReviewImages.objects.create(review=review, image=image)
+            review_images.append(img)
+
+        serializer = ReviewsImageSerializer(review_images, many=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -2,6 +2,7 @@ from rest_framework import viewsets, permissions, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.parsers import MultiPartParser, FormParser
 from .models import *
 from .serializers import *
 
@@ -30,3 +31,17 @@ class BannerViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [filters.SearchFilter]
     search_fields = ['banner']
+    parser_classes = [MultiPartParser, FormParser]
+
+    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    def upload_Image(self, request, pk=None):
+        """
+        Upload or replace banner.
+        """
+        banner = self.get_object()
+        image = request.FILES.get('image')
+        if image:
+            banner.sub_image = image
+            banner.save()
+        serializer = self.get_serializer(banner)
+        return Response(serializer.data)

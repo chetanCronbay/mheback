@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import (
-    Category, Subcategory, Product,
+    Category, Subcategory, Product, ProductImage,
     Cart, Wishlist, Quote, Rental
 )
 
@@ -22,10 +22,16 @@ class SubcategorySerializer(serializers.ModelSerializer):
         model = Subcategory
         fields = '__all__'
 
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'image', 'product']
+
 class ProductSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name', read_only=True)
     subcategory_name = serializers.CharField(source='subcategory.name', read_only=True)
     user_name = serializers.CharField(source='user.username', read_only=True)
+    images = ProductImageSerializer(many=True, read_only=True)  # related_name = 'images'
 
     class Meta:
         model = Product
