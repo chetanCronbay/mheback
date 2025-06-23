@@ -96,12 +96,27 @@ WSGI_APPLICATION = "mhe_backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# sqlite db
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
+
+# postgres db 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'new_mhe',            # your database name
+        'USER': 'postgres',          # your database username
+        'PASSWORD': 'pass',  # your database password
+        'HOST': 'localhost',       # local machine
+        'PORT': '5432',            # default PostgreSQL port
     }
 }
+
 
 # Only use PostgreSQL if DATABASE_URL is set (production)
 # if os.getenv('DATABASE_URL') and os.getenv('ENVIRONMENT') == 'production':
