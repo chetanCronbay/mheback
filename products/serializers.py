@@ -4,9 +4,10 @@ from .models import (
     Cart, Wishlist, Quote, Rental
 )
 
-
 class CategorySerializer(serializers.ModelSerializer):
     subcategories = serializers.SerializerMethodField()
+    cat_image = serializers.ImageField(required=False, allow_null=True)
+    cat_banner = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = Category
@@ -17,6 +18,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class SubcategorySerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name', read_only=True)
+    sub_image = serializers.ImageField(required=False, allow_null=True)
+    sub_banner = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = Subcategory
@@ -31,7 +34,8 @@ class ProductSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name', read_only=True)
     subcategory_name = serializers.CharField(source='subcategory.name', read_only=True)
     user_name = serializers.CharField(source='user.username', read_only=True)
-    images = ProductImageSerializer(many=True, read_only=True)  # related_name = 'images'
+    images = ProductImageSerializer(many=True, read_only=True)
+    brochure = serializers.FileField(required=False, allow_null=True)
 
     class Meta:
         model = Product
@@ -70,6 +74,13 @@ class QuoteSerializer(serializers.ModelSerializer):
         model = Quote
         fields = '__all__'
         read_only_fields = ['user', 'status']
+    
+    def validate_message(self, value):
+        if len(value) > 2000:
+            raise serializers.ValidationError("Message too long (max 2000 characters)")
+        if '<script>' in value.lower():
+            raise serializers.ValidationError("Invalid content in message")
+        return value
 
 class RentalSerializer(serializers.ModelSerializer):
     product_details = ProductSerializer(source='product', read_only=True)
@@ -84,3 +95,10 @@ class RentalSerializer(serializers.ModelSerializer):
         if attrs['start_date'] >= attrs['end_date']:
             raise serializers.ValidationError("End date must be after start date")
         return attrs
+    
+    def validate_notes(self, value):
+        if value and len(value) > 1000:
+            raise serializers.ValidationError("Notes too long (max 1000 characters)")
+        if value and '<script>' in value.lower():
+            raise serializers.ValidationError("Invalid content in notes")
+        return value

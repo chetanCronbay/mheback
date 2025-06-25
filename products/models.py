@@ -20,6 +20,7 @@ class Category(models.Model):
     meta_description = models.TextField(blank=True, null=True)
     cat_image = models.ImageField(upload_to=category_image_upload_path, blank=True, null=True)
     cat_banner = models.ImageField(upload_to=category_image_upload_path, blank=True, null=True)
+    product_details = models.JSONField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -31,6 +32,7 @@ class Subcategory(models.Model):
     meta_description = models.TextField(blank=True, null=True)
     sub_image = models.ImageField(upload_to=subcategory_image_upload_path, blank=True, null=True)
     sub_banner = models.ImageField(upload_to=subcategory_image_upload_path, blank=True, null=True)
+    product_details = models.JSONField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -50,7 +52,7 @@ class Product(models.Model):
     meta_description = models.TextField(blank=True, null=True)
     manufacturer = models.CharField(max_length=255, blank=True, null=True)
     model = models.CharField(max_length=255, blank=True, null=True)
-    product_details = models.TextField(blank=True, null=True)
+    product_details = models.JSONField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     brochure = models.FileField(upload_to=product_brochure_upload_path, blank=True, null=True)
     type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='new')
@@ -106,6 +108,15 @@ class Quote(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    last_request_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'product'],
+                name='unique_user_product_quote'
+            )
+        ]
 
 
 class Rental(models.Model):
@@ -124,4 +135,6 @@ class Rental(models.Model):
     notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    last_request_time = models.DateTimeField(auto_now=True)
+
 

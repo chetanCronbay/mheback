@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import RegexValidator
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
@@ -51,6 +52,15 @@ class ContactForm(models.Model):
     location = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     message = models.TextField()
+    captcha = models.CharField(max_length=10, validators=[
+        RegexValidator(
+            regex='^[A-Z0-9]{6}$',
+            message='CAPTCHA must be exactly 6 alphanumeric characters',
+            code='invalid_captcha'
+        )
+    ])
+    captcha_answer = models.CharField(max_length=10)
+    honeypot = models.CharField(max_length=100, blank=True, verbose_name="Leave blank")
     created_at = models.DateTimeField(auto_now_add=True)
 
 class ReviewImages(models.Model):

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from .models import User, UserBanner, Role, ContactForm, Reviews, ReviewImages
+from django.core.exceptions import ValidationError
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,6 +42,16 @@ class ContactFormSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactForm
         fields = '__all__'
+        extra_kwargs = {
+            'captcha_answer': {'write_only': True}
+        }
+
+    def validate(self, attrs):
+        if attrs.get('captcha') != attrs.get('captcha_answer'):
+            raise ValidationError("CAPTCHA verification failed")
+        if attrs.get('honeypot'):
+            raise serializers.ValidationError("Bot detected")
+        return attrs
 
 class ReviewsImageSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=True)

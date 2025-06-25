@@ -1,8 +1,12 @@
 from rest_framework import viewsets, permissions, filters, status
 from rest_framework.decorators import action
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import AllowAny
+from datetime import timedelta
+from django.utils import timezone
 from .models import *
 from .serializers import *
 
@@ -18,20 +22,26 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.user == request.user
+    
+class QuoteThrottle(UserRateThrottle):
+    scope = 'quote'
+    rate = '10/hour'
+
+class RentalThrottle(UserRateThrottle):
+    scope = 'rental'
+    rate = '10/hour'
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAdminOrReadOnly]
+    # permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [AllowAny]
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description']
     parser_classes = [MultiPartParser, FormParser]
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_Image(self, request, pk=None):
-        """
-        Upload or replace category Image.
-        """
         category = self.get_object()
         image = request.FILES.get('cat_image')
         if image:
@@ -42,15 +52,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_Banner(self, request, pk=None):
-        """
-        Upload or replace category Banner.
-        """
         category = self.get_object()
         banner = request.FILES.get('cat_banner')
         if banner:
             category.cat_banner = banner
             category.save()
-        serializer = self.get_serializer(product)
+        serializer = self.get_serializer(category)
         return Response(serializer.data)
 
 class SubcategoryViewSet(viewsets.ModelViewSet):
@@ -64,9 +71,6 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_Image(self, request, pk=None):
-        """
-        Upload or replace subcategory Image.
-        """
         subcategory = self.get_object()
         image = request.FILES.get('sub_image')
         if image:
@@ -77,13 +81,10 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_Banner(self, request, pk=None):
-        """
-        Upload or replace category Banner.
-        """
         subcategory = self.get_object()
         banner = request.FILES.get('sub_banner')
         if banner:
-            subcategory.banner = sub_banner
+            subcategory.sub_banner = banner
             subcategory.save()
         serializer = self.get_serializer(subcategory)
         return Response(serializer.data)
@@ -172,6 +173,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
 class QuoteViewSet(viewsets.ModelViewSet):
     serializer_class = QuoteSerializer
     permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [QuoteThrottle]
 
     def get_queryset(self):
         if self.request.user.is_staff:
@@ -179,6 +181,15 @@ class QuoteViewSet(viewsets.ModelViewSet):
         return Quote.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
+        # Check if user has made too many requests recently
+        recent_requests = Quote.objects.filter(
+            user=self.request.user,
+            last_request_time__gte=timezone.now() - timedelta(hours=1)
+        ).count()
+        
+        if recent_requests >= 5:
+            raise serializers.ValidationError("Too many quote requests recently. Please wait before submitting another.")
+            
         serializer.save(user=self.request.user)
 
     @action(detail=True, methods=['post'])
@@ -204,6 +215,7 @@ class QuoteViewSet(viewsets.ModelViewSet):
 class RentalViewSet(viewsets.ModelViewSet):
     serializer_class = RentalSerializer
     permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [RentalThrottle]
 
     def get_queryset(self):
         if self.request.user.is_staff:

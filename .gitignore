@@ -1,0 +1,17 @@
+#ignore all multimedia files
+*.jpeg
+*.jpg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.webp
+*.svg
+*.ico
+*.avif
+*.heic
+*.heif
+*.raw
+*.psd
+*.eps
+*.pdf

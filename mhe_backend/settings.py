@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if os.getenv('ENVIRONMENT') == 'production' else True
 
-ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1', 'your-production-domain.com']
+ALLOWED_HOSTS = ['.onrender.com', 'localhost:3000', 'localhost', '127.0.0.1', 'your-production-domain.com']
 
 
 # Application definition
@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     "django_filters",
     "banners",
     "products",
-    "users"
+    "users",
+    "corsheaders",
 ]
 
 REST_FRAMEWORK = {
@@ -63,6 +64,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # Add this at the top
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",  # Make sure this is second
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -71,6 +73,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "Middleware.security.SecurityHeadersMiddleware"
 ]
 
 ROOT_URLCONF = "mhe_backend.urls"
@@ -175,3 +178,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]

@@ -1,10 +1,12 @@
 from rest_framework import viewsets, permissions, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import *
 from .serializers import *
+from ..util.security import IPRateLimiter, SecurityLogger
 
 class IsAdminOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -17,6 +19,10 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.user == request.user
+    
+class ContactFormThrottle(UserRateThrottle):
+    scope = 'contact_form'
+    rate = '5/hour'
 
 class RoleViewSet(viewsets.ModelViewSet):
     queryset = Role.objects.all()
@@ -61,8 +67,18 @@ class ContactFormViewSet(viewsets.ModelViewSet):
     queryset = ContactForm.objects.all()
     serializer_class = ContactFormSerializer
     permission_classes = [IsAdminOrReadOnly]
+    throttle_classes = [ContactFormThrottle]
     filter_backends = [filters.SearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'company_name']
+
+    def create(self, request, *args, **kwargs):
+        IPRateLimiter.check_ip(request, limit=5, timeout=3600)
+        try:
+            return super().create(request, *args, **kwargs)
+        except serializers.ValidationError as e:
+            if 'CAPTCHA' in str(e) or 'honeypot' in str(e):
+                SecurityLogger.log_suspicious_request(request, "Failed CAPTCHA/honeypot")
+            raise e
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
