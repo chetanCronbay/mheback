@@ -1,12 +1,22 @@
 from rest_framework import viewsets, permissions, filters, status
-from rest_framework.decorators import action
+from rest_framework.decorators import action, authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from .models import *
 from .serializers import *
 from util.security import IPRateLimiter, SecurityLogger
+
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+    """
+    Session authentication but does not enforce CSRF for API clients.
+    Use only for API endpoints where JWT is also allowed.
+    """
+    def enforce_csrf(self, request):
+        return  # To allow JWT clients to work without CSRF
 
 class IsAdminOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -28,6 +38,7 @@ class RoleViewSet(viewsets.ModelViewSet):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
     permission_classes = [IsAdminOrReadOnly]
+    authentication_classes = [JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication]
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description']
 
@@ -35,11 +46,14 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
+    authentication_classes = [JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication]
     filter_backends = [filters.SearchFilter]
     search_fields = ['username', 'email', 'phone']
     parser_classes = [MultiPartParser, FormParser]
 
-    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser],
+            authentication_classes=[JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication],
+            permission_classes=[permissions.IsAdminUser])
     def upload_banner(self, request, pk=None):
         """
         Upload multiple banner images to a specific user.
@@ -58,7 +72,9 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = UserBannerSerializer(banners, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
+    @action(detail=False, methods=['get'],
+            authentication_classes=[JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication],
+            permission_classes=[permissions.IsAuthenticated])
     def me(self, request):
         serializer = self.get_serializer(request.user)
         return Response(serializer.data)
@@ -67,6 +83,7 @@ class ContactFormViewSet(viewsets.ModelViewSet):
     queryset = ContactForm.objects.all()
     serializer_class = ContactFormSerializer
     permission_classes = [IsAdminOrReadOnly]
+    authentication_classes = [JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication]
     throttle_classes = [ContactFormThrottle]
     filter_backends = [filters.SearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'company_name']
@@ -87,6 +104,7 @@ class ContactFormViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    authentication_classes = [JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication]
     parser_classes = [MultiPartParser, FormParser]
 
     def get_queryset(self):
@@ -95,7 +113,9 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser],
+            authentication_classes=[JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication],
+            permission_classes=[permissions.IsAuthenticated, IsOwnerOrReadOnly])
     def upload_images(self, request, pk=None):
         """
         Upload images for a specific review.

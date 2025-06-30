@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from datetime import timedelta
 import os
 import dj_database_url
 from pathlib import Path
@@ -44,6 +45,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     "django_filters",
     "banners",
     "products",
@@ -62,7 +65,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         # Apply Rules: JWT tokens for stateless authentication (uncomment when needed)
-        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -123,6 +126,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "mhe_backend.wsgi.application"
+
+SIMPLE_JWT = {
+    'AUTH_COOKIE': 'access_token',  # Cookie name. Should be secure.
+    'AUTH_COOKIE_SECURE': True,     # Only HTTPS
+    'AUTH_COOKIE_HTTP_ONLY': True,  # Prevent JavaScript access
+    'AUTH_COOKIE_PATH': '/',        
+    'AUTH_COOKIE_SAMESITE': 'Lax',  # or 'Strict'
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
 
 
 # Database Configuration - Following Rules: Use PostgreSQL in production and development

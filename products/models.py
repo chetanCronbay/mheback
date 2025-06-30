@@ -146,18 +146,6 @@ class Product(models.Model):
         default=0,
         help_text="Available stock quantity"
     )
-    weight = models.DecimalField(
-        max_digits=8, 
-        decimal_places=2, 
-        blank=True, 
-        null=True,
-        help_text="Product weight in kg"
-    )
-    dimensions = models.JSONField(
-        blank=True, 
-        null=True,
-        help_text="Product dimensions (length, width, height)"
-    )
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -294,5 +282,3 @@ class Rental(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     last_request_time = models.DateTimeField(auto_now=True)
-
-

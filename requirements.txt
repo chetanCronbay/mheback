@@ -8,3 +8,4 @@ dj-database-url
 python-dotenv
 Pillow
 django-cors-headers
+djangorestframework-simplejwt
