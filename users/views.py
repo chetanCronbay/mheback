@@ -6,7 +6,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import *
 from .serializers import *
-from ..util.security import IPRateLimiter, SecurityLogger
+from util.security import IPRateLimiter, SecurityLogger
 
 class IsAdminOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -79,6 +79,10 @@ class ContactFormViewSet(viewsets.ModelViewSet):
             if 'CAPTCHA' in str(e) or 'honeypot' in str(e):
                 SecurityLogger.log_suspicious_request(request, "Failed CAPTCHA/honeypot")
             raise e
+
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        instance.send_emails()
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer

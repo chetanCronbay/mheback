@@ -1,7 +1,20 @@
+"""User models for MHE Backend.
+
+Apply Rules: Maintain up-to-date docstrings for all public classes and methods.
+Apply Rules: Use type hints throughout the codebase for better AI comprehension.
+"""
+from typing import Optional
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.validators import RegexValidator
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils import timezone
+import logging
+
+# Apply Rules: Structured logging
+logger = logging.getLogger(__name__)
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
@@ -25,10 +38,51 @@ class UserBanner(models.Model):
         return f"Image for {self.user.username}"
 
 class User(AbstractUser):
-    role = models.ForeignKey(Role, on_delete=models.RESTRICT, related_name='users')
-    phone = models.CharField(max_length=20, blank=True, null=True)
-    address = models.TextField(blank=True, null=True)
-    profile_photo = models.ImageField(upload_to=user_directory_path, blank=True, null=True)
+    """Custom User model extending Django's AbstractUser.
+    
+    Apply Rules: Document all public classes and methods with comprehensive docstrings.
+    Apply Rules: Use database indexes for frequently queried fields.
+    """
+    role = models.ForeignKey(
+        Role, 
+        on_delete=models.RESTRICT, 
+        related_name='users',
+        help_text="User's role determining their permissions"
+    )
+    phone = models.CharField(
+        max_length=20, 
+        blank=True, 
+        null=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\+?1?\d{9,15}$',
+                message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
+            )
+        ],
+        help_text="User's contact phone number"
+    )
+    address = models.TextField(
+        blank=True, 
+        null=True,
+        help_text="User's physical address"
+    )
+    profile_photo = models.ImageField(
+        upload_to=user_directory_path, 
+        blank=True, 
+        null=True,
+        help_text="User's profile photo"
+    )
+    # Apply Rules: Log authentication attempts and failures
+    last_login_ip = models.GenericIPAddressField(blank=True, null=True)
+    failed_login_attempts = models.PositiveIntegerField(default=0)
+    account_locked_until = models.DateTimeField(blank=True, null=True)
+    
+    # Apply Rules: User activity tracking for analytics
+    is_email_verified = models.BooleanField(default=False)
+    email_verification_token = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='custom_user_set',
@@ -43,6 +97,45 @@ class User(AbstractUser):
         help_text='Specific permissions for this user.',
         verbose_name='user permissions',
     )
+    
+    class Meta:
+        # Apply Rules: Use database indexes for frequently queried fields
+        indexes = [
+            models.Index(fields=['email']),
+            models.Index(fields=['username']),
+            models.Index(fields=['role']),
+            models.Index(fields=['is_active']),
+            models.Index(fields=['created_at']),
+        ]
+        
+    def __str__(self) -> str:
+        """Return string representation of user."""
+        return f"{self.username} ({self.get_full_name() or self.email})"
+        
+    def get_full_name(self) -> str:
+        """Return the full name for the user."""
+        return f"{self.first_name} {self.last_name}".strip()
+        
+    def is_account_locked(self) -> bool:
+        """Check if user account is currently locked."""
+        if self.account_locked_until:
+            return timezone.now() < self.account_locked_until
+        return False
+        
+    def increment_failed_login(self) -> None:
+        """Increment failed login attempts and lock account if necessary."""
+        self.failed_login_attempts += 1
+        # Apply Rules: Implement rate limiting to prevent abuse
+        if self.failed_login_attempts >= 5:
+            self.account_locked_until = timezone.now() + timezone.timedelta(minutes=30)
+            logger.warning(f"Account locked for user {self.username} due to multiple failed login attempts")
+        self.save()
+        
+    def reset_failed_login(self) -> None:
+        """Reset failed login attempts on successful login."""
+        self.failed_login_attempts = 0
+        self.account_locked_until = None
+        self.save()
 
 class ContactForm(models.Model):
     first_name = models.CharField(max_length=100)
@@ -62,6 +155,32 @@ class ContactForm(models.Model):
     captcha_answer = models.CharField(max_length=10)
     honeypot = models.CharField(max_length=100, blank=True, verbose_name="Leave blank")
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def send_emails(self):
+        # Email to the sender (confirmation)
+        send_mail(
+            subject="Thank you for contacting us",
+            message="Dear {},\n\nThank you for reaching out. We have received your message and will get back to you soon.".format(self.first_name),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[self.email],
+            fail_silently=False,
+        )
+
+        # Email to the receiver (admin)
+        send_mail(
+            subject="New Contact Form Submission",
+            message=(
+                f"Name: {self.first_name} {self.last_name}\n"
+                f"Email: {self.email}\n"
+                f"Company: {self.company_name}\n"
+                f"Location: {self.location}\n"
+                f"Phone: {self.phone}\n"
+                f"Message:\n{self.message}"
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[settings.CONTACT_RECEIVER_EMAIL],  # Set this in your settings.py
+            fail_silently=False,
+        )
 
 class ReviewImages(models.Model):
     review = models.ForeignKey('Reviews', on_delete=models.DO_NOTHING, related_name='review_images')

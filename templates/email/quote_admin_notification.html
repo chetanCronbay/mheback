@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>New Quote Request</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #dc3545; color: white; padding: 20px; text-align: center; border-radius: 5px; }
+        .content { padding: 20px 0; }
+        .details { background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .customer-info { background-color: #e7f3ff; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔔 New Quote Request</h1>
+        </div>
+        
+        <div class="content">
+            <p>A new quote request has been submitted and requires your attention.</p>
+            
+            <div class="customer-info">
+                <h3>Customer Information:</h3>
+                <p><strong>Name:</strong> {{ quote.user.first_name }} {{ quote.user.last_name|default:"" }}</p>
+                <p><strong>Username:</strong> {{ quote.user.username }}</p>
+                <p><strong>Email:</strong> {{ quote.user.email }}</p>
+                <p><strong>Date Joined:</strong> {{ quote.user.date_joined|date:"F d, Y" }}</p>
+            </div>
+            
+            <div class="details">
+                <h3>Product Details:</h3>
+                <p><strong>Product:</strong> {{ quote.product.name }}</p>
+                <p><strong>Manufacturer:</strong> {{ quote.product.manufacturer|default:"N/A" }}</p>
+                <p><strong>Model:</strong> {{ quote.product.model|default:"N/A" }}</p>
+                <p><strong>Price:</strong> ${{ quote.product.price }}</p>
+                <p><strong>Category:</strong> {{ quote.product.category.name }}</p>
+                <p><strong>Subcategory:</strong> {{ quote.product.subcategory.name }}</p>
+                <p><strong>Product Type:</strong> {{ quote.product.get_type_display }}</p>
+            </div>
+            
+            <div class="details">
+                <h3>Quote Request Details:</h3>
+                <p><strong>Request Date:</strong> {{ quote.created_at|date:"F d, Y H:i" }}</p>
+                <p><strong>Status:</strong> {{ quote.get_status_display }}</p>
+                {% if quote.message %}
+                <p><strong>Customer Message:</strong></p>
+                <p style="font-style: italic; padding: 10px; border-left: 3px solid #ccc;">{{ quote.message }}</p>
+                {% endif %}
+            </div>
+            
+            <p><strong>Action Required:</strong> Please review this quote request and respond to the customer.</p>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated notification from your MHE system.</p>
+        </div>
+    </div>
+</body>
+</html>
