@@ -9,6 +9,7 @@ from datetime import timedelta
 from django.utils import timezone
 from .models import *
 from .serializers import *
+from ..users.permissions import *
 
 # Create your views here.
 class IsAdminOrReadOnly(permissions.BasePermission):
@@ -34,7 +35,7 @@ class RentalThrottle(UserRateThrottle):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    # permission_classes = [IsAdminOrReadOnly]
+    # permission_classes = [IsAdmin]
     permission_classes = [AllowAny]
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description']
@@ -63,7 +64,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class SubcategoryViewSet(viewsets.ModelViewSet):
     queryset = Subcategory.objects.all()
     serializer_class = SubcategorySerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdmin]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['category']
     search_fields = ['name', 'description']
@@ -92,7 +93,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsOwnerVendorOrAdmin]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['category', 'subcategory', 'type', 'user']
     search_fields = ['name', 'description', 'manufacturer', 'model']

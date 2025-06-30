@@ -9,6 +9,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from .models import *
 from .serializers import *
 from util.security import IPRateLimiter, SecurityLogger
+from .permissions import IsAdmin, IsVendor, IsUser, IsOwnerOrAdmin, IsVendorOrReadOnly, CanCreateReview
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
     """
@@ -37,7 +38,7 @@ class ContactFormThrottle(UserRateThrottle):
 class RoleViewSet(viewsets.ModelViewSet):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdmin]  # Only admins can manage roles
     authentication_classes = [JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication]
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description']
@@ -45,7 +46,7 @@ class RoleViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsAdmin]  # Only admins can manage users
     authentication_classes = [JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication]
     filter_backends = [filters.SearchFilter]
     search_fields = ['username', 'email', 'phone']
@@ -82,8 +83,8 @@ class UserViewSet(viewsets.ModelViewSet):
 class ContactFormViewSet(viewsets.ModelViewSet):
     queryset = ContactForm.objects.all()
     serializer_class = ContactFormSerializer
-    permission_classes = [IsAdminOrReadOnly]
-    authentication_classes = [JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication]
+    permission_classes = [permissions.AllowAny]  # Anyone can submit contact forms
+    authentication_classes = []
     throttle_classes = [ContactFormThrottle]
     filter_backends = [filters.SearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'company_name']
@@ -103,7 +104,7 @@ class ContactFormViewSet(viewsets.ModelViewSet):
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, CanCreateReview, IsOwnerOrAdmin]
     authentication_classes = [JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication]
     parser_classes = [MultiPartParser, FormParser]
 

@@ -25,10 +25,24 @@ def review_image_path(instance, filename):
     return f'review_{instance.review.id}/{filename}'
 
 class Role(models.Model):
+    ADMIN = 1
+    VENDOR = 2
+    USER = 3
+    
+    ROLE_CHOICES = (
+        (ADMIN, 'Admin'),
+        (VENDOR, 'Vendor'),
+        (USER, 'User'),
+    )
+    
+    id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 class UserBanner(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='user_banner')
