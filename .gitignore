@@ -15,3 +15,5 @@
 *.psd
 *.eps
 *.pdf
+
+__init__.py
