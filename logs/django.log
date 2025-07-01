@@ -1,0 +1,13 @@
+INFO 2025-07-01 10:50:49,532 autoreload 1888 15704 Watching for file changes with StatReloader
+WARNING 2025-07-01 10:50:54,079 log 1888 16776 Not Found: /
+WARNING 2025-07-01 10:50:54,080 basehttp 1888 16776 "GET / HTTP/1.1" 404 2309
+WARNING 2025-07-01 10:50:54,205 log 1888 16776 Not Found: /favicon.ico
+WARNING 2025-07-01 10:50:54,206 basehttp 1888 16776 "GET /favicon.ico HTTP/1.1" 404 2360
+WARNING 2025-07-01 10:50:58,081 log 1888 16776 Not Found: /docs
+WARNING 2025-07-01 10:50:58,082 basehttp 1888 16776 "GET /docs HTTP/1.1" 404 2339
+INFO 2025-07-01 10:57:14,399 autoreload 1888 15704 C:\Users\suman\Music\Projects\mhebazar\mhebazar_api\mheback\products\views.py changed, reloading.
+INFO 2025-07-01 10:57:15,474 autoreload 13016 21500 Watching for file changes with StatReloader
+INFO 2025-07-01 10:57:28,776 autoreload 13016 21500 C:\Users\suman\Music\Projects\mhebazar\mhebazar_api\mheback\products\views.py changed, reloading.
+INFO 2025-07-01 10:57:29,511 autoreload 26560 24340 Watching for file changes with StatReloader
+INFO 2025-07-01 10:57:38,588 autoreload 26560 24340 C:\Users\suman\Music\Projects\mhebazar\mhebazar_api\mheback\products\views.py changed, reloading.
+INFO 2025-07-01 10:57:39,387 autoreload 7808 17680 Watching for file changes with StatReloader

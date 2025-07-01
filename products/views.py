@@ -10,6 +10,7 @@ from django.utils import timezone
 from .models import *
 from .serializers import *
 from users.permissions import ReadOnlyOrAdmin, IsVendorOwnerOrAdmin, IsAdmin
+from users.models import Role  # Import Role model or constant
 
 class QuoteThrottle(UserRateThrottle):
     scope = 'quote'
@@ -22,7 +23,7 @@ class RentalThrottle(UserRateThrottle):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAdminOrReadOnly]  # Read for all, write for admin only
+    permission_classes = [ReadOnlyOrAdmin]  # Read for all, write for admin only
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description']
     parser_classes = [MultiPartParser, FormParser]

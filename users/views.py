@@ -9,7 +9,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from .models import *
 from .serializers import *
 from util.security import IPRateLimiter, SecurityLogger
-from .permissions import IsAdmin, IsVendor, IsUser, IsOwnerOrAdmin, IsVendorOrReadOnly, CanCreateReview
+from .permissions import IsAdmin, IsVendor, IsUser, IsOwnerOrAdmin, CanCreateReview
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
     """
