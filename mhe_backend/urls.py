@@ -21,6 +21,7 @@ from django.urls import path, include
 from banners.views import BannerViewSet
 from products.views import ( CategoryViewSet, SubcategoryViewSet, ProductViewSet, CartViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet)
 from users.views import (RoleViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet)
+from users.social_auth import google_login
 
 router = DefaultRouter()
 router.register(r'roles', RoleViewSet, basename='role')
@@ -38,6 +39,10 @@ router.register(r'reviews', ReviewViewSet, basename='review')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('auth/', include('dj_rest_auth.urls')),
+    path('auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('auth/social/login/', google_login, name='google_login'),  # Custom Google login endpoint
+    path('accounts/', include('allauth.urls')),  # This is for web-based OAuth flow
     path('api/', include(router.urls)),
 ]
 

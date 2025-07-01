@@ -12,6 +12,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
 import logging
+from allauth.socialaccount.models import SocialAccount
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Apply Rules: Structured logging
 logger = logging.getLogger(__name__)
@@ -152,6 +155,13 @@ class User(AbstractUser):
         self.failed_login_attempts = 0
         self.account_locked_until = None
         self.save()
+
+    @receiver(post_save, sender=SocialAccount)
+    def set_google_login(sender, instance, created, **kwargs):
+      if created and instance.provider == 'google':
+          user = instance.user
+          user.google_login = True
+          user.save(update_fields=['google_login'])
 
 class ContactForm(models.Model):
     first_name = models.CharField(max_length=100)

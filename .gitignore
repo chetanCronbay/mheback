@@ -17,3 +17,4 @@
 *.pdf
 
 __init__.py
+.env
