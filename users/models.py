@@ -60,7 +60,7 @@ class User(AbstractUser):
     role = models.ForeignKey(
         Role, 
         on_delete=models.RESTRICT, 
-        related_name='users',
+        related_name='role',
         help_text="User's role determining their permissions"
     )
     phone = models.CharField(
@@ -86,6 +86,8 @@ class User(AbstractUser):
         null=True,
         help_text="User's profile photo"
     )
+    google_login = models.BooleanField(blank=True, null=True, default=False)
+
     # Apply Rules: Log authentication attempts and failures
     last_login_ip = models.GenericIPAddressField(blank=True, null=True)
     failed_login_attempts = models.PositiveIntegerField(default=0)

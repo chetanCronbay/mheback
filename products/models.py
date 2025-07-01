@@ -191,7 +191,7 @@ class Product(models.Model):
         if self.type != 'rental':
             return False
             
-        conflicting_rentals = self.rental_set.filter(
+        conflicting_rentals = self.rentals.filter(
             status__in=['approved', 'pending'],
             start_date__lte=end_date,
             end_date__gte=start_date

@@ -4,26 +4,13 @@ from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from datetime import timedelta
 from django.utils import timezone
 from .models import *
 from .serializers import *
-from ..users.permissions import *
+from users.permissions import ReadOnlyOrAdmin, IsVendorOwnerOrAdmin, IsAdmin
 
-# Create your views here.
-class IsAdminOrReadOnly(permissions.BasePermission):
-    def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return request.user and request.user.is_staff
-
-class IsOwnerOrReadOnly(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return obj.user == request.user
-    
 class QuoteThrottle(UserRateThrottle):
     scope = 'quote'
     rate = '10/hour'
@@ -35,11 +22,15 @@ class RentalThrottle(UserRateThrottle):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    # permission_classes = [IsAdmin]
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]  # Read for all, write for admin only
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description']
     parser_classes = [MultiPartParser, FormParser]
+
+    def get_permissions(self):
+        if self.action in ['upload_Image', 'upload_Banner']:
+            return [IsAdmin()]
+        return super().get_permissions()
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_Image(self, request, pk=None):
@@ -64,11 +55,16 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class SubcategoryViewSet(viewsets.ModelViewSet):
     queryset = Subcategory.objects.all()
     serializer_class = SubcategorySerializer
-    permission_classes = [IsAdmin]
+    permission_classes = [ReadOnlyOrAdmin]  # Read for all, write for admin only
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['category']
     search_fields = ['name', 'description']
     parser_classes = [MultiPartParser, FormParser]
+
+    def get_permissions(self):
+        if self.action in ['upload_Image', 'upload_Banner']:
+            return [IsAdmin()]
+        return super().get_permissions()
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_Image(self, request, pk=None):
@@ -93,17 +89,19 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsOwnerVendorOrAdmin]
+    permission_classes = [IsVendorOwnerOrAdmin]  # Read for all, write for owner/admin
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['category', 'subcategory', 'type', 'user']
     search_fields = ['name', 'description', 'manufacturer', 'model']
     parser_classes = [MultiPartParser, FormParser]
 
+    def get_permissions(self):
+        if self.action in ['add_to_cart', 'add_to_wishlist']:
+            return [IsAuthenticated()]
+        return super().get_permissions()
+
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_images(self, request, pk=None):
-        """
-        Upload multiple images for this product.
-        """
         product = self.get_object()
         images = request.FILES.getlist('images')
         for image in images:
@@ -113,9 +111,6 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_brochure(self, request, pk=None):
-        """
-        Upload or replace the brochure file for this product.
-        """
         product = self.get_object()
         brochure = request.FILES.get('brochure')
         if brochure:
@@ -154,7 +149,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 class CartViewSet(viewsets.ModelViewSet):
     serializer_class = CartSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated]  # Only authenticated users
 
     def get_queryset(self):
         return Cart.objects.filter(user=self.request.user)
@@ -166,23 +161,22 @@ class CartViewSet(viewsets.ModelViewSet):
 
 class WishlistViewSet(viewsets.ModelViewSet):
     serializer_class = WishlistSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated]  # Only authenticated users
 
     def get_queryset(self):
         return Wishlist.objects.filter(user=self.request.user)
 
 class QuoteViewSet(viewsets.ModelViewSet):
     serializer_class = QuoteSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Only authenticated users
     throttle_classes = [QuoteThrottle]
 
     def get_queryset(self):
-        if self.request.user.is_staff:
+        if self.request.user.role.id == Role.ADMIN:  # Assuming you have Role model
             return Quote.objects.all()
         return Quote.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        # Check if user has made too many requests recently
         recent_requests = Quote.objects.filter(
             user=self.request.user,
             last_request_time__gte=timezone.now() - timedelta(hours=1)
@@ -195,7 +189,7 @@ class QuoteViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def approve(self, request, pk=None):
-        if not request.user.is_staff:
+        if not request.user.role.id == Role.ADMIN:
             return Response(status=status.HTTP_403_FORBIDDEN)
         quote = self.get_object()
         quote.status = 'approved'
@@ -205,7 +199,7 @@ class QuoteViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def reject(self, request, pk=None):
-        if not request.user.is_staff:
+        if not request.user.role.id == Role.ADMIN:
             return Response(status=status.HTTP_403_FORBIDDEN)
         quote = self.get_object()
         quote.status = 'rejected'
@@ -215,11 +209,11 @@ class QuoteViewSet(viewsets.ModelViewSet):
 
 class RentalViewSet(viewsets.ModelViewSet):
     serializer_class = RentalSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Only authenticated users
     throttle_classes = [RentalThrottle]
 
     def get_queryset(self):
-        if self.request.user.is_staff:
+        if self.request.user.role.id == Role.ADMIN:
             return Rental.objects.all()
         return Rental.objects.filter(user=self.request.user)
 
@@ -228,7 +222,7 @@ class RentalViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def approve(self, request, pk=None):
-        if not request.user.is_staff:
+        if not request.user.role.id == Role.ADMIN:
             return Response(status=status.HTTP_403_FORBIDDEN)
         rental = self.get_object()
         rental.status = 'approved'
@@ -238,7 +232,7 @@ class RentalViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def reject(self, request, pk=None):
-        if not request.user.is_staff:
+        if not request.user.role.id == Role.ADMIN:
             return Response(status=status.HTTP_403_FORBIDDEN)
         rental = self.get_object()
         rental.status = 'rejected'
@@ -248,7 +242,7 @@ class RentalViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def mark_returned(self, request, pk=None):
-        if not request.user.is_staff:
+        if not request.user.role.id == Role.ADMIN:
             return Response(status=status.HTTP_403_FORBIDDEN)
         rental = self.get_object()
         rental.status = 'returned'

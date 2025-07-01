@@ -3,76 +3,96 @@ from .models import Role
 
 class IsAdmin(permissions.BasePermission):
     """
-    Allows access only to users with the Admin role.
-    Enforces RBAC as recommended in project rules.
+    Allows access only to users with Admin role (role_id=1).
+    Admins have full privileges including managing all products and vendor requests.
     """
     def has_permission(self, request, view):
-        return request.user.role.id == Role.ADMIN
+        return request.user.is_authenticated and request.user.role.id == Role.ADMIN
+
 
 class IsVendor(permissions.BasePermission):
     """
-    Allows access only to users with the Vendor role.
-    Used to restrict endpoints to vendors as per RBAC guidelines.
+    Allows access only to authenticated users with Vendor role (role_id=2).
+    Vendars can manage their own products but not others'.
     """
     def has_permission(self, request, view):
-        return request.user.role.id == Role.VENDOR
+        return request.user.is_authenticated and request.user.role.id == Role.VENDOR
+
 
 class IsUser(permissions.BasePermission):
     """
-    Allows access only to users with the User role.
-    Ensures only regular users can access certain endpoints.
+    Allows access only to authenticated regular Users (role_id=3).
+    Regular users can write reviews and perform other non-admin/non-vendor actions.
     """
     def has_permission(self, request, view):
-        return request.user.role.id == Role.USER
+        return request.user.is_authenticated and request.user.role.id == Role.USER
+
 
 class IsOwnerOrAdmin(permissions.BasePermission):
     """
-    Object-level permission to allow access to object owners or admins.
-    Supports secure data access and RBAC as outlined in the rules.
+    Object-level permission that allows access to:
+    - Admins for any object
+    - Owners of the specific object
+    Used for protecting user-specific resources.
     """
     def has_object_permission(self, request, view, obj):
         if request.user.role.id == Role.ADMIN:
             return True
         return obj.user == request.user
 
-class IsVendorOrReadOnly(permissions.BasePermission):
+
+class IsVendorOwnerOrAdmin(permissions.BasePermission):
     """
-    Allows read-only access to everyone, but write access only to vendors.
-    Implements safe method checks and RBAC for write operations.
+    Object-level permission that allows:
+    - Read access to everyone (including unauthenticated users)
+    - Write access only to:
+        * Admins
+        * Vendor who owns the product
     """
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return request.user.role.id == Role.VENDOR
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return (
+            request.user.role.id == Role.ADMIN or
+            (request.user.role.id == Role.VENDOR and obj.user == request.user)
+        )
+
 
 class CanCreateReview(permissions.BasePermission):
     """
-    Allows review creation only for users with User or Vendor roles.
-    Enforces role-based restrictions for POST requests.
+    Allows review creation only for authenticated Users (role_id=3).
+    Admins and Vendors cannot create reviews.
+    All users can read reviews.
     """
     def has_permission(self, request, view):
         if request.method == 'POST':
-            return request.user.role.id in [Role.USER, Role.VENDOR]
+            return request.user.is_authenticated and request.user.role.id == Role.USER
         return True
 
-class IsOwnerVendorOrAdmin(permissions.BasePermission):
+
+class ReadOnlyOrAdmin(permissions.BasePermission):
     """
-    Allows safe methods to anyone.
-    Allows write methods only to product owner (vendor) or admin.
+    Allows:
+    - Read access to everyone (including unauthenticated users)
+    - Write access only to Admins
+    Used for system-wide settings and configurations.
     """
     def has_permission(self, request, view):
-        # Allow anyone to view (GET, HEAD, OPTIONS)
         if request.method in permissions.SAFE_METHODS:
             return True
-        # Only authenticated users for unsafe methods
-        return request.user and request.user.is_authenticated
+        return request.user.is_authenticated and request.user.role.id == Role.ADMIN
 
-    def has_object_permission(self, request, view, obj):
-        # Allow anyone to view
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        # Only owner (vendor) or admin can modify
-        return (
-            (hasattr(request.user, "role") and request.user.role.id == Role.ADMIN)
-            or (hasattr(obj, "user") and obj.user == request.user)
-        )
+
+class PublicReadOnly(permissions.BasePermission):
+    """
+    Allows read-only access to everyone (including unauthenticated users).
+    No write access is granted to anyone through this permission.
+    Used for public product listings and views.
+    """
+    def has_permission(self, request, view):
+        return request.method in permissions.SAFE_METHODS
