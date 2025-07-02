@@ -157,7 +157,32 @@ class GoogleLogin(APIView):
                 os.getenv('GOOGLE_CLIENT_ID')
             )
             email = id_info['email']
-            user, _ = User.objects.get_or_create(email=email)
+            first_name = id_info.get('given_name', '')
+            last_name = id_info.get('family_name', '')
+            picture = id_info.get('picture', None)
+
+            user, created = User.objects.get_or_create(email=email, defaults={
+                'username': email,
+                'first_name': first_name,
+                'last_name': last_name,
+                'google_login': True,
+                'is_active': True,
+            })
+            # If user already exists, update google_login and names if needed
+            if not created:
+                updated = False
+                if not user.google_login:
+                    user.google_login = True
+                    updated = True
+                if first_name and user.first_name != first_name:
+                    user.first_name = first_name
+                    updated = True
+                if last_name and user.last_name != last_name:
+                    user.last_name = last_name
+                    updated = True
+                if updated:
+                    user.save()
+
             refresh = RefreshToken.for_user(user)
             return Response({
                 'access': str(refresh.access_token),
