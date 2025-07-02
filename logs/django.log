@@ -1065,3 +1065,16 @@ WARNING 2025-07-02 16:42:57,822 basehttp 13556 23196 "GET /api/top_searched HTTP
 INFO 2025-07-02 16:42:57,842 basehttp 13556 19284 "GET /api/categories/ HTTP/1.1" 200 52
 INFO 2025-07-02 16:42:57,935 basehttp 13556 23196 "GET /api/categories/ HTTP/1.1" 200 52
 INFO 2025-07-02 16:42:57,940 basehttp 13556 19284 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 16:50:55,672 log 13556 12732 Not Found: /api/craousels
+WARNING 2025-07-02 16:50:55,689 log 13556 16524 Not Found: /api/most_popular
+WARNING 2025-07-02 16:50:55,691 basehttp 13556 12732 "GET /api/craousels HTTP/1.1" 404 30424
+WARNING 2025-07-02 16:50:55,709 log 13556 12292 Not Found: /api/spare_parts
+WARNING 2025-07-02 16:50:55,710 basehttp 13556 16524 "GET /api/most_popular HTTP/1.1" 404 30433
+WARNING 2025-07-02 16:50:55,727 basehttp 13556 12292 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-02 16:50:55,733 log 13556 17612 Not Found: /api/vendor_products
+WARNING 2025-07-02 16:50:55,752 log 13556 1048 Not Found: /api/export_products
+WARNING 2025-07-02 16:50:55,754 basehttp 13556 17612 "GET /api/vendor_products HTTP/1.1" 404 30442
+WARNING 2025-07-02 16:50:55,755 basehttp 13556 1048 "GET /api/export_products HTTP/1.1" 404 30442
+INFO 2025-07-02 16:50:55,831 basehttp 13556 21456 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:50:55,838 basehttp 13556 21456 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:50:55,849 basehttp 13556 21456 "GET /api/categories/ HTTP/1.1" 200 52
