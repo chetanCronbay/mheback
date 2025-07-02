@@ -47,12 +47,31 @@ INSTALLED_APPS = [
     "rest_framework",
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'dj_rest_auth.registration',
+    'rest_framework',
+    'rest_framework_simplejwt',
     "django_filters",
     "banners",
     "products",
     "users",
     "corsheaders",
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.getenv('GOOGLE_CLIENT_ID'),
+            'secret': os.getenv('GOOGLE_CLIENT_SECRET'),
+            'key': ''
+        },
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+    }
+}
 
 # Apply Rules: REST API configuration with comprehensive settings
 REST_FRAMEWORK = {
@@ -133,8 +152,8 @@ SIMPLE_JWT = {
     'AUTH_COOKIE_HTTP_ONLY': True,  # Prevent JavaScript access
     'AUTH_COOKIE_PATH': '/',        
     'AUTH_COOKIE_SAMESITE': 'Lax',  # or 'Strict'
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
 

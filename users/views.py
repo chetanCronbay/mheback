@@ -10,6 +10,12 @@ from .models import *
 from .serializers import *
 from util.security import IPRateLimiter, SecurityLogger
 from .permissions import IsAdmin, IsVendor, IsUser, IsOwnerOrAdmin, CanCreateReview
+import os
+from rest_framework.views import APIView
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
     """
@@ -134,3 +140,28 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
         serializer = ReviewsImageSerializer(review_images, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class GoogleLogin(APIView):
+    """
+    API endpoint for Google OAuth2 login.
+    Expects a POST with {'token': <Google ID token>}.
+    """
+    def post(self, request):
+        token = request.data.get('token')
+        if not token:
+            return Response({'error': 'Token is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            id_info = id_token.verify_oauth2_token(
+                token,
+                google_requests.Request(),
+                os.getenv('GOOGLE_CLIENT_ID')
+            )
+            email = id_info['email']
+            user, _ = User.objects.get_or_create(email=email)
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'access': str(refresh.access_token),
+                'refresh': str(refresh),
+            })
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

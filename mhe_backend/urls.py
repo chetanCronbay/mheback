@@ -20,7 +20,7 @@ from rest_framework.routers import DefaultRouter
 from django.urls import path, include
 from banners.views import BannerViewSet
 from products.views import ( CategoryViewSet, SubcategoryViewSet, ProductViewSet, CartViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet)
-from users.views import (RoleViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet)
+from users.views import (RoleViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin)
 
 router = DefaultRouter()
 router.register(r'roles', RoleViewSet, basename='role')
@@ -38,6 +38,7 @@ router.register(r'reviews', ReviewViewSet, basename='review')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/google/login/', GoogleLogin.as_view(), name='google_login'),
     path('api/', include(router.urls)),
 ]
 
