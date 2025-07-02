@@ -11,3 +11,12 @@ INFO 2025-07-01 10:57:28,776 autoreload 13016 21500 C:\Users\suman\Music\Project
 INFO 2025-07-01 10:57:29,511 autoreload 26560 24340 Watching for file changes with StatReloader
 INFO 2025-07-01 10:57:38,588 autoreload 26560 24340 C:\Users\suman\Music\Projects\mhebazar\mhebazar_api\mheback\products\views.py changed, reloading.
 INFO 2025-07-01 10:57:39,387 autoreload 7808 17680 Watching for file changes with StatReloader
+INFO 2025-07-02 11:55:16,215 autoreload 19616 25188 Watching for file changes with StatReloader
+INFO 2025-07-02 11:55:52,340 autoreload 19616 25188 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-02 11:55:53,094 autoreload 768 2696 Watching for file changes with StatReloader
+INFO 2025-07-02 11:56:23,990 autoreload 768 2696 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-02 11:56:24,838 autoreload 8268 11144 Watching for file changes with StatReloader
+INFO 2025-07-02 11:57:35,222 autoreload 8268 11144 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-02 11:57:35,980 autoreload 23172 20148 Watching for file changes with StatReloader
+INFO 2025-07-02 11:57:43,588 autoreload 23172 20148 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-02 11:57:54,221 autoreload 21912 9920 Watching for file changes with StatReloader
