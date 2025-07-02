@@ -16,6 +16,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.utils import timezone
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
     """
@@ -146,6 +147,8 @@ class GoogleLogin(APIView):
     API endpoint for Google OAuth2 login.
     Expects a POST with {'token': <Google ID token>}.
     """
+    permission_classes = [permissions.AllowAny]  # to be used by any user
+
     def post(self, request):
         token = request.data.get('token')
         if not token:
@@ -161,12 +164,16 @@ class GoogleLogin(APIView):
             last_name = id_info.get('family_name', '')
             picture = id_info.get('picture', None)
 
+            role_instance = Role.objects.get(id=3)  # or use name="User" if preferred
             user, created = User.objects.get_or_create(email=email, defaults={
-                'username': email,
-                'first_name': first_name,
-                'last_name': last_name,
-                'google_login': True,
-                'is_active': True,
+              'username': email,
+              'first_name': first_name,
+              'last_name': last_name,
+              'google_login': True,
+              'is_active': True,
+              'is_email_verified': True,
+              'last_login': timezone.now(),
+              'role': role_instance,  # <-- Correct
             })
             # If user already exists, update google_login and names if needed
             if not created:
@@ -189,4 +196,5 @@ class GoogleLogin(APIView):
                 'refresh': str(refresh),
             })
         except Exception as e:
+            print("Google login error:", e)  # Add this line for debugging
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

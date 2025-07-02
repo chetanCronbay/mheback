@@ -36,15 +36,19 @@ class ProductSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='user.username', read_only=True)
     images = ProductImageSerializer(many=True, read_only=True)
     brochure = serializers.FileField(required=False, allow_null=True)
+    average_rating = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = '__all__'  # or add 'average_rating' if you use explicit fields
 
     def validate_price(self, value):
         if value < 0:
             raise serializers.ValidationError("Price cannot be negative")
         return value
+
+    def get_average_rating(self, obj):
+        return obj.get_average_rating()
 
 class CartSerializer(serializers.ModelSerializer):
     product_details = ProductSerializer(source='product', read_only=True)

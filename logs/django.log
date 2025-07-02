@@ -1,22 +1,1067 @@
-INFO 2025-07-01 10:50:49,532 autoreload 1888 15704 Watching for file changes with StatReloader
-WARNING 2025-07-01 10:50:54,079 log 1888 16776 Not Found: /
-WARNING 2025-07-01 10:50:54,080 basehttp 1888 16776 "GET / HTTP/1.1" 404 2309
-WARNING 2025-07-01 10:50:54,205 log 1888 16776 Not Found: /favicon.ico
-WARNING 2025-07-01 10:50:54,206 basehttp 1888 16776 "GET /favicon.ico HTTP/1.1" 404 2360
-WARNING 2025-07-01 10:50:58,081 log 1888 16776 Not Found: /docs
-WARNING 2025-07-01 10:50:58,082 basehttp 1888 16776 "GET /docs HTTP/1.1" 404 2339
-INFO 2025-07-01 10:57:14,399 autoreload 1888 15704 C:\Users\suman\Music\Projects\mhebazar\mhebazar_api\mheback\products\views.py changed, reloading.
-INFO 2025-07-01 10:57:15,474 autoreload 13016 21500 Watching for file changes with StatReloader
-INFO 2025-07-01 10:57:28,776 autoreload 13016 21500 C:\Users\suman\Music\Projects\mhebazar\mhebazar_api\mheback\products\views.py changed, reloading.
-INFO 2025-07-01 10:57:29,511 autoreload 26560 24340 Watching for file changes with StatReloader
-INFO 2025-07-01 10:57:38,588 autoreload 26560 24340 C:\Users\suman\Music\Projects\mhebazar\mhebazar_api\mheback\products\views.py changed, reloading.
-INFO 2025-07-01 10:57:39,387 autoreload 7808 17680 Watching for file changes with StatReloader
-INFO 2025-07-02 11:55:16,215 autoreload 19616 25188 Watching for file changes with StatReloader
-INFO 2025-07-02 11:55:52,340 autoreload 19616 25188 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
-INFO 2025-07-02 11:55:53,094 autoreload 768 2696 Watching for file changes with StatReloader
-INFO 2025-07-02 11:56:23,990 autoreload 768 2696 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
-INFO 2025-07-02 11:56:24,838 autoreload 8268 11144 Watching for file changes with StatReloader
-INFO 2025-07-02 11:57:35,222 autoreload 8268 11144 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
-INFO 2025-07-02 11:57:35,980 autoreload 23172 20148 Watching for file changes with StatReloader
-INFO 2025-07-02 11:57:43,588 autoreload 23172 20148 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
-INFO 2025-07-02 11:57:54,221 autoreload 21912 9920 Watching for file changes with StatReloader
+WARNING 2025-07-02 12:59:58,588 log 14672 668 Bad Request: /google/login/
+WARNING 2025-07-02 12:59:58,589 basehttp 14672 668 "POST /google/login/ HTTP/1.1" 400 358
+INFO 2025-07-02 13:01:34,588 autoreload 14672 22380 C:\Users\cheta\OneDrive\Documents\mheback\users\models.py changed, reloading.
+INFO 2025-07-02 13:01:36,655 autoreload 24492 24240 Watching for file changes with StatReloader
+INFO 2025-07-02 13:01:38,217 autoreload 24492 24240 C:\Users\cheta\OneDrive\Documents\mheback\users\models.py changed, reloading.
+INFO 2025-07-02 13:01:38,965 autoreload 15544 10328 Watching for file changes with StatReloader
+INFO 2025-07-02 13:01:50,659 autoreload 15544 10328 C:\Users\cheta\OneDrive\Documents\mheback\users\models.py changed, reloading.
+INFO 2025-07-02 13:01:51,591 autoreload 21344 25492 Watching for file changes with StatReloader
+INFO 2025-07-02 13:02:12,058 autoreload 21344 25492 C:\Users\cheta\OneDrive\Documents\mheback\users\models.py changed, reloading.
+INFO 2025-07-02 13:02:13,054 autoreload 4304 12616 Watching for file changes with StatReloader
+INFO 2025-07-02 13:43:11,868 autoreload 15832 21436 Watching for file changes with StatReloader
+WARNING 2025-07-02 13:43:22,806 log 15832 15432 Bad Request: /google/login/
+WARNING 2025-07-02 13:43:22,808 basehttp 15832 15432 "POST /google/login/ HTTP/1.1" 400 44
+INFO 2025-07-02 13:44:06,519 autoreload 15832 21436 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 13:44:07,676 autoreload 2124 16576 Watching for file changes with StatReloader
+INFO 2025-07-02 13:44:14,151 autoreload 19964 15532 Watching for file changes with StatReloader
+WARNING 2025-07-02 13:44:25,929 log 19964 20820 Bad Request: /google/login/
+WARNING 2025-07-02 13:44:25,930 basehttp 19964 20820 "POST /google/login/ HTTP/1.1" 400 44
+INFO 2025-07-02 13:44:54,158 autoreload 19964 15532 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 13:44:55,173 autoreload 3724 12244 Watching for file changes with StatReloader
+INFO 2025-07-02 13:44:56,863 autoreload 3724 12244 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 13:44:57,797 autoreload 18644 11408 Watching for file changes with StatReloader
+INFO 2025-07-02 13:45:01,573 autoreload 21520 20108 Watching for file changes with StatReloader
+WARNING 2025-07-02 13:45:12,251 log 21520 7256 Bad Request: /google/login/
+WARNING 2025-07-02 13:45:12,253 basehttp 21520 7256 "POST /google/login/ HTTP/1.1" 400 75
+INFO 2025-07-02 13:46:18,864 autoreload 21520 20108 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 13:46:20,149 autoreload 13596 25164 Watching for file changes with StatReloader
+WARNING 2025-07-02 13:46:26,898 log 13596 1872 Bad Request: /google/login/
+WARNING 2025-07-02 13:46:26,899 basehttp 13596 1872 "POST /google/login/ HTTP/1.1" 400 47
+INFO 2025-07-02 13:52:08,010 autoreload 7936 23364 Watching for file changes with StatReloader
+ERROR 2025-07-02 13:52:19,612 email_utils 7936 10424 Email sending error: (530, b'5.7.0 Authentication Required. For more information, go to\n5.7.0  https://support.google.com/accounts/troubleshooter/2402620. d9443c01a7336-23acb2f2239sm130409635ad.81 - gsmtp', 'no-reply@yourdomain.com')
+INFO 2025-07-02 13:52:19,613 signals 7936 10424 Verification email sent to new user: chetan@cronbay-tech.com
+INFO 2025-07-02 13:52:19,614 signals 7936 10424 New user registered - ID: 7, Username: chetan@cronbay-tech.com, Email: chetan@cronbay-tech.com, Role: User
+INFO 2025-07-02 13:52:19,637 basehttp 7936 10424 "POST /google/login/ HTTP/1.1" 200 483
+WARNING 2025-07-02 13:52:23,540 log 7936 12040 Not Found: /categories
+WARNING 2025-07-02 13:52:23,540 log 7936 10424 Not Found: /craousels
+WARNING 2025-07-02 13:52:23,541 basehttp 7936 12040 "GET /categories HTTP/1.1" 404 2534
+WARNING 2025-07-02 13:52:23,541 basehttp 7936 10424 "GET /craousels HTTP/1.1" 404 2531
+WARNING 2025-07-02 13:52:23,549 log 7936 12040 Not Found: /most_popular
+INFO 2025-07-02 13:52:23,549 basehttp 7936 10424 "OPTIONS /new_arrivals HTTP/1.1" 200 0
+WARNING 2025-07-02 13:52:23,550 basehttp 7936 12040 "GET /most_popular HTTP/1.1" 404 2540
+INFO 2025-07-02 13:52:23,552 basehttp 7936 10424 "OPTIONS /top_searched HTTP/1.1" 200 0
+WARNING 2025-07-02 13:52:23,559 log 7936 12040 Not Found: /spare_parts
+WARNING 2025-07-02 13:52:23,568 log 7936 10424 Not Found: /vendor_products
+WARNING 2025-07-02 13:52:23,569 basehttp 7936 12040 "GET /spare_parts HTTP/1.1" 404 2537
+WARNING 2025-07-02 13:52:23,570 basehttp 7936 10424 "GET /vendor_products HTTP/1.1" 404 2549
+WARNING 2025-07-02 13:52:23,577 log 7936 12040 Not Found: /export_products
+INFO 2025-07-02 13:52:23,579 basehttp 7936 10424 "OPTIONS /api/categories/ HTTP/1.1" 200 0
+WARNING 2025-07-02 13:52:23,580 basehttp 7936 12040 "GET /export_products HTTP/1.1" 404 2549
+INFO 2025-07-02 13:52:23,585 basehttp 7936 10424 "OPTIONS /api/categories/ HTTP/1.1" 200 0
+INFO 2025-07-02 13:52:23,586 basehttp 7936 12040 "OPTIONS /new_arrivals HTTP/1.1" 200 0
+INFO 2025-07-02 13:52:23,589 basehttp 7936 10424 "OPTIONS /top_searched HTTP/1.1" 200 0
+INFO 2025-07-02 13:52:23,590 basehttp 7936 12040 "OPTIONS /api/categories/ HTTP/1.1" 200 0
+INFO 2025-07-02 13:52:23,594 basehttp 7936 10424 "OPTIONS /api/categories/ HTTP/1.1" 200 0
+WARNING 2025-07-02 13:52:23,601 log 7936 12040 Not Found: /categories
+WARNING 2025-07-02 13:52:23,610 log 7936 10424 Not Found: /craousels
+WARNING 2025-07-02 13:52:23,611 basehttp 7936 12040 "GET /categories HTTP/1.1" 404 2534
+WARNING 2025-07-02 13:52:23,611 basehttp 7936 10424 "GET /craousels HTTP/1.1" 404 2531
+WARNING 2025-07-02 13:52:23,630 log 7936 12040 Not Found: /new_arrivals
+WARNING 2025-07-02 13:52:23,644 log 7936 10424 Not Found: /most_popular
+WARNING 2025-07-02 13:52:23,646 basehttp 7936 12040 "GET /new_arrivals HTTP/1.1" 404 2540
+WARNING 2025-07-02 13:52:23,647 basehttp 7936 10424 "GET /most_popular HTTP/1.1" 404 2540
+WARNING 2025-07-02 13:52:23,668 log 7936 12040 Not Found: /top_searched
+WARNING 2025-07-02 13:52:23,679 log 7936 10424 Not Found: /spare_parts
+WARNING 2025-07-02 13:52:23,686 basehttp 7936 12040 "GET /top_searched HTTP/1.1" 404 2540
+WARNING 2025-07-02 13:52:23,687 basehttp 7936 10424 "GET /spare_parts HTTP/1.1" 404 2537
+WARNING 2025-07-02 13:52:23,704 log 7936 12040 Not Found: /vendor_products
+WARNING 2025-07-02 13:52:23,706 basehttp 7936 12040 "GET /vendor_products HTTP/1.1" 404 2549
+WARNING 2025-07-02 13:52:23,717 log 7936 12040 Not Found: /export_products
+WARNING 2025-07-02 13:52:23,719 basehttp 7936 12040 "GET /export_products HTTP/1.1" 404 2549
+INFO 2025-07-02 13:52:23,737 basehttp 7936 10424 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 13:52:23,745 basehttp 7936 10424 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 13:52:23,758 basehttp 7936 10424 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 13:52:23,768 basehttp 7936 10424 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 13:55:09,600 log 7936 10424 Not Found: /craousels
+WARNING 2025-07-02 13:55:09,608 log 7936 12040 Not Found: /categories
+WARNING 2025-07-02 13:55:09,611 basehttp 7936 10424 "GET /craousels HTTP/1.1" 404 2531
+WARNING 2025-07-02 13:55:09,612 basehttp 7936 12040 "GET /categories HTTP/1.1" 404 2534
+WARNING 2025-07-02 13:55:09,636 log 7936 12040 Not Found: /spare_parts
+WARNING 2025-07-02 13:55:09,637 log 7936 10424 Not Found: /most_popular
+WARNING 2025-07-02 13:55:09,638 basehttp 7936 12040 "GET /spare_parts HTTP/1.1" 404 2537
+WARNING 2025-07-02 13:55:09,638 basehttp 7936 10424 "GET /most_popular HTTP/1.1" 404 2540
+WARNING 2025-07-02 13:55:09,649 log 7936 12040 Not Found: /vendor_products
+WARNING 2025-07-02 13:55:09,654 log 7936 10424 Not Found: /export_products
+WARNING 2025-07-02 13:55:09,655 basehttp 7936 12040 "GET /vendor_products HTTP/1.1" 404 2549
+WARNING 2025-07-02 13:55:09,656 basehttp 7936 10424 "GET /export_products HTTP/1.1" 404 2549
+INFO 2025-07-02 13:55:09,724 basehttp 7936 12040 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 13:55:09,730 basehttp 7936 12040 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 13:57:51,433 log 7936 12040 Not Found: /api/craousels
+INFO 2025-07-02 13:57:51,439 basehttp 7936 10424 "GET /api/categories HTTP/1.1" 301 0
+WARNING 2025-07-02 13:57:51,439 basehttp 7936 12040 "GET /api/craousels HTTP/1.1" 404 28606
+WARNING 2025-07-02 13:57:51,460 log 7936 12040 Not Found: /api/most_popular
+WARNING 2025-07-02 13:57:51,461 basehttp 7936 12040 "GET /api/most_popular HTTP/1.1" 404 28615
+INFO 2025-07-02 13:57:51,465 basehttp 7936 12040 "OPTIONS /api/new_arrivals HTTP/1.1" 200 0
+INFO 2025-07-02 13:57:51,473 basehttp 7936 12040 "OPTIONS /api/top_searched HTTP/1.1" 200 0
+WARNING 2025-07-02 13:57:51,490 log 7936 12040 Not Found: /api/spare_parts
+WARNING 2025-07-02 13:57:51,491 basehttp 7936 12040 "GET /api/spare_parts HTTP/1.1" 404 28612
+WARNING 2025-07-02 13:57:51,507 log 7936 12040 Not Found: /api/vendor_products
+WARNING 2025-07-02 13:57:51,508 basehttp 7936 12040 "GET /api/vendor_products HTTP/1.1" 404 28624
+WARNING 2025-07-02 13:57:51,526 log 7936 12040 Not Found: /api/export_products
+WARNING 2025-07-02 13:57:51,527 basehttp 7936 12040 "GET /api/export_products HTTP/1.1" 404 28624
+INFO 2025-07-02 13:57:51,534 basehttp 7936 12040 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 13:57:51,544 log 7936 12040 Not Found: /api/new_arrivals
+WARNING 2025-07-02 13:57:51,545 basehttp 7936 12040 "GET /api/new_arrivals HTTP/1.1" 404 28615
+WARNING 2025-07-02 13:57:51,558 log 7936 12040 Not Found: /api/top_searched
+WARNING 2025-07-02 13:57:51,559 basehttp 7936 12040 "GET /api/top_searched HTTP/1.1" 404 28615
+INFO 2025-07-02 13:57:51,564 basehttp 7936 12040 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 13:57:51,900 basehttp 7936 12040 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 13:58:06,595 autoreload 7936 23364 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
+INFO 2025-07-02 13:58:07,664 autoreload 2028 11620 Watching for file changes with StatReloader
+WARNING 2025-07-02 13:58:15,796 log 2028 8876 Not Found: /api/craousels
+WARNING 2025-07-02 13:58:15,796 log 2028 10348 Not Found: /api/most_popular
+WARNING 2025-07-02 13:58:15,798 log 2028 12640 Not Found: /api/vendor_products
+WARNING 2025-07-02 13:58:15,799 log 2028 3832 Not Found: /api/export_products
+WARNING 2025-07-02 13:58:15,800 log 2028 17668 Not Found: /api/spare_parts
+WARNING 2025-07-02 13:58:15,801 basehttp 2028 10348 "GET /api/most_popular HTTP/1.1" 404 28619
+WARNING 2025-07-02 13:58:15,802 basehttp 2028 8876 "GET /api/craousels HTTP/1.1" 404 28610
+WARNING 2025-07-02 13:58:15,803 basehttp 2028 12640 "GET /api/vendor_products HTTP/1.1" 404 28628
+WARNING 2025-07-02 13:58:15,804 basehttp 2028 17668 "GET /api/spare_parts HTTP/1.1" 404 28616
+WARNING 2025-07-02 13:58:15,805 basehttp 2028 3832 "GET /api/export_products HTTP/1.1" 404 28628
+INFO 2025-07-02 13:58:15,889 basehttp 2028 5360 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 13:58:15,895 basehttp 2028 5360 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 13:58:15,901 basehttp 2028 5360 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 14:01:35,364 autoreload 2028 11620 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 14:01:36,595 autoreload 11756 17868 Watching for file changes with StatReloader
+INFO 2025-07-02 14:02:03,278 autoreload 11756 17868 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 14:02:04,316 autoreload 6260 2008 Watching for file changes with StatReloader
+INFO 2025-07-02 14:02:09,002 autoreload 6260 2008 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 14:02:10,016 autoreload 8300 21244 Watching for file changes with StatReloader
+INFO 2025-07-02 14:02:15,556 autoreload 8300 21244 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 14:02:16,702 autoreload 4796 20220 Watching for file changes with StatReloader
+INFO 2025-07-02 14:02:32,394 autoreload 4796 20220 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 14:02:33,720 autoreload 8604 7548 Watching for file changes with StatReloader
+INFO 2025-07-02 14:02:35,239 autoreload 8604 7548 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 14:02:36,598 autoreload 12864 20300 Watching for file changes with StatReloader
+INFO 2025-07-02 14:02:43,417 autoreload 12864 20300 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 14:02:44,892 autoreload 15056 9748 Watching for file changes with StatReloader
+INFO 2025-07-02 14:02:46,189 autoreload 15056 9748 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 14:02:47,425 autoreload 19564 7164 Watching for file changes with StatReloader
+INFO 2025-07-02 14:02:49,805 autoreload 19564 7164 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 14:02:50,796 autoreload 3024 19968 Watching for file changes with StatReloader
+INFO 2025-07-02 14:03:04,712 autoreload 3024 19968 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 14:03:05,600 autoreload 23304 20640 Watching for file changes with StatReloader
+INFO 2025-07-02 14:20:49,551 autoreload 23304 20640 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-02 14:20:50,806 autoreload 12344 25548 Watching for file changes with StatReloader
+WARNING 2025-07-02 14:27:01,525 log 12344 21776 Not Found: /api/most_popular
+WARNING 2025-07-02 14:27:01,527 log 12344 2340 Not Found: /api/craousels
+WARNING 2025-07-02 14:27:01,528 log 12344 18716 Not Found: /api/spare_parts
+WARNING 2025-07-02 14:27:01,530 basehttp 12344 21776 "GET /api/most_popular HTTP/1.1" 404 28619
+WARNING 2025-07-02 14:27:01,537 log 12344 24916 Not Found: /api/vendor_products
+WARNING 2025-07-02 14:27:01,543 log 12344 25180 Not Found: /api/export_products
+WARNING 2025-07-02 14:27:01,547 basehttp 12344 2340 "GET /api/craousels HTTP/1.1" 404 28610
+WARNING 2025-07-02 14:27:01,548 basehttp 12344 18716 "GET /api/spare_parts HTTP/1.1" 404 28616
+WARNING 2025-07-02 14:27:01,549 basehttp 12344 25180 "GET /api/export_products HTTP/1.1" 404 28628
+WARNING 2025-07-02 14:27:01,550 basehttp 12344 24916 "GET /api/vendor_products HTTP/1.1" 404 28628
+INFO 2025-07-02 14:27:01,634 basehttp 12344 21768 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 14:27:01,640 basehttp 12344 21768 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 14:27:01,645 basehttp 12344 21768 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 14:35:10,681 log 12344 5612 Not Found: /api/craousels
+WARNING 2025-07-02 14:35:10,693 log 12344 17092 Not Found: /api/most_popular
+WARNING 2025-07-02 14:35:10,729 log 12344 15048 Not Found: /api/spare_parts
+WARNING 2025-07-02 14:35:10,723 log 12344 12276 Not Found: /api/vendor_products
+WARNING 2025-07-02 14:35:10,746 log 12344 12452 Not Found: /api/export_products
+WARNING 2025-07-02 14:35:10,748 basehttp 12344 5612 "GET /api/craousels HTTP/1.1" 404 28610
+WARNING 2025-07-02 14:35:10,750 basehttp 12344 17092 "GET /api/most_popular HTTP/1.1" 404 28619
+WARNING 2025-07-02 14:35:10,751 basehttp 12344 15048 "GET /api/spare_parts HTTP/1.1" 404 28616
+WARNING 2025-07-02 14:35:10,751 basehttp 12344 12276 "GET /api/vendor_products HTTP/1.1" 404 28628
+WARNING 2025-07-02 14:35:10,752 basehttp 12344 12452 "GET /api/export_products HTTP/1.1" 404 28628
+INFO 2025-07-02 14:35:10,847 basehttp 12344 12144 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 14:35:10,853 basehttp 12344 12144 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 14:35:10,861 basehttp 12344 12144 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 14:36:51,185 log 12344 12144 Not Found: /api/craousels
+WARNING 2025-07-02 14:36:51,187 basehttp 12344 12144 "GET /api/craousels HTTP/1.1" 404 28610
+WARNING 2025-07-02 14:36:51,193 log 12344 12452 Not Found: /api/most_popular
+WARNING 2025-07-02 14:36:51,201 log 12344 12276 Not Found: /api/spare_parts
+WARNING 2025-07-02 14:36:51,206 log 12344 12144 Not Found: /api/vendor_products
+WARNING 2025-07-02 14:36:51,210 basehttp 12344 12452 "GET /api/most_popular HTTP/1.1" 404 28619
+WARNING 2025-07-02 14:36:51,224 log 12344 15048 Not Found: /api/export_products
+WARNING 2025-07-02 14:36:51,225 basehttp 12344 12276 "GET /api/spare_parts HTTP/1.1" 404 28616
+WARNING 2025-07-02 14:36:51,225 basehttp 12344 12144 "GET /api/vendor_products HTTP/1.1" 404 28628
+WARNING 2025-07-02 14:36:51,226 basehttp 12344 15048 "GET /api/export_products HTTP/1.1" 404 28628
+INFO 2025-07-02 14:36:51,264 basehttp 12344 17092 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 14:36:51,268 basehttp 12344 17092 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 14:36:51,591 basehttp 12344 17092 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 14:53:21,257 log 12344 7928 Forbidden: /api/
+WARNING 2025-07-02 14:53:21,257 basehttp 12344 7928 "GET /api/ HTTP/1.1" 403 9655
+INFO 2025-07-02 14:53:21,494 basehttp 12344 8264 "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 200 3426
+INFO 2025-07-02 14:53:21,499 basehttp 12344 7928 "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 200 121457
+INFO 2025-07-02 14:53:21,508 basehttp 12344 8264 "GET /static/rest_framework/css/prettify.css HTTP/1.1" 200 817
+INFO 2025-07-02 14:53:21,512 basehttp 12344 7928 "GET /static/rest_framework/css/default.css HTTP/1.1" 200 1152
+INFO 2025-07-02 14:53:21,540 basehttp 12344 7928 "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 200 3796
+INFO 2025-07-02 14:53:21,567 basehttp 12344 7928 "GET /static/rest_framework/js/csrf.js HTTP/1.1" 200 1793
+INFO 2025-07-02 14:53:21,578 basehttp 12344 8264 "GET /static/rest_framework/js/jquery-3.7.1.min.js HTTP/1.1" 200 87533
+INFO 2025-07-02 14:53:21,610 basehttp 12344 7928 "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 200 39680
+INFO 2025-07-02 14:53:21,616 basehttp 12344 20456 "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+INFO 2025-07-02 14:53:21,627 basehttp 12344 6992 "GET /static/rest_framework/js/load-ajax-form.js HTTP/1.1" 200 59
+INFO 2025-07-02 14:53:21,634 basehttp 12344 14792 "GET /static/rest_framework/js/default.js HTTP/1.1" 200 1268
+INFO 2025-07-02 14:53:21,636 basehttp 12344 8264 "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 200 13632
+WARNING 2025-07-02 14:53:26,505 log 12344 8264 Not Found: /api/a
+WARNING 2025-07-02 14:53:26,506 basehttp 12344 8264 "GET /api/a HTTP/1.1" 404 28586
+INFO 2025-07-02 14:56:24,096 basehttp 12344 8488 "GET /api/banners HTTP/1.1" 301 0
+WARNING 2025-07-02 14:56:24,153 log 12344 25464 Not Found: /api/export_products
+WARNING 2025-07-02 14:56:24,187 log 12344 24680 Not Found: /api/most_popular
+WARNING 2025-07-02 14:56:24,204 log 12344 20140 Not Found: /api/vendor_products
+WARNING 2025-07-02 14:56:24,232 log 12344 10144 Not Found: /api/spare_parts
+WARNING 2025-07-02 14:56:24,233 basehttp 12344 25464 "GET /api/export_products HTTP/1.1" 404 28628
+WARNING 2025-07-02 14:56:24,233 basehttp 12344 24680 "GET /api/most_popular HTTP/1.1" 404 28619
+WARNING 2025-07-02 14:56:24,234 basehttp 12344 20140 "GET /api/vendor_products HTTP/1.1" 404 28628
+WARNING 2025-07-02 14:56:24,238 basehttp 12344 10144 "GET /api/spare_parts HTTP/1.1" 404 28616
+INFO 2025-07-02 14:56:24,296 basehttp 12344 10584 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 14:56:24,316 basehttp 12344 10584 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 14:56:24,356 basehttp 12344 10584 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 14:56:24,467 basehttp 12344 25464 "GET /api/banners/ HTTP/1.1" 200 52
+WARNING 2025-07-02 14:58:08,265 log 12344 25464 Not Found: /api/most_popular
+WARNING 2025-07-02 14:58:08,271 log 12344 10584 Not Found: /api/new_arrivals
+WARNING 2025-07-02 14:58:08,273 basehttp 12344 25464 "GET /api/most_popular HTTP/1.1" 404 28619
+WARNING 2025-07-02 14:58:08,282 log 12344 20140 Not Found: /api/spare_parts
+WARNING 2025-07-02 14:58:08,289 log 12344 24680 Not Found: /api/vendor_products
+WARNING 2025-07-02 14:58:08,295 log 12344 10144 Not Found: /api/top_searched
+WARNING 2025-07-02 14:58:08,296 basehttp 12344 10584 "GET /api/new_arrivals HTTP/1.1" 404 28619
+WARNING 2025-07-02 14:58:08,302 log 12344 25464 Not Found: /api/export_products
+WARNING 2025-07-02 14:58:08,303 basehttp 12344 20140 "GET /api/spare_parts HTTP/1.1" 404 28616
+WARNING 2025-07-02 14:58:08,304 basehttp 12344 24680 "GET /api/vendor_products HTTP/1.1" 404 28628
+WARNING 2025-07-02 14:58:08,308 basehttp 12344 10144 "GET /api/top_searched HTTP/1.1" 404 28619
+WARNING 2025-07-02 14:58:08,311 basehttp 12344 25464 "GET /api/export_products HTTP/1.1" 404 28628
+INFO 2025-07-02 14:58:08,312 basehttp 12344 10584 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 14:58:08,322 basehttp 12344 10584 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 14:58:08,665 basehttp 12344 10584 "GET /api/banners/ HTTP/1.1" 200 52
+INFO 2025-07-02 14:58:08,671 basehttp 12344 10584 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:33:25,676 autoreload 12344 25548 C:\Users\cheta\OneDrive\Documents\mheback\users\models.py changed, reloading.
+INFO 2025-07-02 15:33:27,706 autoreload 12480 3472 Watching for file changes with StatReloader
+INFO 2025-07-02 15:39:37,254 autoreload 12480 3472 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 15:39:38,664 autoreload 20540 21724 Watching for file changes with StatReloader
+INFO 2025-07-02 15:40:58,587 autoreload 20540 21724 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 15:40:59,653 autoreload 22824 18264 Watching for file changes with StatReloader
+INFO 2025-07-02 15:41:03,386 autoreload 22824 18264 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 15:41:04,670 autoreload 6392 6964 Watching for file changes with StatReloader
+INFO 2025-07-02 15:42:51,042 autoreload 6392 6964 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 15:42:52,147 autoreload 5240 12916 Watching for file changes with StatReloader
+INFO 2025-07-02 15:43:12,634 autoreload 5240 12916 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 15:43:13,683 autoreload 13168 6288 Watching for file changes with StatReloader
+INFO 2025-07-02 15:43:51,105 autoreload 13168 6288 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 15:43:52,429 autoreload 25452 10076 Watching for file changes with StatReloader
+INFO 2025-07-02 15:44:00,372 autoreload 25452 10076 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 15:44:01,840 autoreload 11060 4896 Watching for file changes with StatReloader
+INFO 2025-07-02 15:44:07,658 autoreload 11060 4896 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 15:44:08,768 autoreload 19612 6024 Watching for file changes with StatReloader
+INFO 2025-07-02 15:44:57,734 autoreload 19612 6024 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 15:44:59,078 autoreload 8264 6448 Watching for file changes with StatReloader
+INFO 2025-07-02 15:45:00,621 autoreload 8264 6448 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 15:45:01,872 autoreload 24856 15760 Watching for file changes with StatReloader
+INFO 2025-07-02 15:45:06,624 autoreload 24856 15760 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 15:45:07,850 autoreload 4316 22908 Watching for file changes with StatReloader
+INFO 2025-07-02 15:45:09,711 autoreload 4316 22908 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 15:45:10,974 autoreload 16796 23860 Watching for file changes with StatReloader
+WARNING 2025-07-02 15:45:35,433 log 16796 11640 Not Found: /api/most_popular
+WARNING 2025-07-02 15:45:35,433 log 16796 10144 Not Found: /api/products/top_by_creation/
+WARNING 2025-07-02 15:45:35,434 log 16796 7544 Not Found: /api/top_searched
+WARNING 2025-07-02 15:45:35,437 basehttp 16796 11640 "GET /api/most_popular HTTP/1.1" 404 29835
+WARNING 2025-07-02 15:45:35,441 basehttp 16796 7544 "GET /api/top_searched HTTP/1.1" 404 29835
+WARNING 2025-07-02 15:45:35,441 basehttp 16796 10144 "GET /api/products/top_by_creation/ HTTP/1.1" 404 23
+WARNING 2025-07-02 15:45:35,449 log 16796 22716 Not Found: /api/vendor_products
+WARNING 2025-07-02 15:45:35,453 log 16796 18628 Not Found: /api/spare_parts
+WARNING 2025-07-02 15:45:35,462 log 16796 10920 Not Found: /api/export_products
+WARNING 2025-07-02 15:45:35,469 basehttp 16796 22716 "GET /api/vendor_products HTTP/1.1" 404 29844
+WARNING 2025-07-02 15:45:35,471 basehttp 16796 18628 "GET /api/spare_parts HTTP/1.1" 404 29832
+WARNING 2025-07-02 15:45:35,472 basehttp 16796 10920 "GET /api/export_products HTTP/1.1" 404 29844
+INFO 2025-07-02 15:45:35,525 basehttp 16796 7544 "GET /api/banners/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:45:35,528 basehttp 16796 11640 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:45:35,532 basehttp 16796 11640 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:45:35,537 basehttp 16796 11640 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 15:45:46,509 log 16796 13112 Not Found: /api/spare_parts
+WARNING 2025-07-02 15:45:46,519 log 16796 22824 Not Found: /api/most_popular
+WARNING 2025-07-02 15:45:46,533 log 16796 20148 Not Found: /api/export_products
+WARNING 2025-07-02 15:45:46,534 basehttp 16796 13112 "GET /api/spare_parts HTTP/1.1" 404 29832
+WARNING 2025-07-02 15:45:46,539 log 16796 6152 Not Found: /api/top_searched
+WARNING 2025-07-02 15:45:46,550 log 16796 7484 Not Found: /api/vendor_products
+INFO 2025-07-02 15:45:46,550 basehttp 16796 13492 "GET /api/products/new_arrivals HTTP/1.1" 301 0
+WARNING 2025-07-02 15:45:46,550 basehttp 16796 22824 "GET /api/most_popular HTTP/1.1" 404 29835
+WARNING 2025-07-02 15:45:46,554 basehttp 16796 20148 "GET /api/export_products HTTP/1.1" 404 29844
+WARNING 2025-07-02 15:45:46,556 basehttp 16796 6152 "GET /api/top_searched HTTP/1.1" 404 29835
+WARNING 2025-07-02 15:45:46,557 basehttp 16796 7484 "GET /api/vendor_products HTTP/1.1" 404 29844
+WARNING 2025-07-02 15:45:46,607 log 16796 6152 Not Found: /api/products/new_arrivals/
+WARNING 2025-07-02 15:45:46,608 basehttp 16796 6152 "GET /api/products/new_arrivals/ HTTP/1.1" 404 23
+INFO 2025-07-02 15:45:46,630 basehttp 16796 13112 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:45:46,636 basehttp 16796 13112 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:45:46,640 basehttp 16796 13112 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:45:46,764 basehttp 16796 7484 "GET /api/banners/ HTTP/1.1" 200 52
+WARNING 2025-07-02 15:45:57,064 log 16796 7484 Not Found: /api/most_popular
+INFO 2025-07-02 15:45:57,071 basehttp 16796 13112 "GET /api/products/new_arrival HTTP/1.1" 301 0
+WARNING 2025-07-02 15:45:57,082 log 16796 22824 Not Found: /api/vendor_products
+WARNING 2025-07-02 15:45:57,084 basehttp 16796 7484 "GET /api/most_popular HTTP/1.1" 404 29835
+WARNING 2025-07-02 15:45:57,093 log 16796 20148 Not Found: /api/spare_parts
+WARNING 2025-07-02 15:45:57,098 log 16796 6152 Not Found: /api/top_searched
+WARNING 2025-07-02 15:45:57,100 basehttp 16796 22824 "GET /api/vendor_products HTTP/1.1" 404 29844
+WARNING 2025-07-02 15:45:57,101 basehttp 16796 6152 "GET /api/top_searched HTTP/1.1" 404 29835
+WARNING 2025-07-02 15:45:57,107 log 16796 7484 Not Found: /api/export_products
+WARNING 2025-07-02 15:45:57,110 basehttp 16796 20148 "GET /api/spare_parts HTTP/1.1" 404 29832
+WARNING 2025-07-02 15:45:57,112 basehttp 16796 7484 "GET /api/export_products HTTP/1.1" 404 29844
+INFO 2025-07-02 15:45:57,262 basehttp 16796 22824 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:45:57,267 basehttp 16796 22824 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:45:57,506 basehttp 16796 22824 "GET /api/banners/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:45:57,506 basehttp 16796 7484 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:45:57,574 basehttp 16796 20148 "GET /api/products/new_arrival/ HTTP/1.1" 200 2
+WARNING 2025-07-02 15:46:21,342 log 16796 20148 Not Found: /api/most_popular
+WARNING 2025-07-02 15:46:21,360 basehttp 16796 20148 "GET /api/most_popular HTTP/1.1" 404 29835
+WARNING 2025-07-02 15:46:21,364 log 16796 7484 Not Found: /api//products/new_arrival
+WARNING 2025-07-02 15:46:21,388 log 16796 6152 Not Found: /api/vendor_products
+WARNING 2025-07-02 15:46:21,400 log 16796 22824 Not Found: /api/spare_parts
+WARNING 2025-07-02 15:46:21,403 basehttp 16796 7484 "GET /api//products/new_arrival HTTP/1.1" 404 29862
+WARNING 2025-07-02 15:46:21,412 log 16796 20148 Not Found: /api/export_products
+WARNING 2025-07-02 15:46:21,414 basehttp 16796 6152 "GET /api/vendor_products HTTP/1.1" 404 29844
+WARNING 2025-07-02 15:46:21,415 basehttp 16796 22824 "GET /api/spare_parts HTTP/1.1" 404 29832
+WARNING 2025-07-02 15:46:21,416 basehttp 16796 20148 "GET /api/export_products HTTP/1.1" 404 29844
+INFO 2025-07-02 15:46:21,447 basehttp 16796 6108 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:46:21,452 basehttp 16796 6108 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:46:21,789 basehttp 16796 6108 "GET /api/banners/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:46:21,803 basehttp 16796 6108 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:46:21,804 basehttp 16796 20148 "GET /api/products/new_arrival/ HTTP/1.1" 200 2
+WARNING 2025-07-02 15:46:25,250 log 16796 20148 Not Found: /api/most_popular
+WARNING 2025-07-02 15:46:25,286 log 16796 6152 Not Found: /api/export_products
+WARNING 2025-07-02 15:46:25,289 log 16796 6108 Not Found: /api/spare_parts
+WARNING 2025-07-02 15:46:25,292 basehttp 16796 20148 "GET /api/most_popular HTTP/1.1" 404 29835
+WARNING 2025-07-02 15:46:25,307 log 16796 22824 Not Found: /api/vendor_products
+WARNING 2025-07-02 15:46:25,307 basehttp 16796 6152 "GET /api/export_products HTTP/1.1" 404 29844
+INFO 2025-07-02 15:46:25,308 basehttp 16796 7484 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 15:46:25,309 basehttp 16796 6108 "GET /api/spare_parts HTTP/1.1" 404 29832
+WARNING 2025-07-02 15:46:25,313 basehttp 16796 22824 "GET /api/vendor_products HTTP/1.1" 404 29844
+INFO 2025-07-02 15:46:25,320 basehttp 16796 20148 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:46:25,526 basehttp 16796 20148 "GET /api/banners/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:46:25,526 basehttp 16796 22824 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:46:25,539 basehttp 16796 6108 "GET /api/products/new_arrival/ HTTP/1.1" 200 2
+INFO 2025-07-02 15:46:25,549 basehttp 16796 6108 "GET /api/products/new_arrival/ HTTP/1.1" 200 2
+WARNING 2025-07-02 15:46:41,614 log 16796 6108 Not Found: /api/most_popular
+WARNING 2025-07-02 15:46:41,618 basehttp 16796 6108 "GET /api/most_popular HTTP/1.1" 404 29835
+WARNING 2025-07-02 15:46:41,638 log 16796 20148 Not Found: /api/spare_parts
+INFO 2025-07-02 15:46:41,642 basehttp 16796 22824 "GET /api/products/most_popular HTTP/1.1" 301 0
+WARNING 2025-07-02 15:46:41,654 log 16796 6108 Not Found: /api/export_products
+WARNING 2025-07-02 15:46:41,664 log 16796 7484 Not Found: /api/vendor_products
+WARNING 2025-07-02 15:46:41,664 basehttp 16796 20148 "GET /api/spare_parts HTTP/1.1" 404 29832
+WARNING 2025-07-02 15:46:41,665 basehttp 16796 6108 "GET /api/export_products HTTP/1.1" 404 29844
+WARNING 2025-07-02 15:46:41,666 basehttp 16796 7484 "GET /api/vendor_products HTTP/1.1" 404 29844
+INFO 2025-07-02 15:46:41,708 basehttp 16796 6152 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:46:41,712 basehttp 16796 6152 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:46:42,060 basehttp 16796 6152 "GET /api/banners/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:46:42,077 basehttp 16796 6152 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:46:42,077 basehttp 16796 6108 "GET /api/products/new_arrival/ HTTP/1.1" 200 2
+ERROR 2025-07-02 15:46:42,260 log 16796 7484 Internal Server Error: /api/products/most_popular/
+Traceback (most recent call last):
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 168, in most_popular
+    .annotate(
+     ~~~~~~~~^
+        quote_count=Count('quotes', distinct=True),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\aggregates.py", line 176, in resolve_expression
+    result = super().resolve_expression(*args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 2049, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1900, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1805, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'quotes' into field. Choices are: brochure, cart, category, category_id, created_at, description, id, images, is_active, manufacturer, meta_description, meta_title, model, name, price, product_details, quote, rental, reviews, stock_quantity, subcategory, subcategory_id, type, updated_at, user, user_id, wishlist
+ERROR 2025-07-02 15:46:42,272 basehttp 16796 7484 "GET /api/products/most_popular/ HTTP/1.1" 500 164495
+WARNING 2025-07-02 15:47:17,704 log 16796 7484 Not Found: /api/most_popular
+WARNING 2025-07-02 15:47:17,715 log 16796 20148 Not Found: /api/export_products
+WARNING 2025-07-02 15:47:17,726 log 16796 6152 Not Found: /api/vendor_products
+WARNING 2025-07-02 15:47:17,733 log 16796 6108 Not Found: /api/spare_parts
+WARNING 2025-07-02 15:47:17,734 basehttp 16796 7484 "GET /api/most_popular HTTP/1.1" 404 29835
+WARNING 2025-07-02 15:47:17,735 basehttp 16796 20148 "GET /api/export_products HTTP/1.1" 404 29844
+WARNING 2025-07-02 15:47:17,736 basehttp 16796 6152 "GET /api/vendor_products HTTP/1.1" 404 29844
+WARNING 2025-07-02 15:47:17,740 basehttp 16796 6108 "GET /api/spare_parts HTTP/1.1" 404 29832
+INFO 2025-07-02 15:47:17,741 basehttp 16796 7484 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:47:17,748 basehttp 16796 7484 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:47:17,916 basehttp 16796 7484 "GET /api/banners/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:47:17,916 basehttp 16796 6108 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 15:47:17,921 basehttp 16796 6152 "GET /api/products/new_arrival/ HTTP/1.1" 200 2
+ERROR 2025-07-02 15:47:17,967 log 16796 20148 Internal Server Error: /api/products/most_popular/
+Traceback (most recent call last):
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 168, in most_popular
+    .annotate(
+     ~~~~~~~~^
+        quote_count=Count('quotes', distinct=True),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\aggregates.py", line 176, in resolve_expression
+    result = super().resolve_expression(*args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 2049, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1900, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1805, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'quotes' into field. Choices are: brochure, cart, category, category_id, created_at, description, id, images, is_active, manufacturer, meta_description, meta_title, model, name, price, product_details, quote, rental, reviews, stock_quantity, subcategory, subcategory_id, type, updated_at, user, user_id, wishlist
+ERROR 2025-07-02 15:47:17,972 basehttp 16796 20148 "GET /api/products/most_popular/ HTTP/1.1" 500 164495
+INFO 2025-07-02 16:09:53,315 autoreload 16796 23860 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 16:09:55,429 autoreload 13260 13460 Watching for file changes with StatReloader
+INFO 2025-07-02 16:20:43,519 autoreload 13260 13460 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 16:20:44,686 autoreload 17612 5948 Watching for file changes with StatReloader
+INFO 2025-07-02 16:20:54,832 autoreload 17612 5948 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 16:20:55,960 autoreload 7320 22860 Watching for file changes with StatReloader
+INFO 2025-07-02 16:32:51,512 autoreload 7320 22860 C:\Users\cheta\OneDrive\Documents\mheback\products\serializers.py changed, reloading.
+INFO 2025-07-02 16:32:52,647 autoreload 11464 10408 Watching for file changes with StatReloader
+INFO 2025-07-02 16:33:16,370 autoreload 11464 10408 C:\Users\cheta\OneDrive\Documents\mheback\products\serializers.py changed, reloading.
+INFO 2025-07-02 16:33:17,602 autoreload 23904 8264 Watching for file changes with StatReloader
+INFO 2025-07-02 16:34:02,820 autoreload 23904 8264 C:\Users\cheta\OneDrive\Documents\mheback\products\views.py changed, reloading.
+INFO 2025-07-02 16:34:03,989 autoreload 13556 8704 Watching for file changes with StatReloader
+WARNING 2025-07-02 16:34:29,066 log 13556 24928 Not Found: /api/most_popular
+WARNING 2025-07-02 16:34:29,073 log 13556 12344 Not Found: /api/vendor_products
+WARNING 2025-07-02 16:34:29,073 log 13556 6384 Not Found: /api /products/top_rated/
+WARNING 2025-07-02 16:34:29,076 log 13556 6448 Not Found: /api/spare_parts
+WARNING 2025-07-02 16:34:29,092 log 13556 20908 Not Found: /api/export_products
+WARNING 2025-07-02 16:34:29,094 basehttp 13556 24928 "GET /api/most_popular HTTP/1.1" 404 30433
+WARNING 2025-07-02 16:34:29,096 basehttp 13556 12344 "GET /api/vendor_products HTTP/1.1" 404 30442
+WARNING 2025-07-02 16:34:29,097 basehttp 13556 6384 "GET /api%20/products/top_rated/ HTTP/1.1" 404 2582
+WARNING 2025-07-02 16:34:29,097 basehttp 13556 6448 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-02 16:34:29,102 basehttp 13556 20908 "GET /api/export_products HTTP/1.1" 404 30442
+INFO 2025-07-02 16:34:29,176 basehttp 13556 15500 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:34:29,183 basehttp 13556 15500 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:34:29,209 basehttp 13556 15500 "GET /api/banners/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:34:29,224 basehttp 13556 15500 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:34:29,306 basehttp 13556 20908 "GET /api/products/new_arrival/ HTTP/1.1" 200 2
+WARNING 2025-07-02 16:35:13,727 log 13556 20908 Not Found: /api/most_popular
+WARNING 2025-07-02 16:35:13,735 basehttp 13556 20908 "GET /api/most_popular HTTP/1.1" 404 30433
+WARNING 2025-07-02 16:35:13,743 log 13556 6448 Not Found: /api/spare_parts
+WARNING 2025-07-02 16:35:13,755 log 13556 6384 Not Found: /api/vendor_products
+WARNING 2025-07-02 16:35:13,766 log 13556 20908 Not Found: /api/export_products
+WARNING 2025-07-02 16:35:13,767 basehttp 13556 6448 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-02 16:35:13,767 basehttp 13556 20908 "GET /api/export_products HTTP/1.1" 404 30442
+WARNING 2025-07-02 16:35:13,768 basehttp 13556 6384 "GET /api/vendor_products HTTP/1.1" 404 30442
+INFO 2025-07-02 16:35:13,810 basehttp 13556 12344 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:35:13,816 basehttp 13556 12344 "GET /api/categories/ HTTP/1.1" 200 52
+ERROR 2025-07-02 16:35:13,827 log 13556 15500 Internal Server Error: /api/products/top_rated/
+Traceback (most recent call last):
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 168, in top_rated
+    .annotate(avg_rating=Avg('reviews__star_count'))
+     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 2065, in resolve_ref
+    transform = join_info.transform_function(targets[0], final_alias)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1923, in transform
+    return self.try_transform(wrapped, name)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1458, in try_transform
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Unsupported lookup 'star_count' for BigAutoField or join on the field not permitted.
+ERROR 2025-07-02 16:35:13,833 basehttp 13556 15500 "GET /api/products/top_rated/ HTTP/1.1" 500 157671
+INFO 2025-07-02 16:35:14,110 basehttp 13556 15500 "GET /api/banners/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:35:14,125 basehttp 13556 15500 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:35:14,130 basehttp 13556 15500 "GET /api/products/new_arrival/ HTTP/1.1" 200 2
+WARNING 2025-07-02 16:37:10,281 log 13556 15500 Not Found: /apimost_popular
+WARNING 2025-07-02 16:37:10,282 basehttp 13556 15500 "GET /apimost_popular HTTP/1.1" 404 2553
+WARNING 2025-07-02 16:37:10,305 log 13556 12344 Not Found: /api/spare_parts
+WARNING 2025-07-02 16:37:10,327 log 13556 20908 Not Found: /api/vendor_products
+WARNING 2025-07-02 16:37:10,338 log 13556 6384 Not Found: /api/export_products
+WARNING 2025-07-02 16:37:10,340 basehttp 13556 12344 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-02 16:37:10,340 basehttp 13556 6384 "GET /api/export_products HTTP/1.1" 404 30442
+WARNING 2025-07-02 16:37:10,341 basehttp 13556 20908 "GET /api/vendor_products HTTP/1.1" 404 30442
+ERROR 2025-07-02 16:37:10,382 log 13556 15500 Internal Server Error: /api/products/top_rated/
+Traceback (most recent call last):
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 168, in top_rated
+    .annotate(avg_rating=Avg('reviews__star_count'))
+     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 2065, in resolve_ref
+    transform = join_info.transform_function(targets[0], final_alias)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1923, in transform
+    return self.try_transform(wrapped, name)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1458, in try_transform
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Unsupported lookup 'star_count' for BigAutoField or join on the field not permitted.
+ERROR 2025-07-02 16:37:10,387 basehttp 13556 15500 "GET /api/products/top_rated/ HTTP/1.1" 500 157671
+INFO 2025-07-02 16:37:10,402 basehttp 13556 6448 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:37:10,408 basehttp 13556 6448 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:37:10,721 basehttp 13556 6448 "GET /api/banners/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:37:10,728 basehttp 13556 6448 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:37:10,732 basehttp 13556 15500 "GET /api/products/new_arrival/ HTTP/1.1" 200 2
+WARNING 2025-07-02 16:37:16,201 log 13556 15500 Not Found: /api /products/top_rated/
+WARNING 2025-07-02 16:37:16,202 basehttp 13556 15500 "GET /api%20/products/top_rated/ HTTP/1.1" 404 2582
+WARNING 2025-07-02 16:37:16,223 log 13556 6448 Not Found: /api/spare_parts
+WARNING 2025-07-02 16:37:16,238 log 13556 6384 Not Found: /api/vendor_products
+WARNING 2025-07-02 16:37:16,249 log 13556 20908 Not Found: /api/export_products
+WARNING 2025-07-02 16:37:16,250 basehttp 13556 6448 "GET /api/spare_parts HTTP/1.1" 404 30430
+INFO 2025-07-02 16:37:16,251 basehttp 13556 12344 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 16:37:16,252 basehttp 13556 6384 "GET /api/vendor_products HTTP/1.1" 404 30442
+WARNING 2025-07-02 16:37:16,253 basehttp 13556 20908 "GET /api/export_products HTTP/1.1" 404 30442
+INFO 2025-07-02 16:37:16,262 basehttp 13556 12344 "GET /api/categories/ HTTP/1.1" 200 52
+ERROR 2025-07-02 16:37:16,298 log 13556 15500 Internal Server Error: /api/products/top_rated/
+Traceback (most recent call last):
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 168, in top_rated
+    .annotate(avg_rating=Avg('reviews__star_count'))
+     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 2065, in resolve_ref
+    transform = join_info.transform_function(targets[0], final_alias)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1923, in transform
+    return self.try_transform(wrapped, name)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1458, in try_transform
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Unsupported lookup 'star_count' for BigAutoField or join on the field not permitted.
+ERROR 2025-07-02 16:37:16,302 basehttp 13556 15500 "GET /api/products/top_rated/ HTTP/1.1" 500 157671
+INFO 2025-07-02 16:37:16,649 basehttp 13556 15500 "GET /api/banners/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:37:16,660 basehttp 13556 15500 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:37:16,673 basehttp 13556 12344 "GET /api/products/new_arrival/ HTTP/1.1" 200 2
+WARNING 2025-07-02 16:37:22,172 log 13556 12344 Not Found: /api /products/most_popular/
+WARNING 2025-07-02 16:37:22,184 basehttp 13556 12344 "GET /api%20/products/most_popular/ HTTP/1.1" 404 2591
+WARNING 2025-07-02 16:37:22,198 log 13556 6448 Not Found: /api/export_products
+WARNING 2025-07-02 16:37:22,208 log 13556 20908 Not Found: /api/spare_parts
+WARNING 2025-07-02 16:37:22,214 log 13556 6384 Not Found: /api/vendor_products
+WARNING 2025-07-02 16:37:22,216 basehttp 13556 6448 "GET /api/export_products HTTP/1.1" 404 30442
+WARNING 2025-07-02 16:37:22,216 basehttp 13556 20908 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-02 16:37:22,217 basehttp 13556 6384 "GET /api/vendor_products HTTP/1.1" 404 30442
+ERROR 2025-07-02 16:37:22,245 log 13556 15500 Internal Server Error: /api/products/top_rated/
+Traceback (most recent call last):
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 168, in top_rated
+    .annotate(avg_rating=Avg('reviews__star_count'))
+     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 2065, in resolve_ref
+    transform = join_info.transform_function(targets[0], final_alias)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1923, in transform
+    return self.try_transform(wrapped, name)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1458, in try_transform
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Unsupported lookup 'star_count' for BigAutoField or join on the field not permitted.
+ERROR 2025-07-02 16:37:22,250 basehttp 13556 15500 "GET /api/products/top_rated/ HTTP/1.1" 500 157671
+INFO 2025-07-02 16:37:22,260 basehttp 13556 24928 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:37:22,265 basehttp 13556 24928 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:37:22,639 basehttp 13556 24928 "GET /api/banners/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:37:22,642 basehttp 13556 15500 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:37:22,654 basehttp 13556 24928 "GET /api/products/new_arrival/ HTTP/1.1" 200 2
+WARNING 2025-07-02 16:37:47,977 log 13556 6384 Not Found: /api/spare_parts
+WARNING 2025-07-02 16:37:47,991 log 13556 6448 Not Found: /api/export_products
+WARNING 2025-07-02 16:37:48,001 log 13556 20908 Not Found: /api/vendor_products
+INFO 2025-07-02 16:37:48,003 basehttp 13556 12344 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 16:37:48,003 basehttp 13556 6384 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-02 16:37:48,004 basehttp 13556 6448 "GET /api/export_products HTTP/1.1" 404 30442
+WARNING 2025-07-02 16:37:48,008 basehttp 13556 20908 "GET /api/vendor_products HTTP/1.1" 404 30442
+INFO 2025-07-02 16:37:48,019 basehttp 13556 12344 "GET /api/categories/ HTTP/1.1" 200 52
+ERROR 2025-07-02 16:37:48,065 log 13556 24928 Internal Server Error: /api/products/most_popular/
+Traceback (most recent call last):
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 181, in most_popular
+    .annotate(
+     ~~~~~~~~^
+        quote_count=Count('quotes', distinct=True),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\aggregates.py", line 176, in resolve_expression
+    result = super().resolve_expression(*args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 2049, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1900, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1805, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'quotes' into field. Choices are: brochure, cart, category, category_id, created_at, description, id, images, is_active, manufacturer, meta_description, meta_title, model, name, price, product_details, quote, rental, reviews, stock_quantity, subcategory, subcategory_id, type, updated_at, user, user_id, wishlist
+ERROR 2025-07-02 16:37:48,086 log 13556 15500 Internal Server Error: /api/products/top_rated/
+Traceback (most recent call last):
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 168, in top_rated
+    .annotate(avg_rating=Avg('reviews__star_count'))
+     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 2065, in resolve_ref
+    transform = join_info.transform_function(targets[0], final_alias)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1923, in transform
+    return self.try_transform(wrapped, name)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cheta\OneDrive\Documents\mheback\venv\Lib\site-packages\django\db\models\sql\query.py", line 1458, in try_transform
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Unsupported lookup 'star_count' for BigAutoField or join on the field not permitted.
+ERROR 2025-07-02 16:37:48,094 basehttp 13556 24928 "GET /api/products/most_popular/ HTTP/1.1" 500 164639
+ERROR 2025-07-02 16:37:48,096 basehttp 13556 15500 "GET /api/products/top_rated/ HTTP/1.1" 500 157671
+INFO 2025-07-02 16:37:48,152 basehttp 13556 15500 "GET /api/banners/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:37:48,154 basehttp 13556 24928 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:37:48,161 basehttp 13556 24928 "GET /api/products/new_arrival/ HTTP/1.1" 200 2
+INFO 2025-07-02 16:42:02,173 basehttp 13556 9100 "OPTIONS /api/new_arrivals HTTP/1.1" 200 0
+INFO 2025-07-02 16:42:02,175 basehttp 13556 17668 "OPTIONS /api/top_searched HTTP/1.1" 200 0
+WARNING 2025-07-02 16:42:02,192 log 13556 25104 Not Found: /api/craousels
+WARNING 2025-07-02 16:42:02,192 log 13556 2300 Not Found: /api/most_popular
+WARNING 2025-07-02 16:42:02,206 log 13556 9100 Not Found: /api/spare_parts
+WARNING 2025-07-02 16:42:02,207 basehttp 13556 25104 "GET /api/craousels HTTP/1.1" 404 30424
+WARNING 2025-07-02 16:42:02,217 log 13556 9104 Not Found: /api/vendor_products
+WARNING 2025-07-02 16:42:02,229 log 13556 17668 Not Found: /api/export_products
+WARNING 2025-07-02 16:42:02,230 basehttp 13556 2300 "GET /api/most_popular HTTP/1.1" 404 30433
+WARNING 2025-07-02 16:42:02,231 basehttp 13556 9100 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-02 16:42:02,232 basehttp 13556 9104 "GET /api/vendor_products HTTP/1.1" 404 30442
+WARNING 2025-07-02 16:42:02,233 basehttp 13556 17668 "GET /api/export_products HTTP/1.1" 404 30442
+INFO 2025-07-02 16:42:02,279 basehttp 13556 6708 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:42:02,284 basehttp 13556 6708 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:42:02,290 basehttp 13556 6708 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 16:42:10,838 log 13556 6708 Not Found: /api/craousels
+WARNING 2025-07-02 16:42:10,859 log 13556 17668 Not Found: /api/most_popular
+WARNING 2025-07-02 16:42:10,871 log 13556 2300 Not Found: /api/export_products
+WARNING 2025-07-02 16:42:10,878 log 13556 9100 Not Found: /api/vendor_products
+WARNING 2025-07-02 16:42:10,892 log 13556 9104 Not Found: /api/spare_parts
+WARNING 2025-07-02 16:42:10,892 basehttp 13556 6708 "GET /api/craousels HTTP/1.1" 404 30424
+WARNING 2025-07-02 16:42:10,893 basehttp 13556 17668 "GET /api/most_popular HTTP/1.1" 404 30433
+WARNING 2025-07-02 16:42:10,894 basehttp 13556 9100 "GET /api/vendor_products HTTP/1.1" 404 30442
+WARNING 2025-07-02 16:42:10,895 basehttp 13556 2300 "GET /api/export_products HTTP/1.1" 404 30442
+WARNING 2025-07-02 16:42:10,896 basehttp 13556 9104 "GET /api/spare_parts HTTP/1.1" 404 30430
+INFO 2025-07-02 16:42:10,927 basehttp 13556 25104 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:42:10,936 basehttp 13556 25104 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:42:11,072 basehttp 13556 25104 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 16:42:17,786 log 13556 9104 Not Found: /api/most_popular
+WARNING 2025-07-02 16:42:17,796 log 13556 25104 Not Found: /api/craousels
+WARNING 2025-07-02 16:42:17,822 log 13556 2300 Not Found: /api/spare_parts
+WARNING 2025-07-02 16:42:17,830 log 13556 17668 Not Found: /api/vendor_products
+WARNING 2025-07-02 16:42:17,843 log 13556 9100 Not Found: /api/export_products
+INFO 2025-07-02 16:42:17,844 basehttp 13556 6708 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 16:42:17,844 basehttp 13556 9104 "GET /api/most_popular HTTP/1.1" 404 30433
+WARNING 2025-07-02 16:42:17,845 basehttp 13556 25104 "GET /api/craousels HTTP/1.1" 404 30424
+WARNING 2025-07-02 16:42:17,846 basehttp 13556 2300 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-02 16:42:17,847 basehttp 13556 17668 "GET /api/vendor_products HTTP/1.1" 404 30442
+WARNING 2025-07-02 16:42:17,847 basehttp 13556 9100 "GET /api/export_products HTTP/1.1" 404 30442
+INFO 2025-07-02 16:42:17,860 basehttp 13556 6708 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:42:17,873 basehttp 13556 6708 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 16:42:31,526 log 13556 6708 Not Found: /api/craousels
+WARNING 2025-07-02 16:42:31,540 log 13556 9104 Not Found: /api/export_products
+WARNING 2025-07-02 16:42:31,551 log 13556 2300 Not Found: /api/spare_parts
+WARNING 2025-07-02 16:42:31,551 basehttp 13556 6708 "GET /api/craousels HTTP/1.1" 404 30424
+WARNING 2025-07-02 16:42:31,563 log 13556 17668 Not Found: /api/most_popular
+WARNING 2025-07-02 16:42:31,574 log 13556 25104 Not Found: /api/vendor_products
+WARNING 2025-07-02 16:42:31,588 basehttp 13556 2300 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-02 16:42:31,592 basehttp 13556 9104 "GET /api/export_products HTTP/1.1" 404 30442
+INFO 2025-07-02 16:42:31,593 basehttp 13556 9100 "GET /api/categories HTTP/1.1" 301 0
+WARNING 2025-07-02 16:42:31,600 basehttp 13556 17668 "GET /api/most_popular HTTP/1.1" 404 30433
+WARNING 2025-07-02 16:42:31,600 basehttp 13556 25104 "GET /api/vendor_products HTTP/1.1" 404 30442
+INFO 2025-07-02 16:42:31,603 basehttp 13556 6708 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:42:31,640 basehttp 13556 6708 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:42:31,677 basehttp 13556 2300 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-02 16:42:57,714 log 13556 21356 Not Found: /api/craousels
+INFO 2025-07-02 16:42:57,715 basehttp 13556 404 "GET /api/categories HTTP/1.1" 301 0
+WARNING 2025-07-02 16:42:57,728 log 13556 21836 Not Found: /api/most_popular
+WARNING 2025-07-02 16:42:57,729 basehttp 13556 21356 "GET /api/craousels HTTP/1.1" 404 30424
+INFO 2025-07-02 16:42:57,732 basehttp 13556 19284 "OPTIONS /api/top_searched HTTP/1.1" 200 0
+WARNING 2025-07-02 16:42:57,747 log 13556 23196 Not Found: /api/spare_parts
+INFO 2025-07-02 16:42:57,747 basehttp 13556 3828 "OPTIONS /api/new_arrivals HTTP/1.1" 200 0
+WARNING 2025-07-02 16:42:57,752 basehttp 13556 21836 "GET /api/most_popular HTTP/1.1" 404 30433
+WARNING 2025-07-02 16:42:57,767 basehttp 13556 23196 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-02 16:42:57,771 log 13556 21356 Not Found: /api/vendor_products
+WARNING 2025-07-02 16:42:57,790 log 13556 3828 Not Found: /api/export_products
+WARNING 2025-07-02 16:42:57,804 log 13556 21836 Not Found: /api/new_arrivals
+WARNING 2025-07-02 16:42:57,819 log 13556 23196 Not Found: /api/top_searched
+WARNING 2025-07-02 16:42:57,819 basehttp 13556 21356 "GET /api/vendor_products HTTP/1.1" 404 30442
+WARNING 2025-07-02 16:42:57,820 basehttp 13556 3828 "GET /api/export_products HTTP/1.1" 404 30442
+WARNING 2025-07-02 16:42:57,821 basehttp 13556 21836 "GET /api/new_arrivals HTTP/1.1" 404 30433
+WARNING 2025-07-02 16:42:57,822 basehttp 13556 23196 "GET /api/top_searched HTTP/1.1" 404 30433
+INFO 2025-07-02 16:42:57,842 basehttp 13556 19284 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:42:57,935 basehttp 13556 23196 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:42:57,940 basehttp 13556 19284 "GET /api/categories/ HTTP/1.1" 200 52

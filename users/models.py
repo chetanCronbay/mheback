@@ -58,10 +58,10 @@ class User(AbstractUser):
     Apply Rules: Use database indexes for frequently queried fields.
     """
     role = models.ForeignKey(
-        Role, 
-        on_delete=models.RESTRICT, 
-        related_name='role',
-        help_text="User's role determining their permissions"
+      Role,
+      on_delete=models.RESTRICT,
+      related_name='role',
+      help_text="User's role determining their permissions",
     )
     phone = models.CharField(
         max_length=20, 

@@ -7,6 +7,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from datetime import timedelta
 from django.utils import timezone
+from django.db.models import Count, F, Value, IntegerField, Sum, Avg
 from .models import *
 from .serializers import *
 from users.permissions import ReadOnlyOrAdmin, IsVendorOwnerOrAdmin, IsAdmin
@@ -146,6 +147,46 @@ class ProductViewSet(viewsets.ModelViewSet):
             product=product
         )
         serializer = WishlistSerializer(wishlist_item)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def new_arrival(self, request):
+        """
+        Get top 10 products by creation date (most recent first).
+        """
+        products = Product.objects.order_by('-created_at')[:10]
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def top_rated(self, request):
+        """
+        Get top 10 products by average review star count.
+        """
+        products = (
+            Product.objects
+            .annotate(avg_rating=Avg('reviews__star_count'))
+            .order_by('-avg_rating', '-created_at')[:10]
+        )
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def most_popular(self, request):
+        """
+        Get top 10 products by popularity (sum of quotes, wishlists, carts).
+        """
+        products = (
+            Product.objects
+            .annotate(
+                quote_count=Count('quotes', distinct=True),
+                wishlist_count=Count('wishlist_items', distinct=True),
+                cart_count=Count('cart_items', distinct=True),
+                popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+            )
+            .order_by('-popularity', '-created_at')[:10]
+        )
+        serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
 
 class CartViewSet(viewsets.ModelViewSet):

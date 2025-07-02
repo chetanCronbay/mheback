@@ -16,4 +16,6 @@
 *.eps
 *.pdf
 
-__init__.py
+!**/__init__.py
+
+*.log
