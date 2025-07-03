@@ -1,4 +1,13 @@
-#ignore all multimedia files
+# Python __pycache__ and compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.cpython-*
+
+# Ignore logs
+*.log
+
+# Ignore media/image files
 *.jpeg
 *.jpg
 *.png
@@ -16,6 +25,5 @@
 *.eps
 *.pdf
 
+# Allow init files (important for module resolution)
 !**/__init__.py
-
-*.log
