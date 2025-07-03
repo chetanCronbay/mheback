@@ -20,7 +20,8 @@ from rest_framework.routers import DefaultRouter
 from django.urls import path, include
 from banners.views import BannerViewSet
 from products.views import ( CategoryViewSet, SubcategoryViewSet, ProductViewSet, CartViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet)
-from users.views import (RoleViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin)
+from users.views import (RoleViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin, RegisterView)
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 router = DefaultRouter()
 router.register(r'roles', RoleViewSet, basename='role')
@@ -39,6 +40,9 @@ router.register(r'reviews', ReviewViewSet, basename='review')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/google/login/', GoogleLogin.as_view(), name='google_login'),
+    path('api/register/', RegisterView.as_view(), name='user-register'),
+     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/', include(router.urls)),
 ]
 

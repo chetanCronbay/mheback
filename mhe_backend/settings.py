@@ -79,6 +79,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter',  # Apply Rules: Add ordering
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'util.authentication.APIKeyAuthentication',  # <-- Add this line
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         # Apply Rules: JWT tokens for stateless authentication (uncomment when needed)

@@ -1078,3 +1078,92 @@ WARNING 2025-07-02 16:50:55,755 basehttp 13556 1048 "GET /api/export_products HT
 INFO 2025-07-02 16:50:55,831 basehttp 13556 21456 "GET /api/categories/ HTTP/1.1" 200 52
 INFO 2025-07-02 16:50:55,838 basehttp 13556 21456 "GET /api/categories/ HTTP/1.1" 200 52
 INFO 2025-07-02 16:50:55,849 basehttp 13556 21456 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:58:59,454 basehttp 13556 14312 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-02 16:58:59,479 basehttp 13556 14312 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-03 14:28:33,042 autoreload 19056 9676 Watching for file changes with StatReloader
+INFO 2025-07-03 14:29:55,203 autoreload 20996 3164 Watching for file changes with StatReloader
+INFO 2025-07-03 14:31:17,082 autoreload 2340 20676 Watching for file changes with StatReloader
+INFO 2025-07-03 14:31:34,276 autoreload 11452 19852 Watching for file changes with StatReloader
+INFO 2025-07-03 14:32:57,879 autoreload 8608 9312 Watching for file changes with StatReloader
+INFO 2025-07-03 14:34:39,361 autoreload 11776 9580 Watching for file changes with StatReloader
+INFO 2025-07-03 14:40:07,876 basehttp 11776 2836 "OPTIONS /api/new_arrivals HTTP/1.1" 200 0
+INFO 2025-07-03 14:40:07,882 basehttp 11776 2664 "OPTIONS /api/top_searched HTTP/1.1" 200 0
+INFO 2025-07-03 14:40:08,236 basehttp 11776 3172 "GET /api/categories HTTP/1.1" 301 0
+WARNING 2025-07-03 14:40:08,242 log 11776 21416 Not Found: /api/most_popular
+WARNING 2025-07-03 14:40:08,242 log 11776 2836 Not Found: /api/vendor_products
+WARNING 2025-07-03 14:40:08,242 log 11776 2664 Not Found: /api/export_products
+WARNING 2025-07-03 14:40:08,243 log 11776 1972 Not Found: /api/spare_parts
+WARNING 2025-07-03 14:40:08,243 log 11776 2024 Not Found: /api/craousels
+WARNING 2025-07-03 14:40:08,244 basehttp 11776 21416 "GET /api/most_popular HTTP/1.1" 404 30433
+WARNING 2025-07-03 14:40:08,245 basehttp 11776 2836 "GET /api/vendor_products HTTP/1.1" 404 30442
+WARNING 2025-07-03 14:40:08,246 basehttp 11776 2664 "GET /api/export_products HTTP/1.1" 404 30442
+WARNING 2025-07-03 14:40:08,252 basehttp 11776 1972 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-03 14:40:08,253 basehttp 11776 2024 "GET /api/craousels HTTP/1.1" 404 30424
+INFO 2025-07-03 14:40:08,409 basehttp 11776 21416 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-03 15:30:19,826 basehttp 11776 8788 "OPTIONS /api/google/login/ HTTP/1.1" 200 0
+INFO 2025-07-03 15:30:20,545 basehttp 11776 8788 "POST /api/google/login/ HTTP/1.1" 200 483
+WARNING 2025-07-03 15:30:21,228 log 11776 8788 Not Found: /api/craousels
+WARNING 2025-07-03 15:30:21,239 log 11776 20364 Not Found: /api/most_popular
+WARNING 2025-07-03 15:30:21,242 basehttp 11776 8788 "GET /api/craousels HTTP/1.1" 404 30424
+WARNING 2025-07-03 15:30:21,242 basehttp 11776 20364 "GET /api/most_popular HTTP/1.1" 404 30433
+WARNING 2025-07-03 15:30:21,260 log 11776 8788 Not Found: /api/spare_parts
+WARNING 2025-07-03 15:30:21,273 log 11776 20364 Not Found: /api/vendor_products
+WARNING 2025-07-03 15:30:21,276 basehttp 11776 8788 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-03 15:30:21,279 basehttp 11776 20364 "GET /api/vendor_products HTTP/1.1" 404 30442
+WARNING 2025-07-03 15:30:21,298 log 11776 8788 Not Found: /api/export_products
+WARNING 2025-07-03 15:30:21,314 log 11776 20364 Not Found: /api/craousels
+WARNING 2025-07-03 15:30:21,315 basehttp 11776 8788 "GET /api/export_products HTTP/1.1" 404 30442
+WARNING 2025-07-03 15:30:21,316 basehttp 11776 20364 "GET /api/craousels HTTP/1.1" 404 30424
+WARNING 2025-07-03 15:30:21,353 log 11776 8788 Not Found: /api/most_popular
+WARNING 2025-07-03 15:30:21,368 log 11776 20364 Not Found: /api/spare_parts
+WARNING 2025-07-03 15:30:21,370 basehttp 11776 8788 "GET /api/most_popular HTTP/1.1" 404 30433
+WARNING 2025-07-03 15:30:21,370 basehttp 11776 20364 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-03 15:30:21,403 log 11776 20364 Not Found: /api/vendor_products
+WARNING 2025-07-03 15:30:21,410 log 11776 8788 Not Found: /api/export_products
+WARNING 2025-07-03 15:30:21,412 basehttp 11776 8788 "GET /api/export_products HTTP/1.1" 404 30442
+WARNING 2025-07-03 15:30:21,412 basehttp 11776 20364 "GET /api/vendor_products HTTP/1.1" 404 30442
+INFO 2025-07-03 15:30:21,432 basehttp 11776 8788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-03 15:30:21,439 basehttp 11776 8788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-03 15:56:49,572 basehttp 11776 12952 "POST /api/google/login/ HTTP/1.1" 200 483
+WARNING 2025-07-03 15:56:50,111 log 11776 12952 Not Found: /api/craousels
+WARNING 2025-07-03 15:56:50,112 log 11776 10668 Not Found: /api/most_popular
+WARNING 2025-07-03 15:56:50,113 basehttp 11776 12952 "GET /api/craousels HTTP/1.1" 404 30424
+WARNING 2025-07-03 15:56:50,114 basehttp 11776 10668 "GET /api/most_popular HTTP/1.1" 404 30433
+WARNING 2025-07-03 15:56:50,134 log 11776 12952 Not Found: /api/spare_parts
+WARNING 2025-07-03 15:56:50,150 log 11776 10668 Not Found: /api/vendor_products
+WARNING 2025-07-03 15:56:50,150 basehttp 11776 12952 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-03 15:56:50,151 basehttp 11776 10668 "GET /api/vendor_products HTTP/1.1" 404 30442
+WARNING 2025-07-03 15:56:50,203 log 11776 12952 Not Found: /api/export_products
+WARNING 2025-07-03 15:56:50,207 log 11776 10668 Not Found: /api/craousels
+WARNING 2025-07-03 15:56:50,209 basehttp 11776 12952 "GET /api/export_products HTTP/1.1" 404 30442
+WARNING 2025-07-03 15:56:50,210 basehttp 11776 10668 "GET /api/craousels HTTP/1.1" 404 30424
+WARNING 2025-07-03 15:56:50,246 log 11776 12952 Not Found: /api/most_popular
+WARNING 2025-07-03 15:56:50,290 log 11776 10668 Not Found: /api/spare_parts
+WARNING 2025-07-03 15:56:50,291 basehttp 11776 12952 "GET /api/most_popular HTTP/1.1" 404 30433
+WARNING 2025-07-03 15:56:50,293 basehttp 11776 10668 "GET /api/spare_parts HTTP/1.1" 404 30430
+WARNING 2025-07-03 15:56:50,310 log 11776 12952 Not Found: /api/vendor_products
+WARNING 2025-07-03 15:56:50,334 log 11776 10668 Not Found: /api/export_products
+WARNING 2025-07-03 15:56:50,335 basehttp 11776 12952 "GET /api/vendor_products HTTP/1.1" 404 30442
+WARNING 2025-07-03 15:56:50,335 basehttp 11776 10668 "GET /api/export_products HTTP/1.1" 404 30442
+INFO 2025-07-03 15:56:50,366 basehttp 11776 12952 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-03 15:56:50,376 basehttp 11776 12952 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-03 16:09:46,509 log 11776 2888 Not Found: /api/a
+WARNING 2025-07-03 16:09:46,510 basehttp 11776 2888 "GET /api/a HTTP/1.1" 404 30400
+WARNING 2025-07-03 16:09:46,784 log 11776 2888 Not Found: /favicon.ico
+WARNING 2025-07-03 16:09:46,786 basehttp 11776 2888 "GET /favicon.ico HTTP/1.1" 404 2541
+INFO 2025-07-03 16:17:24,909 autoreload 11776 9580 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-03 16:17:27,147 autoreload 22176 12808 Watching for file changes with StatReloader
+INFO 2025-07-03 16:18:12,894 autoreload 22176 12808 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-03 16:18:13,902 autoreload 21548 132 Watching for file changes with StatReloader
+INFO 2025-07-03 16:18:37,629 autoreload 21548 132 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
+INFO 2025-07-03 16:18:38,701 autoreload 404 2340 Watching for file changes with StatReloader
+INFO 2025-07-03 16:18:49,515 autoreload 404 2340 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
+INFO 2025-07-03 16:18:50,418 autoreload 4424 21888 Watching for file changes with StatReloader
+INFO 2025-07-03 16:27:39,774 autoreload 4424 21888 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-03 16:27:40,851 autoreload 21544 22016 Watching for file changes with StatReloader
+INFO 2025-07-03 16:27:43,454 autoreload 21544 22016 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-03 16:27:44,700 autoreload 12404 15244 Watching for file changes with StatReloader
+INFO 2025-07-03 16:29:14,354 autoreload 12404 15244 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
+INFO 2025-07-03 16:29:15,529 autoreload 9500 22472 Watching for file changes with StatReloader
+INFO 2025-07-03 16:29:24,392 autoreload 9500 22472 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
+INFO 2025-07-03 16:29:25,518 autoreload 16816 7568 Watching for file changes with StatReloader
