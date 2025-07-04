@@ -7,6 +7,10 @@ Apply Rules: Validate and sanitize all user inputs.
 from typing import Dict, Any
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import authenticate
+from django.utils.translation import gettext_lazy as _
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import User, UserBanner, Role, ContactForm, Reviews, ReviewImages
 from django.core.exceptions import ValidationError
 import logging
@@ -172,3 +176,25 @@ class ReviewSerializer(serializers.ModelSerializer):
         if not (1 <= value <= 5):
             raise serializers.ValidationError("Stars must be between 1 and 5.")
         return value
+    
+class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = 'email'
+
+    def validate(self, attrs):
+        email = attrs.get("email")
+        password = attrs.get("password")
+
+        if email and password:
+            user = authenticate(request=self.context.get('request'), email=email, password=password)
+
+            if not user:
+                raise serializers.ValidationError('Invalid email or password')
+
+        else:
+            raise serializers.ValidationError('Must include "email" and "password".')
+
+        refresh = RefreshToken.for_user(user)
+        return {
+            'access': str(refresh.access_token),
+            'refresh': str(refresh),
+        }

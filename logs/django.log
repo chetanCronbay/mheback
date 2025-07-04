@@ -1167,3 +1167,137 @@ INFO 2025-07-03 16:29:14,354 autoreload 12404 15244 C:\Users\cheta\OneDrive\Docu
 INFO 2025-07-03 16:29:15,529 autoreload 9500 22472 Watching for file changes with StatReloader
 INFO 2025-07-03 16:29:24,392 autoreload 9500 22472 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
 INFO 2025-07-03 16:29:25,518 autoreload 16816 7568 Watching for file changes with StatReloader
+INFO 2025-07-03 16:39:22,993 autoreload 1972 21944 Watching for file changes with StatReloader
+INFO 2025-07-03 16:39:38,902 autoreload 744 13484 Watching for file changes with StatReloader
+INFO 2025-07-03 16:44:08,524 basehttp 744 200 "OPTIONS /api/register/ HTTP/1.1" 200 0
+INFO 2025-07-03 16:45:17,370 autoreload 744 13484 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-03 16:45:18,753 autoreload 22524 18176 Watching for file changes with StatReloader
+INFO 2025-07-03 16:45:22,437 autoreload 22524 18176 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-03 16:45:23,599 autoreload 9348 8384 Watching for file changes with StatReloader
+INFO 2025-07-03 16:45:46,779 basehttp 9348 2024 "OPTIONS /api/register/ HTTP/1.1" 200 0
+WARNING 2025-07-03 16:45:46,791 log 9348 2024 Forbidden: /api/register/
+WARNING 2025-07-03 16:45:46,793 basehttp 9348 2024 "POST /api/register/ HTTP/1.1" 403 42
+WARNING 2025-07-03 16:47:15,711 log 9348 2024 Forbidden: /api/register/
+WARNING 2025-07-03 16:47:15,712 basehttp 9348 2024 "POST /api/register/ HTTP/1.1" 403 42
+WARNING 2025-07-03 16:49:03,981 log 9348 2024 Forbidden: /api/register/
+WARNING 2025-07-03 16:49:03,982 basehttp 9348 2024 "POST /api/register/ HTTP/1.1" 403 42
+WARNING 2025-07-03 16:49:20,632 log 9348 2024 Forbidden: /api/register/
+WARNING 2025-07-03 16:49:20,632 basehttp 9348 2024 "POST /api/register/ HTTP/1.1" 403 42
+WARNING 2025-07-03 16:54:42,490 log 9348 12600 Forbidden: /api/register/
+WARNING 2025-07-03 16:54:42,492 basehttp 9348 12600 "POST /api/register/ HTTP/1.1" 403 42
+WARNING 2025-07-03 16:56:31,017 log 9348 12600 Bad Request: /api/register/
+WARNING 2025-07-03 16:56:31,018 basehttp 9348 12600 "POST /api/register/ HTTP/1.1" 400 118
+INFO 2025-07-03 16:59:26,403 serializers 9348 12600 Creating new user: chetanasd
+ERROR 2025-07-03 16:59:28,908 email_utils 9348 12600 Email sending error: (530, b'5.7.0 Authentication Required. For more information, go to\n5.7.0  https://support.google.com/accounts/troubleshooter/2402620. d9443c01a7336-23acb3b0047sm160720965ad.160 - gsmtp', 'no-reply@yourdomain.com')
+INFO 2025-07-03 16:59:28,909 signals 9348 12600 Verification email sent to new user: chetanasd
+INFO 2025-07-03 16:59:28,910 signals 9348 12600 New user registered - ID: 8, Username: chetanasd, Email: marketing.1@greentechmh.com, Role: User
+INFO 2025-07-03 16:59:28,910 serializers 9348 12600 User created successfully: chetanasd
+INFO 2025-07-03 16:59:28,939 basehttp 9348 12600 "POST /api/register/ HTTP/1.1" 201 409
+INFO 2025-07-03 16:59:43,296 basehttp 9348 12600 "OPTIONS /api/token/ HTTP/1.1" 200 0
+WARNING 2025-07-03 16:59:43,304 log 9348 12600 Bad Request: /api/token/
+WARNING 2025-07-03 16:59:43,305 basehttp 9348 12600 "POST /api/token/ HTTP/1.1" 400 40
+INFO 2025-07-03 17:06:02,868 autoreload 9348 8384 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-03 17:06:04,046 autoreload 19832 21972 Watching for file changes with StatReloader
+INFO 2025-07-03 17:06:09,901 autoreload 19832 21972 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-03 17:06:10,946 autoreload 22052 16016 Watching for file changes with StatReloader
+INFO 2025-07-03 17:10:36,912 autoreload 22052 16016 C:\Users\cheta\OneDrive\Documents\mheback\users\serializers.py changed, reloading.
+INFO 2025-07-03 17:10:38,170 autoreload 12800 2536 Watching for file changes with StatReloader
+INFO 2025-07-03 17:10:50,268 autoreload 12800 2536 C:\Users\cheta\OneDrive\Documents\mheback\users\serializers.py changed, reloading.
+INFO 2025-07-03 17:10:51,349 autoreload 2024 16264 Watching for file changes with StatReloader
+INFO 2025-07-03 17:11:38,613 autoreload 2024 16264 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-03 17:11:39,553 autoreload 11296 19280 Watching for file changes with StatReloader
+INFO 2025-07-03 17:11:50,575 autoreload 11296 19280 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-03 17:11:51,599 autoreload 17104 21940 Watching for file changes with StatReloader
+INFO 2025-07-03 17:12:15,351 autoreload 17104 21940 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
+INFO 2025-07-03 17:12:16,385 autoreload 15728 19596 Watching for file changes with StatReloader
+INFO 2025-07-03 17:12:20,167 autoreload 15728 19596 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
+INFO 2025-07-03 17:12:21,217 autoreload 1316 21548 Watching for file changes with StatReloader
+INFO 2025-07-03 17:33:16,618 autoreload 20764 13144 Watching for file changes with StatReloader
+INFO 2025-07-03 17:33:33,994 basehttp 20764 15512 "OPTIONS /api/login/ HTTP/1.1" 200 0
+WARNING 2025-07-03 17:33:34,068 log 20764 15512 Bad Request: /api/login/
+WARNING 2025-07-03 17:33:34,069 basehttp 20764 15512 "POST /api/login/ HTTP/1.1" 400 51
+INFO 2025-07-03 17:35:38,116 autoreload 20764 13144 C:\Users\cheta\OneDrive\Documents\mheback\users\serializers.py changed, reloading.
+INFO 2025-07-03 17:35:39,205 autoreload 2748 17508 Watching for file changes with StatReloader
+INFO 2025-07-03 17:35:45,769 autoreload 2748 17508 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-03 17:35:46,762 autoreload 3376 9444 Watching for file changes with StatReloader
+INFO 2025-07-03 17:36:02,809 autoreload 3376 9444 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
+INFO 2025-07-03 17:36:04,088 autoreload 12100 20656 Watching for file changes with StatReloader
+INFO 2025-07-03 17:36:08,626 autoreload 12100 20656 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
+INFO 2025-07-03 17:36:09,762 autoreload 10448 15552 Watching for file changes with StatReloader
+INFO 2025-07-03 17:36:12,175 autoreload 10448 15552 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
+INFO 2025-07-03 17:36:13,275 autoreload 9284 21448 Watching for file changes with StatReloader
+WARNING 2025-07-03 17:38:02,926 log 9284 15640 Unauthorized: /api/token/
+WARNING 2025-07-03 17:38:02,929 basehttp 9284 15640 "POST /api/token/ HTTP/1.1" 401 63
+INFO 2025-07-03 17:38:20,758 basehttp 9284 15640 "POST /api/token/ HTTP/1.1" 200 483
+INFO 2025-07-03 17:38:23,738 basehttp 9284 6548 "OPTIONS /api/new_arrivals HTTP/1.1" 200 0
+INFO 2025-07-03 17:38:23,809 basehttp 9284 6548 "OPTIONS /api/top_searched HTTP/1.1" 200 0
+WARNING 2025-07-03 17:38:23,810 log 9284 15640 Not Found: /api/craousels
+WARNING 2025-07-03 17:38:23,818 basehttp 9284 15640 "GET /api/craousels HTTP/1.1" 404 30964
+WARNING 2025-07-03 17:38:23,829 log 9284 6548 Not Found: /api/most_popular
+WARNING 2025-07-03 17:38:23,851 log 9284 15640 Not Found: /api/spare_parts
+WARNING 2025-07-03 17:38:23,851 basehttp 9284 6548 "GET /api/most_popular HTTP/1.1" 404 30973
+WARNING 2025-07-03 17:38:23,854 basehttp 9284 15640 "GET /api/spare_parts HTTP/1.1" 404 30970
+WARNING 2025-07-03 17:38:23,869 log 9284 6548 Not Found: /api/vendor_products
+WARNING 2025-07-03 17:38:23,887 log 9284 15640 Not Found: /api/export_products
+WARNING 2025-07-03 17:38:23,887 basehttp 9284 6548 "GET /api/vendor_products HTTP/1.1" 404 30982
+WARNING 2025-07-03 17:38:23,889 basehttp 9284 15640 "GET /api/export_products HTTP/1.1" 404 30982
+WARNING 2025-07-03 17:38:23,892 log 9284 6548 Forbidden: /api/categories/
+WARNING 2025-07-03 17:38:23,893 basehttp 9284 6548 "GET /api/categories/ HTTP/1.1" 403 42
+INFO 2025-07-03 17:50:16,319 autoreload 9284 21448 C:\Users\cheta\OneDrive\Documents\mheback\users\serializers.py changed, reloading.
+INFO 2025-07-03 17:50:17,427 autoreload 21644 13376 Watching for file changes with StatReloader
+INFO 2025-07-03 17:50:30,718 autoreload 21644 13376 C:\Users\cheta\OneDrive\Documents\mheback\users\serializers.py changed, reloading.
+INFO 2025-07-03 17:50:31,794 autoreload 22448 8352 Watching for file changes with StatReloader
+INFO 2025-07-03 17:50:33,167 autoreload 22448 8352 C:\Users\cheta\OneDrive\Documents\mheback\users\serializers.py changed, reloading.
+INFO 2025-07-03 17:50:34,090 autoreload 2336 22112 Watching for file changes with StatReloader
+INFO 2025-07-03 17:53:15,009 autoreload 2336 22112 C:\Users\cheta\OneDrive\Documents\mheback\users\serializers.py changed, reloading.
+INFO 2025-07-03 17:53:15,955 autoreload 3536 16272 Watching for file changes with StatReloader
+INFO 2025-07-03 17:53:34,328 autoreload 3536 16272 C:\Users\cheta\OneDrive\Documents\mheback\users\serializers.py changed, reloading.
+INFO 2025-07-03 17:53:35,234 autoreload 22448 7644 Watching for file changes with StatReloader
+INFO 2025-07-03 17:53:43,295 autoreload 22448 7644 C:\Users\cheta\OneDrive\Documents\mheback\users\serializers.py changed, reloading.
+INFO 2025-07-03 17:53:44,366 autoreload 15252 22144 Watching for file changes with StatReloader
+INFO 2025-07-03 17:53:57,708 autoreload 15252 22144 C:\Users\cheta\OneDrive\Documents\mheback\users\serializers.py changed, reloading.
+INFO 2025-07-03 17:53:58,773 autoreload 14964 21508 Watching for file changes with StatReloader
+INFO 2025-07-03 17:55:11,794 autoreload 14964 21508 C:\Users\cheta\OneDrive\Documents\mheback\users\serializers.py changed, reloading.
+INFO 2025-07-03 17:55:12,893 autoreload 20488 13672 Watching for file changes with StatReloader
+INFO 2025-07-03 17:55:16,346 autoreload 20488 13672 C:\Users\cheta\OneDrive\Documents\mheback\users\serializers.py changed, reloading.
+INFO 2025-07-03 17:55:17,330 autoreload 18956 11232 Watching for file changes with StatReloader
+INFO 2025-07-03 17:55:59,111 autoreload 18956 11232 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-03 17:56:00,357 autoreload 21612 10216 Watching for file changes with StatReloader
+INFO 2025-07-03 17:56:02,138 autoreload 21612 10216 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-03 17:56:03,262 autoreload 8956 1912 Watching for file changes with StatReloader
+INFO 2025-07-03 17:56:24,753 autoreload 8956 1912 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-03 17:56:25,812 autoreload 11400 8532 Watching for file changes with StatReloader
+INFO 2025-07-03 17:56:35,823 autoreload 11400 8532 C:\Users\cheta\OneDrive\Documents\mheback\users\views.py changed, reloading.
+INFO 2025-07-03 17:56:36,794 autoreload 9928 10448 Watching for file changes with StatReloader
+INFO 2025-07-03 17:57:21,376 autoreload 9928 10448 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
+INFO 2025-07-03 17:57:22,620 autoreload 21516 5360 Watching for file changes with StatReloader
+INFO 2025-07-03 17:57:31,581 autoreload 21516 5360 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
+INFO 2025-07-03 17:57:32,710 autoreload 796 22288 Watching for file changes with StatReloader
+INFO 2025-07-03 17:57:35,435 autoreload 796 22288 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\urls.py changed, reloading.
+INFO 2025-07-03 17:57:36,327 autoreload 22064 20332 Watching for file changes with StatReloader
+INFO 2025-07-03 17:59:51,316 autoreload 22064 20332 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-03 17:59:52,352 autoreload 6428 18424 Watching for file changes with StatReloader
+INFO 2025-07-03 17:59:57,148 autoreload 6428 18424 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-03 17:59:58,266 autoreload 17384 17540 Watching for file changes with StatReloader
+INFO 2025-07-03 18:00:03,957 autoreload 17384 17540 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-03 18:00:05,064 autoreload 15968 22232 Watching for file changes with StatReloader
+INFO 2025-07-04 10:30:37,905 autoreload 10084 9528 Watching for file changes with StatReloader
+INFO 2025-07-04 10:32:16,044 basehttp 10084 16012 "OPTIONS /api/token/ HTTP/1.1" 200 0
+INFO 2025-07-04 10:32:16,825 basehttp 10084 16012 "POST /api/token/ HTTP/1.1" 200 483
+INFO 2025-07-04 10:32:19,134 basehttp 10084 16012 "OPTIONS /api/new_arrivals HTTP/1.1" 200 0
+INFO 2025-07-04 10:32:19,136 basehttp 10084 10384 "OPTIONS /api/top_searched HTTP/1.1" 200 0
+WARNING 2025-07-04 10:32:19,516 log 10084 1852 Forbidden: /api/categories/
+WARNING 2025-07-04 10:32:19,517 log 10084 10384 Not Found: /api/most_popular
+WARNING 2025-07-04 10:32:19,519 basehttp 10084 1852 "GET /api/categories/ HTTP/1.1" 403 42
+WARNING 2025-07-04 10:32:19,520 basehttp 10084 10384 "GET /api/most_popular HTTP/1.1" 404 30973
+WARNING 2025-07-04 10:32:19,526 log 10084 16012 Not Found: /api/craousels
+WARNING 2025-07-04 10:32:19,529 basehttp 10084 16012 "GET /api/craousels HTTP/1.1" 404 30964
+WARNING 2025-07-04 10:32:19,662 log 10084 19308 Not Found: /api/export_products
+WARNING 2025-07-04 10:32:19,664 basehttp 10084 19308 "GET /api/export_products HTTP/1.1" 404 30982
+WARNING 2025-07-04 10:32:19,667 log 10084 17400 Not Found: /api/vendor_products
+WARNING 2025-07-04 10:32:19,668 log 10084 17172 Not Found: /api/spare_parts
+WARNING 2025-07-04 10:32:19,669 basehttp 10084 17400 "GET /api/vendor_products HTTP/1.1" 404 30982
+WARNING 2025-07-04 10:32:19,670 basehttp 10084 17172 "GET /api/spare_parts HTTP/1.1" 404 30970
+INFO 2025-07-04 10:35:39,270 basehttp 10084 17400 "POST /api/token/ HTTP/1.1" 200 483
+INFO 2025-07-04 10:35:39,275 basehttp 10084 17400 "OPTIONS /api/users/me/ HTTP/1.1" 200 0
+INFO 2025-07-04 10:35:39,315 basehttp 10084 17400 "GET /api/users/me/ HTTP/1.1" 200 409

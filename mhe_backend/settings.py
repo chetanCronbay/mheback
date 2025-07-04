@@ -126,6 +126,11 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware"
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'users.authentication.EmailBackend',  # Custom backend
+    'django.contrib.auth.backends.ModelBackend',  # Optional fallback
+]
+
 ROOT_URLCONF = "mhe_backend.urls"
 
 TEMPLATES = [
@@ -276,16 +281,17 @@ CORS_ALLOWED_METHODS = [
     'PUT',
 ]
 
-CORS_ALLOWED_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+    "x-api-key",  # Add this line
 ]
 
 # Apply Rules: Never use CORS_ALLOW_ALL_ORIGINS in production
