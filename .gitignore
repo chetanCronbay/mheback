@@ -16,5 +16,38 @@
 *.eps
 *.pdf
 
-__init__.py
+# Logs, translations, caches
+*.log
+*.pot
+*.pyc
+__pycache__/
+
+# Local database and media uploads
+db.sqlite3
+media/
+
+# Virtual environments and dotenv
 .env
+.venv/
+env/
+venv/
+
+# Python package files
+*.egg-info/
+build/
+dist/
+
+# Coverage/test artifacts
+.coverage*
+htmlcov/
+.tox/
+.cache/
+.pytest_cache/
+
+# IDE/editor settings
+.idea/
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
