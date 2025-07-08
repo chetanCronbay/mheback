@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: mheback
+    env: python
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: >
+      python manage.py migrate --noinput &&
+      python manage.py collectstatic --noinput &&
+      gunicorn mhe_backend.wsgi:application --bind 0.0.0.0:$PORT --workers 4
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DEBUG
+        value: false
+      - key: DJANGO_SETTINGS_MODULE
+        value: mhe_backend.settings
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mheback-db
+          property: connectionString
+
+databases:
+  - name: mheback-db
+    plan: free
+    region: oregon

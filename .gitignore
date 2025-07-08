@@ -1,0 +1,122 @@
+# ----------------------------------------
+# 📦 Python & Django
+# ----------------------------------------
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django specific
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# Environment files
+.env
+.env.*
+
+# pipenv & poetry
+Pipfile.lock
+poetry.lock
+
+# pyenv
+.python-version
+
+# mypy
+.mypy_cache/
+
+# coverage reports
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.cache/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyinstaller
+*.manifest
+*.spec
+
+# celery beat schedule file
+celerybeat-schedule
+
+# sqlite history
+.history
+
+# ----------------------------------------
+# 🔧 Editor & OS Specific
+# ----------------------------------------
+
+# VSCode
+.vscode/
+
+# JetBrains IDEs
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ----------------------------------------
+# 🎨 Assets & Media
+# ----------------------------------------
+
+# Ignore image and document formats
+*.jpeg
+*.jpg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.webp
+*.svg
+*.ico
+*.avif
+*.heic
+*.heif
+*.raw
+*.psd
+*.eps
+*.pdf
+
+# ----------------------------------------
+# 🚫 Temporary / Backup Files
+# ----------------------------------------
+
+*.bak
+*.tmp
+*.swp
+*.swo
+*.orig
