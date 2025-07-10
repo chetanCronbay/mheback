@@ -8,12 +8,13 @@ services:
       python manage.py migrate --noinput &&
       python manage.py collectstatic --noinput &&
       gunicorn mhe_backend.wsgi:application --bind 0.0.0.0:$PORT --workers 4
+    postBuildCommand: python manage.py collectstatic --noinput
 
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: DEBUG
-        value: false
+        value: true
       - key: DJANGO_SETTINGS_MODULE
         value: mhe_backend.settings
       - key: SECRET_KEY
