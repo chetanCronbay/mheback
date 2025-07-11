@@ -165,18 +165,18 @@ SIMPLE_JWT = {
 
 # Database Configuration - Following Rules: Use PostgreSQL in production and development
 # Apply Rules: Never commit database credentials to version control
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv('DB_NAME', 'new_mhe'),
-#         'USER': os.getenv('DB_USER', 'postgres'),
-#         'PASSWORD': os.getenv('DB_PASSWORD', 'pass'),
-#         'HOST': os.getenv('DB_HOST', 'localhost'),
-#         'PORT': os.getenv('DB_PORT', '5432'),
-#         # Apply Rules: Database connection pooling for performance
-#         'CONN_MAX_AGE': 600,
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'new_mhe'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'pass'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
+        # Apply Rules: Database connection pooling for performance
+        'CONN_MAX_AGE': 600,
+    }
+}
 
 # Apply Rules: Use dj_database_url for dynamic database configuration
 # if os.getenv('DATABASE_URL'):
@@ -189,13 +189,13 @@ SIMPLE_JWT = {
 #     DATABASES['default'] = dict(db_config)
 
 # Database configuration - replace your current DATABASES with this:
-DATABASES = {
-    'default': dj_database_url.config(
-        conn_max_age=600,
-        conn_health_checks=True,
-        ssl_require=True
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         conn_max_age=600,
+#         conn_health_checks=True,
+#         ssl_require=True
+#     )
+# }
 
 
 # Password validation
@@ -313,17 +313,17 @@ CORS_ALLOW_CREDENTIALS = True
 # Apply Rules: Security headers implementation
 if os.getenv('ENVIRONMENT') == 'production':
     # Apply Rules: Use HTTPS everywhere in production
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+    # SECURE_SSL_REDIRECT = True
+    # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    # SESSION_COOKIE_SECURE = True
+    # CSRF_COOKIE_SECURE = True
     
     # Apply Rules: Implement security headers and CSP policies
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_HSTS_SECONDS = 31536000  # 1 year
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
+    # SECURE_BROWSER_XSS_FILTER = True
+    # SECURE_CONTENT_TYPE_NOSNIFF = True
+    # SECURE_HSTS_SECONDS = 31536000  # 1 year
+    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    # SECURE_HSTS_PRELOAD = True
     
     # Frame options
     X_FRAME_OPTIONS = 'DENY'
