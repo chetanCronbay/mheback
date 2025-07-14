@@ -424,3 +424,694 @@ WARNING 2025-07-14 15:12:23,655 basehttp 17548 5032 "GET /api/spare_parts HTTP/1
 INFO 2025-07-14 15:12:23,701 basehttp 17548 4212 "GET /api/categories/ HTTP/1.1" 200 52
 WARNING 2025-07-14 15:17:04,679 log 17548 21340 Not Found: /api/vendors-list
 WARNING 2025-07-14 15:17:04,680 basehttp 17548 21340 "GET /api/vendors-list HTTP/1.1" 404 39561
+INFO 2025-07-14 15:35:34,492 basehttp 17548 3500 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:35:40,123 basehttp 17548 3500 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:35:40,216 basehttp 17548 3500 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:35:53,473 basehttp 17548 3500 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:35:54,610 basehttp 17548 3500 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:35:54,689 basehttp 17548 3500 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:35:54,781 basehttp 17548 3500 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:38:34,383 log 17548 14544 Not Found: /
+WARNING 2025-07-14 15:38:34,386 basehttp 17548 14544 "GET / HTTP/1.1" 404 3034
+WARNING 2025-07-14 15:38:34,577 log 17548 14544 Not Found: /favicon.ico
+WARNING 2025-07-14 15:38:34,581 basehttp 17548 14544 "GET /favicon.ico HTTP/1.1" 404 3085
+INFO 2025-07-14 15:39:02,575 basehttp 17548 3648 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:39:02,637 basehttp 17548 3648 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:43:46,183 basehttp 17548 11788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:43:46,209 basehttp 17548 14236 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:43:46,250 basehttp 17548 11788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:43:46,266 basehttp 17548 14236 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:43:46,310 basehttp 17548 11788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:43:46,354 basehttp 17548 14236 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:43:46,393 basehttp 17548 11788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:43:46,424 basehttp 17548 14236 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:44:13,372 basehttp 17548 11788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:44:16,992 basehttp 17548 14236 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:44:17,059 basehttp 17548 11788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:44:17,967 basehttp 17548 11788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:44:17,969 basehttp 17548 14236 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:44:18,012 basehttp 17548 14236 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:44:18,047 basehttp 17548 11788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:44:18,114 basehttp 17548 11788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:44:18,169 basehttp 17548 14236 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:44:18,179 basehttp 17548 11788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:44:18,570 basehttp 17548 14236 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:44:18,643 basehttp 17548 14236 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:45:30,305 log 17548 14236 Forbidden: /api/categories/
+WARNING 2025-07-14 15:45:30,306 basehttp 17548 14236 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 15:45:58,941 log 17548 14236 Forbidden: /api/subcategories/
+WARNING 2025-07-14 15:45:58,942 basehttp 17548 14236 "POST /api/subcategories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 15:46:04,703 log 17548 22640 Forbidden: /api/categories/
+WARNING 2025-07-14 15:46:04,706 basehttp 17548 22640 "POST /api/categories/ HTTP/1.1" 403 58
+INFO 2025-07-14 15:46:18,253 basehttp 17548 13508 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:46:18,319 basehttp 17548 13508 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:48:19,173 log 17548 14428 Forbidden: /api/categories/
+WARNING 2025-07-14 15:48:19,176 basehttp 17548 14428 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 15:48:37,756 log 17548 6664 Forbidden: /api/categories/
+WARNING 2025-07-14 15:48:37,758 basehttp 17548 6664 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 15:49:21,712 log 17548 20412 Not Found: /ADMIN
+WARNING 2025-07-14 15:49:21,717 basehttp 17548 20412 "GET /ADMIN HTTP/1.1" 404 3067
+INFO 2025-07-14 15:49:26,709 basehttp 17548 9208 "GET /admin HTTP/1.1" 301 0
+INFO 2025-07-14 15:49:26,743 basehttp 17548 2376 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-07-14 15:49:26,876 basehttp 17548 2376 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4173
+INFO 2025-07-14 15:49:26,998 basehttp 17548 18500 "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+INFO 2025-07-14 15:49:27,005 basehttp 17548 5984 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+INFO 2025-07-14 15:49:27,014 basehttp 17548 2376 "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+INFO 2025-07-14 15:49:27,015 basehttp 17548 11032 "GET /static/admin/css/login.css HTTP/1.1" 200 951
+INFO 2025-07-14 15:49:27,017 basehttp 17548 13976 "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+INFO 2025-07-14 15:49:27,020 basehttp 17548 1956 "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+INFO 2025-07-14 15:49:27,044 basehttp 17548 1956 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+INFO 2025-07-14 15:49:43,591 basehttp 17548 12536 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-07-14 15:49:43,798 basehttp 17548 12536 "GET /admin/ HTTP/1.1" 200 22719
+INFO 2025-07-14 15:49:43,936 basehttp 17548 12536 "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2025-07-14 15:49:43,970 basehttp 17548 8476 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-07-14 15:49:43,971 basehttp 17548 7476 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-07-14 15:50:09,634 basehttp 17548 19048 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:50:09,711 basehttp 17548 19048 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:50:19,674 log 17548 3036 Forbidden: /api/categories/
+WARNING 2025-07-14 15:50:19,675 basehttp 17548 3036 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 15:50:42,691 log 17548 3212 Not Found: /api/most_popular
+WARNING 2025-07-14 15:50:42,712 log 17548 20672 Not Found: /api/spare_parts
+WARNING 2025-07-14 15:50:42,743 log 17548 22860 Not Found: /api/craousels
+WARNING 2025-07-14 15:50:42,743 basehttp 17548 3212 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 15:50:42,766 basehttp 17548 20672 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 15:50:42,778 log 17548 15576 Not Found: /api/vendor_products
+WARNING 2025-07-14 15:50:42,780 basehttp 17548 22860 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 15:50:42,803 log 17548 14812 Not Found: /api/export_products
+WARNING 2025-07-14 15:50:42,809 basehttp 17548 15576 "GET /api/vendor_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 15:50:42,813 basehttp 17548 14812 "GET /api/export_products HTTP/1.1" 404 39570
+INFO 2025-07-14 15:50:42,852 basehttp 17548 2204 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:50:53,604 log 17548 2204 Not Found: /api/craousels
+WARNING 2025-07-14 15:50:53,606 basehttp 17548 2204 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 15:50:53,636 log 17548 2204 Not Found: /api/craousels
+WARNING 2025-07-14 15:50:53,638 basehttp 17548 2204 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 15:51:01,585 log 17548 2204 Not Found: /api/craousels
+WARNING 2025-07-14 15:51:01,598 log 17548 15576 Not Found: /api/spare_parts
+WARNING 2025-07-14 15:51:01,608 log 17548 20672 Not Found: /api/export_products
+WARNING 2025-07-14 15:51:01,614 log 17548 14812 Not Found: /api/most_popular
+WARNING 2025-07-14 15:51:01,616 log 17548 22860 Not Found: /api/vendor_products
+WARNING 2025-07-14 15:51:01,618 basehttp 17548 2204 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 15:51:01,618 basehttp 17548 15576 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 15:51:01,620 basehttp 17548 14812 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 15:51:01,628 basehttp 17548 20672 "GET /api/export_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 15:51:01,632 basehttp 17548 22860 "GET /api/vendor_products HTTP/1.1" 404 39570
+INFO 2025-07-14 15:51:01,632 basehttp 17548 3212 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:51:01,653 log 17548 2204 Not Found: /api/craousels
+WARNING 2025-07-14 15:51:01,681 log 17548 15576 Not Found: /api/spare_parts
+WARNING 2025-07-14 15:51:01,716 log 17548 14812 Not Found: /api/most_popular
+WARNING 2025-07-14 15:51:01,740 basehttp 17548 2204 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 15:51:01,753 log 17548 20672 Not Found: /api/export_products
+WARNING 2025-07-14 15:51:01,763 log 17548 22860 Not Found: /api/vendor_products
+INFO 2025-07-14 15:51:01,764 basehttp 17548 3212 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:51:01,764 basehttp 17548 15576 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 15:51:01,765 basehttp 17548 14812 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 15:51:01,766 basehttp 17548 20672 "GET /api/export_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 15:51:01,767 basehttp 17548 22860 "GET /api/vendor_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 15:51:42,681 log 17548 20672 Not Found: /api/craousels
+WARNING 2025-07-14 15:51:42,682 basehttp 17548 20672 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 15:51:42,716 log 17548 22860 Not Found: /api/craousels
+WARNING 2025-07-14 15:51:42,716 basehttp 17548 22860 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 15:52:06,594 log 17548 17560 Forbidden: /api/categories/
+WARNING 2025-07-14 15:52:06,597 basehttp 17548 17560 "POST /api/categories/ HTTP/1.1" 403 58
+INFO 2025-07-14 15:54:41,546 autoreload 17548 13828 C:\Users\suman\Music\Projects\mhebazar\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-14 15:54:43,954 autoreload 10952 8556 Watching for file changes with StatReloader
+WARNING 2025-07-14 15:54:52,935 log 10952 23304 Forbidden: /api/categories/
+WARNING 2025-07-14 15:54:52,936 basehttp 10952 23304 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 15:54:53,816 log 10952 23304 Forbidden: /api/categories/
+WARNING 2025-07-14 15:54:53,817 basehttp 10952 23304 "POST /api/categories/ HTTP/1.1" 403 58
+INFO 2025-07-14 15:54:57,723 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:54:57,800 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:55:17,284 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:55:17,341 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:56:08,622 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:56:08,724 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:56:32,990 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:56:33,278 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:57:03,800 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:57:03,887 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:57:34,738 log 10952 8244 Forbidden: /api/categories/
+WARNING 2025-07-14 15:57:34,744 basehttp 10952 8244 "POST /api/categories/ HTTP/1.1" 403 58
+INFO 2025-07-14 15:57:45,225 basehttp 10952 23004 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:57:45,238 basehttp 10952 23004 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:57:45,355 basehttp 10952 10468 "OPTIONS /api/new_arrivals HTTP/1.1" 200 0
+INFO 2025-07-14 15:57:45,384 basehttp 10952 8148 "OPTIONS /api/top_searched HTTP/1.1" 200 0
+WARNING 2025-07-14 15:57:46,410 log 10952 10468 Not Found: /api/craousels
+WARNING 2025-07-14 15:57:46,416 basehttp 10952 10468 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 15:57:46,508 log 10952 10468 Not Found: /api/new_arrivals
+WARNING 2025-07-14 15:57:46,528 basehttp 10952 10468 "GET /api/new_arrivals HTTP/1.1" 404 39561
+WARNING 2025-07-14 15:57:46,629 log 10952 10468 Not Found: /api/top_searched
+WARNING 2025-07-14 15:57:46,647 basehttp 10952 10468 "GET /api/top_searched HTTP/1.1" 404 39561
+WARNING 2025-07-14 15:57:46,684 log 10952 21280 Not Found: /api/most_popular
+WARNING 2025-07-14 15:57:46,694 basehttp 10952 21280 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 15:57:46,710 log 10952 8148 Not Found: /api/export_products
+WARNING 2025-07-14 15:57:46,798 log 10952 15796 Not Found: /api/spare_parts
+WARNING 2025-07-14 15:57:46,808 log 10952 17968 Not Found: /api/vendor_products
+INFO 2025-07-14 15:57:46,809 basehttp 10952 192 "GET /api/categories HTTP/1.1" 301 0
+WARNING 2025-07-14 15:57:46,811 basehttp 10952 8148 "GET /api/export_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 15:57:46,813 basehttp 10952 15796 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 15:57:46,825 basehttp 10952 17968 "GET /api/vendor_products HTTP/1.1" 404 39570
+INFO 2025-07-14 15:57:47,117 basehttp 10952 17968 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:58:23,156 log 10952 11700 Forbidden: /api/categories/
+WARNING 2025-07-14 15:58:23,158 basehttp 10952 11700 "POST /api/categories/ HTTP/1.1" 403 58
+INFO 2025-07-14 15:58:33,329 basehttp 10952 14916 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:58:33,401 basehttp 10952 14916 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:58:52,904 log 10952 15796 Not Found: /api/most_popular
+WARNING 2025-07-14 15:58:52,906 log 10952 17968 Not Found: /api/craousels
+WARNING 2025-07-14 15:58:52,937 log 10952 10468 Not Found: /api/export_products
+WARNING 2025-07-14 15:58:52,938 basehttp 10952 17968 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 15:58:52,989 basehttp 10952 15796 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 15:58:53,007 log 10952 8148 Not Found: /api/spare_parts
+WARNING 2025-07-14 15:58:53,009 log 10952 21280 Not Found: /api/vendor_products
+INFO 2025-07-14 15:58:53,010 basehttp 10952 23004 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:58:53,017 basehttp 10952 10468 "GET /api/export_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 15:58:53,018 basehttp 10952 8148 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 15:58:53,019 basehttp 10952 21280 "GET /api/vendor_products HTTP/1.1" 404 39570
+INFO 2025-07-14 15:58:53,104 basehttp 10952 852 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:58:53,169 basehttp 10952 18788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:58:53,253 basehttp 10952 18788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:58:53,981 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:58:54,040 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:58:54,073 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:58:54,147 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:58:59,475 basehttp 10952 18788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:58:59,558 basehttp 10952 18788 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:00,136 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:00,210 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:01,489 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:59:01,758 log 10952 21280 Not Found: /api/craousels
+WARNING 2025-07-14 15:59:01,816 log 10952 10468 Not Found: /api/spare_parts
+INFO 2025-07-14 15:59:01,841 basehttp 10952 852 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:59:01,919 basehttp 10952 21280 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 15:59:01,954 log 10952 15796 Not Found: /api/vendor_products
+INFO 2025-07-14 15:59:01,980 basehttp 10952 8004 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:59:01,981 basehttp 10952 10468 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 15:59:02,018 log 10952 8148 Not Found: /api/most_popular
+INFO 2025-07-14 15:59:02,019 basehttp 10952 23004 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:59:02,029 basehttp 10952 15796 "GET /api/vendor_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 15:59:02,035 basehttp 10952 8148 "GET /api/most_popular HTTP/1.1" 404 39561
+INFO 2025-07-14 15:59:04,528 basehttp 10952 8444 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:04,616 basehttp 10952 8444 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:28,606 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:28,693 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:28,889 basehttp 10952 4692 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:28,957 basehttp 10952 4692 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:59:29,675 log 10952 8148 Not Found: /api/craousels
+WARNING 2025-07-14 15:59:29,737 log 10952 10468 Not Found: /api/spare_parts
+WARNING 2025-07-14 15:59:29,775 log 10952 21280 Not Found: /api/vendor_products
+WARNING 2025-07-14 15:59:29,777 log 10952 15796 Not Found: /api/most_popular
+WARNING 2025-07-14 15:59:29,778 basehttp 10952 8148 "GET /api/craousels HTTP/1.1" 404 39552
+INFO 2025-07-14 15:59:29,783 basehttp 10952 23004 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:59:29,789 basehttp 10952 10468 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 15:59:29,791 basehttp 10952 21280 "GET /api/vendor_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 15:59:29,816 basehttp 10952 15796 "GET /api/most_popular HTTP/1.1" 404 39561
+INFO 2025-07-14 15:59:29,845 basehttp 10952 8004 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:29,847 basehttp 10952 23004 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:29,918 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:41,363 basehttp 10952 16712 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:41,464 basehttp 10952 16712 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:59:57,265 log 10952 15796 Not Found: /api/craousels
+WARNING 2025-07-14 15:59:57,307 log 10952 10468 Not Found: /api/most_popular
+WARNING 2025-07-14 15:59:57,319 log 10952 21280 Not Found: /api/spare_parts
+WARNING 2025-07-14 15:59:57,319 basehttp 10952 15796 "GET /api/craousels HTTP/1.1" 404 39552
+INFO 2025-07-14 15:59:57,320 basehttp 10952 23004 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 15:59:57,343 log 10952 8148 Not Found: /api/vendor_products
+WARNING 2025-07-14 15:59:57,344 basehttp 10952 10468 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 15:59:57,345 basehttp 10952 21280 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 15:59:57,351 basehttp 10952 8148 "GET /api/vendor_products HTTP/1.1" 404 39570
+INFO 2025-07-14 15:59:57,354 basehttp 10952 23004 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:57,425 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:57,490 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:57,516 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:57,549 basehttp 10952 1892 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:57,570 basehttp 10952 8004 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 15:59:57,627 basehttp 10952 1892 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:03,929 basehttp 10952 1892 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:06,310 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:06,318 basehttp 10952 8004 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:07,624 basehttp 10952 1892 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:10,100 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:10,101 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:00:11,599 log 10952 10468 Not Found: /api/most_popular
+INFO 2025-07-14 16:00:11,610 basehttp 10952 23004 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:00:11,617 log 10952 8148 Not Found: /api/craousels
+INFO 2025-07-14 16:00:11,642 basehttp 10952 852 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:00:11,646 log 10952 15796 Not Found: /api/vendor_products
+WARNING 2025-07-14 16:00:11,647 log 10952 21280 Not Found: /api/spare_parts
+WARNING 2025-07-14 16:00:11,650 basehttp 10952 10468 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 16:00:11,652 basehttp 10952 8148 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 16:00:11,656 basehttp 10952 15796 "GET /api/vendor_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 16:00:11,659 basehttp 10952 21280 "GET /api/spare_parts HTTP/1.1" 404 39558
+INFO 2025-07-14 16:00:12,403 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:12,489 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:12,490 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:12,561 basehttp 10952 8004 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:12,840 basehttp 10952 1892 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:12,914 basehttp 10952 1892 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:00:14,734 log 10952 21280 Not Found: /api/most_popular
+WARNING 2025-07-14 16:00:14,885 log 10952 8148 Not Found: /api/spare_parts
+WARNING 2025-07-14 16:00:14,891 log 10952 10468 Not Found: /api/vendor_products
+WARNING 2025-07-14 16:00:14,910 log 10952 15796 Not Found: /api/craousels
+INFO 2025-07-14 16:00:14,912 basehttp 10952 852 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:00:14,917 basehttp 10952 21280 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 16:00:14,921 basehttp 10952 8148 "GET /api/spare_parts HTTP/1.1" 404 39558
+INFO 2025-07-14 16:00:14,923 basehttp 10952 23004 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:00:14,928 basehttp 10952 10468 "GET /api/vendor_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 16:00:14,932 basehttp 10952 15796 "GET /api/craousels HTTP/1.1" 404 39552
+INFO 2025-07-14 16:00:17,058 basehttp 10952 8004 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:17,059 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:23,494 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:00:23,495 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:01:46,830 basehttp 10952 10948 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:01:46,898 basehttp 10952 10948 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:02:30,365 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:02:30,365 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:02:34,853 basehttp 10952 8004 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:02:34,862 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:02:36,363 basehttp 10952 15500 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:02:36,437 basehttp 10952 15500 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:02:36,714 log 10952 21280 Not Found: /api/vendor_products
+WARNING 2025-07-14 16:02:36,737 log 10952 15796 Not Found: /api/craousels
+INFO 2025-07-14 16:02:36,762 basehttp 10952 23004 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:02:36,826 log 10952 8148 Not Found: /api/spare_parts
+WARNING 2025-07-14 16:02:36,845 log 10952 10468 Not Found: /api/most_popular
+INFO 2025-07-14 16:02:36,849 basehttp 10952 852 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:02:36,850 basehttp 10952 21280 "GET /api/vendor_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 16:02:36,855 basehttp 10952 15796 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 16:02:36,864 basehttp 10952 8148 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 16:02:36,871 basehttp 10952 10468 "GET /api/most_popular HTTP/1.1" 404 39561
+INFO 2025-07-14 16:02:43,677 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:02:43,738 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:03:12,743 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:03:12,867 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:03:13,066 basehttp 10952 10700 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:03:13,129 basehttp 10952 10700 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:03:13,622 log 10952 15796 Not Found: /api/spare_parts
+WARNING 2025-07-14 16:03:13,662 log 10952 21280 Not Found: /api/vendor_products
+WARNING 2025-07-14 16:03:13,686 log 10952 8148 Not Found: /api/most_popular
+WARNING 2025-07-14 16:03:13,702 log 10952 10468 Not Found: /api/craousels
+INFO 2025-07-14 16:03:13,703 basehttp 10952 852 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:03:13,704 basehttp 10952 21280 "GET /api/vendor_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 16:03:13,704 basehttp 10952 15796 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 16:03:13,705 basehttp 10952 8148 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 16:03:13,715 basehttp 10952 10468 "GET /api/craousels HTTP/1.1" 404 39552
+INFO 2025-07-14 16:03:13,720 basehttp 10952 852 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:03:13,879 basehttp 10952 8004 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:03:13,941 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:04:02,125 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:04:02,925 log 10952 10468 Not Found: /api/craousels
+WARNING 2025-07-14 16:04:02,929 log 10952 21280 Not Found: /api/vendor_products
+WARNING 2025-07-14 16:04:02,931 log 10952 8148 Not Found: /api/most_popular
+WARNING 2025-07-14 16:04:02,955 log 10952 15796 Not Found: /api/spare_parts
+INFO 2025-07-14 16:04:02,956 basehttp 10952 852 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:04:02,957 basehttp 10952 10468 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 16:04:02,958 basehttp 10952 21280 "GET /api/vendor_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 16:04:02,959 basehttp 10952 8148 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 16:04:02,960 basehttp 10952 15796 "GET /api/spare_parts HTTP/1.1" 404 39558
+INFO 2025-07-14 16:04:03,041 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:04:03,309 basehttp 10952 14280 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:04:07,955 basehttp 10952 23304 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:04:07,956 basehttp 10952 21792 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:04:08,317 basehttp 10952 852 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:04:08,413 basehttp 10952 18464 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:06:03,656 log 10952 23304 Forbidden: /api/categories/
+WARNING 2025-07-14 16:06:03,659 basehttp 10952 23304 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:06:35,139 log 10952 4280 Not Found: /
+WARNING 2025-07-14 16:06:35,142 basehttp 10952 4280 "GET / HTTP/1.1" 404 3034
+WARNING 2025-07-14 16:06:35,528 log 10952 4280 Not Found: /favicon.ico
+WARNING 2025-07-14 16:06:35,529 basehttp 10952 4280 "GET /favicon.ico HTTP/1.1" 404 3085
+INFO 2025-07-14 16:06:39,824 basehttp 10952 4280 "GET /admin HTTP/1.1" 301 0
+INFO 2025-07-14 16:06:40,207 basehttp 10952 11764 "GET /admin/ HTTP/1.1" 200 22719
+INFO 2025-07-14 16:06:41,297 basehttp 10952 11764 "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+INFO 2025-07-14 16:06:41,346 basehttp 10952 15528 "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+INFO 2025-07-14 16:06:41,348 basehttp 10952 18528 "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+INFO 2025-07-14 16:06:41,351 basehttp 10952 12776 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+INFO 2025-07-14 16:06:41,358 basehttp 10952 5212 "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+INFO 2025-07-14 16:06:41,358 basehttp 10952 22936 "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2025-07-14 16:06:41,366 basehttp 10952 12776 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+INFO 2025-07-14 16:06:41,439 basehttp 10952 22936 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-07-14 16:06:41,440 basehttp 10952 12776 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+WARNING 2025-07-14 16:06:46,897 log 10952 23304 Forbidden: /api/categories/
+WARNING 2025-07-14 16:06:46,899 basehttp 10952 23304 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:08:22,198 log 10952 23304 Forbidden: /api/categories/
+WARNING 2025-07-14 16:08:22,201 basehttp 10952 23304 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:08:53,133 log 10952 7368 Forbidden: /api/categories/
+WARNING 2025-07-14 16:08:53,138 basehttp 10952 7368 "POST /api/categories/ HTTP/1.1" 403 58
+INFO 2025-07-14 16:09:11,588 autoreload 10952 8556 C:\Users\suman\Music\Projects\mhebazar\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-14 16:09:28,497 autoreload 5192 14972 Watching for file changes with StatReloader
+WARNING 2025-07-14 16:09:35,856 log 5192 11908 Forbidden: /api/categories/
+WARNING 2025-07-14 16:09:35,857 basehttp 5192 11908 "POST /api/categories/ HTTP/1.1" 403 58
+INFO 2025-07-14 16:09:42,021 basehttp 5192 11908 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:09:42,591 basehttp 5192 11908 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:09:49,440 log 5192 11908 Forbidden: /api/categories/
+WARNING 2025-07-14 16:09:49,445 basehttp 5192 11908 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:10:01,687 log 5192 11908 Forbidden: /api/categories/
+WARNING 2025-07-14 16:10:01,690 basehttp 5192 11908 "POST /api/categories/ HTTP/1.1" 403 58
+INFO 2025-07-14 16:11:02,073 autoreload 5192 14972 C:\Users\suman\Music\Projects\mhebazar\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-14 16:11:04,041 autoreload 9848 10076 Watching for file changes with StatReloader
+INFO 2025-07-14 16:11:05,965 autoreload 9848 10076 C:\Users\suman\Music\Projects\mhebazar\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-14 16:11:07,739 autoreload 4280 11816 Watching for file changes with StatReloader
+WARNING 2025-07-14 16:11:08,410 log 4280 14088 Forbidden: /api/categories/
+WARNING 2025-07-14 16:11:08,411 basehttp 4280 14088 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:11:18,125 log 4280 14088 Forbidden: /api/categories/
+WARNING 2025-07-14 16:11:18,126 basehttp 4280 14088 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:11:20,985 log 4280 14088 Forbidden: /api/categories/
+WARNING 2025-07-14 16:11:20,986 basehttp 4280 14088 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:11:21,598 log 4280 14088 Forbidden: /api/categories/
+WARNING 2025-07-14 16:11:21,599 basehttp 4280 14088 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:11:22,011 log 4280 14088 Forbidden: /api/categories/
+WARNING 2025-07-14 16:11:22,012 basehttp 4280 14088 "POST /api/categories/ HTTP/1.1" 403 58
+INFO 2025-07-14 16:11:27,909 basehttp 4280 5896 "GET /admin/ HTTP/1.1" 200 22719
+WARNING 2025-07-14 16:11:28,163 log 4280 5896 Not Found: /favicon.ico
+WARNING 2025-07-14 16:11:28,164 basehttp 4280 5896 "GET /favicon.ico HTTP/1.1" 404 3085
+INFO 2025-07-14 16:11:29,006 basehttp 4280 5896 "GET /admin/ HTTP/1.1" 200 22719
+INFO 2025-07-14 16:11:34,193 basehttp 4280 20216 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:11:34,273 basehttp 4280 20216 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:11:51,228 basehttp 4280 23472 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:11:51,310 basehttp 4280 23472 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:12:01,571 basehttp 4280 12832 "OPTIONS /api/new_arrivals HTTP/1.1" 200 0
+INFO 2025-07-14 16:12:01,575 basehttp 4280 10324 "OPTIONS /api/top_searched HTTP/1.1" 200 0
+WARNING 2025-07-14 16:12:01,622 log 4280 13448 Not Found: /api/craousels
+WARNING 2025-07-14 16:12:01,671 log 4280 12832 Not Found: /api/vendor_products
+WARNING 2025-07-14 16:12:01,724 log 4280 11316 Not Found: /api/most_popular
+WARNING 2025-07-14 16:12:01,733 log 4280 10324 Not Found: /api/export_products
+WARNING 2025-07-14 16:12:01,754 basehttp 4280 13448 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 16:12:01,760 log 4280 17744 Not Found: /api/spare_parts
+WARNING 2025-07-14 16:12:01,762 basehttp 4280 12832 "GET /api/vendor_products HTTP/1.1" 404 39570
+INFO 2025-07-14 16:12:01,763 basehttp 4280 9392 "GET /api/categories HTTP/1.1" 301 0
+WARNING 2025-07-14 16:12:01,764 basehttp 4280 11316 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 16:12:01,764 basehttp 4280 10324 "GET /api/export_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 16:12:01,774 basehttp 4280 17744 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 16:12:01,805 log 4280 13448 Not Found: /api/new_arrivals
+WARNING 2025-07-14 16:12:01,828 log 4280 22980 Not Found: /api/top_searched
+WARNING 2025-07-14 16:12:01,829 basehttp 4280 13448 "GET /api/new_arrivals HTTP/1.1" 404 39561
+WARNING 2025-07-14 16:12:01,830 basehttp 4280 22980 "GET /api/top_searched HTTP/1.1" 404 39561
+INFO 2025-07-14 16:12:02,241 basehttp 4280 22980 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:12:27,904 basehttp 4280 16492 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:12:28,014 basehttp 4280 16492 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:12:36,904 log 4280 21096 Forbidden: /api/categories/
+WARNING 2025-07-14 16:12:36,905 basehttp 4280 21096 "POST /api/categories/ HTTP/1.1" 403 58
+INFO 2025-07-14 16:12:45,816 basehttp 4280 7476 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:12:45,918 basehttp 4280 7476 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:12:58,574 autoreload 4280 11816 C:\Users\suman\Music\Projects\mhebazar\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-14 16:13:00,789 autoreload 22452 18416 Watching for file changes with StatReloader
+INFO 2025-07-14 16:13:03,938 autoreload 22452 18416 C:\Users\suman\Music\Projects\mhebazar\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-14 16:13:06,180 autoreload 10948 12432 Watching for file changes with StatReloader
+INFO 2025-07-14 16:13:15,095 autoreload 10948 12432 C:\Users\suman\Music\Projects\mhebazar\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-14 16:13:17,098 autoreload 21596 18068 Watching for file changes with StatReloader
+WARNING 2025-07-14 16:13:58,474 log 21596 22344 Forbidden: /api/categories/
+WARNING 2025-07-14 16:13:58,481 basehttp 21596 22344 "POST /api/categories/ HTTP/1.1" 403 58
+INFO 2025-07-14 16:18:39,483 basehttp 21596 10688 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:18:39,565 basehttp 21596 10688 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:18:48,795 log 21596 10688 Forbidden: /api/categories/
+WARNING 2025-07-14 16:18:48,797 basehttp 21596 10688 "POST /api/categories/ HTTP/1.1" 403 58
+INFO 2025-07-14 16:18:50,005 basehttp 21596 7892 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:18:50,096 basehttp 21596 7892 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:19:07,515 log 21596 21868 Forbidden: /api/categories/
+WARNING 2025-07-14 16:19:07,516 basehttp 21596 21868 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:19:54,708 log 21596 10688 Forbidden: /api/categories/
+WARNING 2025-07-14 16:19:54,714 basehttp 21596 10688 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:20:15,299 log 21596 10688 Forbidden: /api/categories/
+WARNING 2025-07-14 16:20:15,304 basehttp 21596 10688 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:21:04,863 log 21596 10688 Forbidden: /api/categories/
+WARNING 2025-07-14 16:21:04,864 basehttp 21596 10688 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:21:10,085 log 21596 10688 Forbidden: /api/categories/
+WARNING 2025-07-14 16:21:10,088 basehttp 21596 10688 "POST /api/categories/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:40:26,068 log 21596 7488 Not Found: /
+WARNING 2025-07-14 16:40:26,071 basehttp 21596 7488 "GET / HTTP/1.1" 404 3030
+WARNING 2025-07-14 16:41:28,747 log 21596 7488 Unauthorized: /api/users/
+WARNING 2025-07-14 16:41:28,748 basehttp 21596 7488 "GET /api/users/ HTTP/1.1" 401 58
+INFO 2025-07-14 16:41:28,794 basehttp 21596 7488 "OPTIONS /api/token/refresh/ HTTP/1.1" 200 0
+WARNING 2025-07-14 16:41:28,799 log 21596 7488 Bad Request: /api/token/refresh/
+WARNING 2025-07-14 16:41:28,800 basehttp 21596 7488 "POST /api/token/refresh/ HTTP/1.1" 400 43
+WARNING 2025-07-14 16:42:00,410 log 21596 7488 Not Found: /
+WARNING 2025-07-14 16:42:00,412 basehttp 21596 7488 "GET / HTTP/1.1" 404 3030
+INFO 2025-07-14 16:42:04,609 basehttp 21596 7488 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:42:09,704 log 21596 7488 Unauthorized: /api/roles/
+WARNING 2025-07-14 16:42:09,706 basehttp 21596 7488 "GET /api/roles/ HTTP/1.1" 401 58
+WARNING 2025-07-14 16:42:09,710 log 21596 7488 Unauthorized: /api/roles/
+WARNING 2025-07-14 16:42:09,711 basehttp 21596 7488 "GET /api/roles/ HTTP/1.1" 401 58
+WARNING 2025-07-14 16:42:09,717 log 21596 7488 Bad Request: /api/token/refresh/
+WARNING 2025-07-14 16:42:09,719 basehttp 21596 7488 "POST /api/token/refresh/ HTTP/1.1" 400 43
+WARNING 2025-07-14 16:42:09,723 log 21596 7488 Bad Request: /api/token/refresh/
+WARNING 2025-07-14 16:42:09,724 basehttp 21596 7488 "POST /api/token/refresh/ HTTP/1.1" 400 43
+INFO 2025-07-14 16:42:34,180 basehttp 21596 7488 "GET /api/products/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:42:40,210 log 21596 7488 Forbidden: /api/quotes/
+WARNING 2025-07-14 16:42:40,211 basehttp 21596 7488 "GET /api/quotes/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:42:40,215 log 21596 7488 Forbidden: /api/quotes/
+WARNING 2025-07-14 16:42:40,216 basehttp 21596 7488 "GET /api/quotes/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:42:47,918 log 21596 7488 Forbidden: /api/orders/
+WARNING 2025-07-14 16:42:47,920 basehttp 21596 7488 "GET /api/orders/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:42:47,928 log 21596 7488 Forbidden: /api/orders/
+WARNING 2025-07-14 16:42:47,930 basehttp 21596 7488 "GET /api/orders/ HTTP/1.1" 403 58
+INFO 2025-07-14 16:42:53,210 basehttp 21596 7488 "GET /api/products/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:42:53,219 basehttp 21596 7488 "GET /api/products/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:43:08,113 log 21596 7488 Unauthorized: /api/users/
+WARNING 2025-07-14 16:43:08,114 basehttp 21596 7488 "GET /api/users/ HTTP/1.1" 401 58
+WARNING 2025-07-14 16:43:08,117 log 21596 7488 Unauthorized: /api/users/
+WARNING 2025-07-14 16:43:08,124 log 21596 11908 Bad Request: /api/token/refresh/
+WARNING 2025-07-14 16:43:08,125 basehttp 21596 7488 "GET /api/users/ HTTP/1.1" 401 58
+WARNING 2025-07-14 16:43:08,127 basehttp 21596 11908 "POST /api/token/refresh/ HTTP/1.1" 400 43
+WARNING 2025-07-14 16:43:08,131 log 21596 7488 Bad Request: /api/token/refresh/
+WARNING 2025-07-14 16:43:08,132 basehttp 21596 7488 "POST /api/token/refresh/ HTTP/1.1" 400 43
+WARNING 2025-07-14 16:43:15,837 log 21596 7488 Unauthorized: /api/users/
+WARNING 2025-07-14 16:43:15,839 basehttp 21596 7488 "GET /api/users/ HTTP/1.1" 401 58
+WARNING 2025-07-14 16:43:15,849 log 21596 7488 Bad Request: /api/token/refresh/
+WARNING 2025-07-14 16:43:15,851 basehttp 21596 7488 "POST /api/token/refresh/ HTTP/1.1" 400 43
+INFO 2025-07-14 16:43:21,137 basehttp 21596 7488 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 16:47:23,681 log 21596 21620 Bad Request: /api/categories/
+WARNING 2025-07-14 16:47:23,685 basehttp 21596 21620 "POST /api/categories/ HTTP/1.1" 400 10544
+INFO 2025-07-14 16:47:23,731 basehttp 21596 21620 "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+INFO 2025-07-14 16:47:23,758 basehttp 21596 10016 "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+INFO 2025-07-14 16:47:23,771 basehttp 21596 14236 "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+INFO 2025-07-14 16:47:23,776 basehttp 21596 21620 "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+INFO 2025-07-14 16:47:23,781 basehttp 21596 13828 "GET /static/rest_framework/js/jquery-3.7.1.min.js HTTP/1.1" 304 0
+INFO 2025-07-14 16:47:23,790 basehttp 21596 10016 "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+INFO 2025-07-14 16:47:23,791 basehttp 21596 19596 "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-14 16:47:23,794 basehttp 21596 21620 "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+INFO 2025-07-14 16:47:23,795 basehttp 21596 14236 "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+INFO 2025-07-14 16:47:23,799 basehttp 21596 13828 "GET /static/rest_framework/js/load-ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-14 16:47:23,801 basehttp 21596 13932 "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+INFO 2025-07-14 16:47:23,803 basehttp 21596 10016 "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+WARNING 2025-07-14 16:47:23,901 log 21596 10016 Not Found: /favicon.ico
+WARNING 2025-07-14 16:47:23,904 basehttp 21596 10016 "GET /favicon.ico HTTP/1.1" 404 3081
+INFO 2025-07-14 16:47:31,675 basehttp 21596 10016 "POST /api/categories/ HTTP/1.1" 201 11156
+INFO 2025-07-14 16:47:41,767 basehttp 21596 7488 "GET /api/categories/ HTTP/1.1" 200 652
+INFO 2025-07-14 16:47:50,140 basehttp 21596 7488 "GET /api/categories/ HTTP/1.1" 200 652
+INFO 2025-07-14 16:47:59,026 basehttp 21596 10016 "GET /api/categories/ HTTP/1.1" 200 12203
+INFO 2025-07-14 16:47:59,077 basehttp 21596 10016 "GET /static/rest_framework/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 304 0
+WARNING 2025-07-14 16:48:07,427 log 21596 10016 Not Found: /api//
+WARNING 2025-07-14 16:48:07,429 basehttp 21596 10016 "GET /api// HTTP/1.1" 404 39528
+INFO 2025-07-14 16:48:10,260 basehttp 21596 10016 "GET /api/ HTTP/1.1" 200 7417
+INFO 2025-07-14 16:48:13,524 basehttp 21596 10016 "GET /api/categories/ HTTP/1.1" 200 12203
+INFO 2025-07-14 16:48:24,630 basehttp 21596 10016 "GET /api/subcategories/ HTTP/1.1" 200 12048
+INFO 2025-07-14 16:48:54,851 basehttp 21596 7488 "GET /api/categories/ HTTP/1.1" 200 652
+INFO 2025-07-14 16:49:04,033 basehttp 21596 7488 "GET /api/products/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:49:04,051 basehttp 21596 7488 "GET /api/products/ HTTP/1.1" 200 52
+INFO 2025-07-14 16:49:24,394 basehttp 21596 7488 "GET /api/categories/ HTTP/1.1" 200 652
+INFO 2025-07-14 16:49:24,409 basehttp 21596 7488 "GET /api/categories/ HTTP/1.1" 200 652
+INFO 2025-07-14 16:49:31,682 basehttp 21596 7488 "GET /api/categories/ HTTP/1.1" 200 652
+WARNING 2025-07-14 16:50:46,729 log 21596 6660 Not Found: /
+WARNING 2025-07-14 16:50:46,734 basehttp 21596 6660 "GET / HTTP/1.1" 404 3030
+WARNING 2025-07-14 16:50:57,083 log 21596 6660 Forbidden: /api/payments/
+WARNING 2025-07-14 16:50:57,085 basehttp 21596 6660 "GET /api/payments/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:50:57,088 log 21596 6660 Forbidden: /api/payments/
+WARNING 2025-07-14 16:50:57,091 basehttp 21596 6660 "GET /api/payments/ HTTP/1.1" 403 58
+WARNING 2025-07-14 16:51:01,502 log 21596 6660 Unauthorized: /api/users/
+WARNING 2025-07-14 16:51:01,503 basehttp 21596 6660 "GET /api/users/ HTTP/1.1" 401 58
+WARNING 2025-07-14 16:51:01,508 log 21596 6660 Unauthorized: /api/users/
+WARNING 2025-07-14 16:51:01,513 log 21596 784 Bad Request: /api/token/refresh/
+WARNING 2025-07-14 16:51:01,515 basehttp 21596 6660 "GET /api/users/ HTTP/1.1" 401 58
+WARNING 2025-07-14 16:51:01,516 basehttp 21596 784 "POST /api/token/refresh/ HTTP/1.1" 400 43
+WARNING 2025-07-14 16:51:01,521 log 21596 784 Bad Request: /api/token/refresh/
+WARNING 2025-07-14 16:51:01,522 basehttp 21596 784 "POST /api/token/refresh/ HTTP/1.1" 400 43
+INFO 2025-07-14 17:49:07,634 autoreload 5368 18836 Watching for file changes with StatReloader
+INFO 2025-07-14 17:49:24,367 basehttp 5368 6616 "OPTIONS /api/top_searched HTTP/1.1" 200 0
+INFO 2025-07-14 17:49:24,369 basehttp 5368 18668 "OPTIONS /api/new_arrivals HTTP/1.1" 200 0
+WARNING 2025-07-14 17:49:24,661 log 5368 11440 Not Found: /api/spare_parts
+WARNING 2025-07-14 17:49:24,661 log 5368 17724 Not Found: /api/craousels
+WARNING 2025-07-14 17:49:24,662 log 5368 8016 Not Found: /api/vendor_products
+WARNING 2025-07-14 17:49:24,662 log 5368 21468 Not Found: /api/most_popular
+WARNING 2025-07-14 17:49:24,662 log 5368 6616 Not Found: /api/export_products
+WARNING 2025-07-14 17:49:24,664 basehttp 5368 11440 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 17:49:24,666 basehttp 5368 8016 "GET /api/vendor_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 17:49:24,666 basehttp 5368 17724 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 17:49:24,666 basehttp 5368 21468 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 17:49:24,667 basehttp 5368 6616 "GET /api/export_products HTTP/1.1" 404 39570
+INFO 2025-07-14 17:49:24,824 basehttp 5368 18668 "GET /api/categories/ HTTP/1.1" 200 652
+WARNING 2025-07-14 17:49:41,107 log 5368 23044 Unauthorized: /api/users/
+WARNING 2025-07-14 17:49:41,109 basehttp 5368 23044 "GET /api/users/?page=1&page_size=10&search=&ordering=-id HTTP/1.1" 401 58
+INFO 2025-07-14 17:49:41,134 basehttp 5368 23044 "OPTIONS /api/token/refresh/ HTTP/1.1" 200 0
+WARNING 2025-07-14 17:49:41,149 log 5368 23044 Bad Request: /api/token/refresh/
+WARNING 2025-07-14 17:49:41,154 basehttp 5368 23044 "POST /api/token/refresh/ HTTP/1.1" 400 43
+INFO 2025-07-14 17:51:08,377 basehttp 5368 18668 "OPTIONS /api/token/ HTTP/1.1" 200 0
+INFO 2025-07-14 17:51:09,253 basehttp 5368 18668 "POST /api/token/ HTTP/1.1" 200 483
+INFO 2025-07-14 17:51:09,261 basehttp 5368 18668 "OPTIONS /api/users/me/ HTTP/1.1" 200 0
+INFO 2025-07-14 17:51:09,286 basehttp 5368 18668 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-14 17:51:10,276 basehttp 5368 18668 - Broken pipe from ('127.0.0.1', 61720)
+WARNING 2025-07-14 17:51:16,769 log 5368 23044 Unauthorized: /api/users/
+WARNING 2025-07-14 17:51:16,770 basehttp 5368 23044 "GET /api/users/?page=1&page_size=10&search=&ordering=-id HTTP/1.1" 401 58
+WARNING 2025-07-14 17:51:16,788 log 5368 23044 Bad Request: /api/token/refresh/
+WARNING 2025-07-14 17:51:16,789 basehttp 5368 23044 "POST /api/token/refresh/ HTTP/1.1" 400 43
+WARNING 2025-07-14 17:51:27,121 log 5368 23044 Unauthorized: /api/users/
+WARNING 2025-07-14 17:51:27,122 basehttp 5368 23044 "GET /api/users/?page=1&page_size=10&search=&ordering=-id HTTP/1.1" 401 58
+WARNING 2025-07-14 17:51:27,147 log 5368 23044 Bad Request: /api/token/refresh/
+WARNING 2025-07-14 17:51:27,149 basehttp 5368 23044 "POST /api/token/refresh/ HTTP/1.1" 400 43
+INFO 2025-07-14 17:51:32,990 basehttp 5368 23044 "GET /api/categories/?page=1&page_size=10&search=&ordering=-id HTTP/1.1" 200 652
+INFO 2025-07-14 17:51:42,436 basehttp 5368 23044 "OPTIONS /api/categories/bulk_delete/ HTTP/1.1" 200 0
+WARNING 2025-07-14 17:51:42,442 log 5368 23044 Forbidden: /api/categories/bulk_delete/
+WARNING 2025-07-14 17:51:42,443 basehttp 5368 23044 "POST /api/categories/bulk_delete/ HTTP/1.1" 403 58
+INFO 2025-07-14 17:51:47,208 basehttp 5368 23044 "GET /api/categories/?page=1&page_size=10&search=&ordering=-id HTTP/1.1" 200 652
+WARNING 2025-07-14 17:51:56,971 log 5368 23044 Unauthorized: /api/users/
+WARNING 2025-07-14 17:51:56,972 basehttp 5368 23044 "GET /api/users/?page=1&page_size=10&search=&ordering=-id HTTP/1.1" 401 58
+WARNING 2025-07-14 17:51:57,028 log 5368 23044 Bad Request: /api/token/refresh/
+WARNING 2025-07-14 17:51:57,029 basehttp 5368 23044 "POST /api/token/refresh/ HTTP/1.1" 400 43
+INFO 2025-07-14 17:52:00,746 basehttp 5368 23044 "GET /api/products/?page=1&page_size=10&search=&ordering=-id HTTP/1.1" 200 52
+WARNING 2025-07-14 17:52:13,833 log 5368 23044 Unauthorized: /api/users/
+WARNING 2025-07-14 17:52:13,834 basehttp 5368 23044 "GET /api/users/?page=1&page_size=10&search=&ordering=-id HTTP/1.1" 401 58
+WARNING 2025-07-14 17:52:13,889 log 5368 23044 Bad Request: /api/token/refresh/
+WARNING 2025-07-14 17:52:13,893 basehttp 5368 23044 "POST /api/token/refresh/ HTTP/1.1" 400 43
+WARNING 2025-07-14 17:52:24,304 log 5368 23044 Forbidden: /api/quotes/
+WARNING 2025-07-14 17:52:24,306 basehttp 5368 23044 "GET /api/quotes/?page=1&page_size=10&search=&ordering=-id HTTP/1.1" 403 58
+INFO 2025-07-14 17:52:37,906 basehttp 5368 23044 "GET /api/categories/?page=1&page_size=10&search=&ordering=-id HTTP/1.1" 200 652
+WARNING 2025-07-14 17:53:33,181 log 5368 23044 Forbidden: /api/quotes/
+WARNING 2025-07-14 17:53:33,182 basehttp 5368 23044 "GET /api/quotes/?page=1&page_size=10&search=&ordering=-id HTTP/1.1" 403 58
+INFO 2025-07-14 17:53:39,453 basehttp 5368 15572 "GET /api/ HTTP/1.1" 200 7417
+INFO 2025-07-14 17:53:39,501 basehttp 5368 15572 "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+INFO 2025-07-14 17:53:39,518 basehttp 5368 5920 "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+INFO 2025-07-14 17:53:39,520 basehttp 5368 468 "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+INFO 2025-07-14 17:53:39,526 basehttp 5368 20488 "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+INFO 2025-07-14 17:53:39,530 basehttp 5368 15572 "GET /static/rest_framework/js/jquery-3.7.1.min.js HTTP/1.1" 304 0
+INFO 2025-07-14 17:53:39,533 basehttp 5368 10460 "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+INFO 2025-07-14 17:53:39,537 basehttp 5368 14576 "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-14 17:53:39,544 basehttp 5368 5920 "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+INFO 2025-07-14 17:53:39,547 basehttp 5368 468 "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+INFO 2025-07-14 17:53:39,548 basehttp 5368 20488 "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+INFO 2025-07-14 17:53:39,548 basehttp 5368 15572 "GET /static/rest_framework/js/load-ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-14 17:53:39,554 basehttp 5368 468 "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+WARNING 2025-07-14 17:53:39,668 log 5368 468 Not Found: /favicon.ico
+WARNING 2025-07-14 17:53:39,669 basehttp 5368 468 "GET /favicon.ico HTTP/1.1" 404 3081
+INFO 2025-07-14 17:53:43,138 basehttp 5368 468 "GET /api/quotes HTTP/1.1" 301 0
+INFO 2025-07-14 17:53:43,599 basehttp 5368 20488 "GET /api/quotes/ HTTP/1.1" 200 12321
+INFO 2025-07-14 17:53:43,647 basehttp 5368 20488 "GET /static/rest_framework/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 304 0
+INFO 2025-07-14 17:53:53,708 basehttp 5368 20488 "GET /api/products/ HTTP/1.1" 200 16689
+WARNING 2025-07-14 17:54:52,393 log 5368 20488 Bad Request: /api/products/
+WARNING 2025-07-14 17:54:52,395 basehttp 5368 20488 "POST /api/products/ HTTP/1.1" 400 14434
+INFO 2025-07-14 17:55:55,706 autoreload 5368 18836 C:\Users\suman\Music\Projects\mhebazar\mheback\products\models.py changed, reloading.
+INFO 2025-07-14 17:55:57,795 autoreload 15104 5584 Watching for file changes with StatReloader
+INFO 2025-07-14 17:55:59,905 autoreload 15104 5584 C:\Users\suman\Music\Projects\mhebazar\mheback\products\models.py changed, reloading.
+INFO 2025-07-14 17:56:01,290 autoreload 8092 14912 Watching for file changes with StatReloader
+INFO 2025-07-14 17:56:07,566 autoreload 8092 14912 C:\Users\suman\Music\Projects\mhebazar\mheback\products\models.py changed, reloading.
+INFO 2025-07-14 17:56:08,782 autoreload 13200 12412 Watching for file changes with StatReloader
+ERROR 2025-07-14 17:56:15,180 log 13200 19152 Internal Server Error: /api/products/
+Traceback (most recent call last):
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "subcategory_id" of relation "products_product" violates not-null constraint
+DETAIL:  Failing row contains (1, Product, desc, title, desc, BYD, 7878, null, 4500.00, , new, t, 2, 2025-07-14 12:26:14.58774+00, 2025-07-14 12:26:14.587753+00, 1, 3, null).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\rest_framework\mixins.py", line 19, in create
+    self.perform_create(serializer)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\rest_framework\mixins.py", line 24, in perform_create
+    serializer.save()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 210, in save
+    self.instance = self.create(validated_data)
+                    ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 991, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\products\models.py", line 212, in save
+    super().save(*args, **kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1868, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1882, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\suman\Music\Projects\mhebazar\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "subcategory_id" of relation "products_product" violates not-null constraint
+DETAIL:  Failing row contains (1, Product, desc, title, desc, BYD, 7878, null, 4500.00, , new, t, 2, 2025-07-14 12:26:14.58774+00, 2025-07-14 12:26:14.587753+00, 1, 3, null).
+
+ERROR 2025-07-14 17:56:15,192 basehttp 13200 19152 "POST /api/products/ HTTP/1.1" 500 242389

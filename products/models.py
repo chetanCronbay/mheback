@@ -78,7 +78,9 @@ class Product(models.Model):
         Subcategory, 
         on_delete=models.CASCADE, 
         related_name='products',
-        help_text="Product subcategory"
+        help_text="Product subcategory",
+        null=True,
+        blank=True,
     )
     name = models.CharField(
         max_length=255,

@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if os.getenv('ENVIRONMENT') == 'production' else True
 
-ALLOWED_HOSTS = ['.onrender.com', 'localhost:3000', 'localhost', '127.0.0.1', 'your-production-domain.com','192.168.0.135']
+ALLOWED_HOSTS = ['.onrender.com', 'localhost:3000', 'localhost', '127.0.0.1', 'your-production-domain.com','192.168.0.135',"http://192.168.0.135:3000"]
 
 
 # Application definition
@@ -270,6 +270,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     # Add production domains here
     # "https://yourdomain.com",
+    "http://192.168.0.135:3000",
 ]
 
 # Apply Rules: Specify allowed methods and headers explicitly
@@ -296,7 +297,7 @@ CORS_ALLOW_HEADERS = [
 ]
 
 # Apply Rules: Never use CORS_ALLOW_ALL_ORIGINS in production
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Apply Rules: Use CORS_ALLOW_CREDENTIALS only when necessary
 CORS_ALLOW_CREDENTIALS = True
