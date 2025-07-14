@@ -179,23 +179,13 @@ DATABASES = {
 }
 
 # Apply Rules: Use dj_database_url for dynamic database configuration
-# if os.getenv('DATABASE_URL'):
-#     db_config = dj_database_url.config(
-#         default=os.environ.get("DATABASE_URL"),
-#         conn_max_age=600,
-#         # ssl_require=os.getenv('ENVIRONMENT') == 'production'
-#         ssl_require= True
-#     )
-#     DATABASES['default'] = dict(db_config)
-
-# Database configuration - replace your current DATABASES with this:
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         conn_max_age=600,
-#         conn_health_checks=True,
-#         ssl_require=True
-#     )
-# }
+if os.getenv('DATABASE_URL'):
+    db_config = dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=os.getenv('ENVIRONMENT') == 'production'
+    )
+    DATABASES['default'] = dict(db_config)
 
 
 # Password validation
@@ -259,10 +249,10 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 FILE_RETENTION_DAYS = int(os.getenv('FILE_RETENTION_DAYS', 365))
 
 # Security settings
-SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

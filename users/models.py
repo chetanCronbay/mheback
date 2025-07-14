@@ -5,7 +5,8 @@ Apply Rules: Use type hints throughout the codebase for better AI comprehension.
 """
 from typing import Optional
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from .managers import UserManager  # import your custom manager
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.validators import RegexValidator
 from django.core.mail import send_mail
@@ -51,12 +52,13 @@ class UserBanner(models.Model):
     def __str__(self):
         return f"Image for {self.user.username}"
 
-class User(AbstractUser):
+class User(AbstractUser, PermissionsMixin):
     """Custom User model extending Django's AbstractUser.
     
     Apply Rules: Document all public classes and methods with comprehensive docstrings.
     Apply Rules: Use database indexes for frequently queried fields.
     """
+    objects = UserManager()
     role = models.ForeignKey(
       Role,
       on_delete=models.RESTRICT,
