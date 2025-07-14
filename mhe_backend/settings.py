@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if os.getenv('ENVIRONMENT') == 'production' else True
 
-ALLOWED_HOSTS = ['.onrender.com', 'localhost:3000', 'localhost', '127.0.0.1', 'your-production-domain.com']
+ALLOWED_HOSTS = ['.onrender.com', 'localhost:3000', 'localhost', '127.0.0.1', 'your-production-domain.com','192.168.0.135']
 
 
 # Application definition
@@ -80,7 +80,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter',  # Apply Rules: Add ordering
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'util.authentication.APIKeyAuthentication',  # <-- Add this line
+        # 'util.authentication.APIKeyAuthentication',  # <-- Add this line
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         # Apply Rules: JWT tokens for stateless authentication (uncomment when needed)

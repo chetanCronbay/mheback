@@ -38,3 +38,210 @@ INFO 2025-07-14 12:47:47,698 autoreload 9756 3136 C:\Users\suman\Music\Projects\
 INFO 2025-07-14 12:47:49,106 autoreload 19700 9772 Watching for file changes with StatReloader
 INFO 2025-07-14 12:48:06,760 autoreload 19700 9772 C:\Users\suman\Music\Projects\mhebazar\mheback\mhe_backend\urls.py changed, reloading.
 INFO 2025-07-14 12:48:08,056 autoreload 15040 10236 Watching for file changes with StatReloader
+INFO 2025-07-14 12:50:00,683 autoreload 15040 10236 C:\Users\suman\Music\Projects\mhebazar\mheback\util\authentication.py changed, reloading.
+INFO 2025-07-14 12:50:01,934 autoreload 23276 10524 Watching for file changes with StatReloader
+INFO 2025-07-14 12:52:54,278 autoreload 14692 11776 Watching for file changes with StatReloader
+WARNING 2025-07-14 12:53:03,202 log 14692 11692 Forbidden: /api/
+WARNING 2025-07-14 12:53:03,203 basehttp 14692 11692 "GET /api/ HTTP/1.1" 403 4883
+INFO 2025-07-14 12:53:03,230 basehttp 14692 10448 "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:03,233 basehttp 14692 11692 "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:03,234 basehttp 14692 10448 "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:03,235 basehttp 14692 17480 "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:03,237 basehttp 14692 9508 "GET /static/rest_framework/js/jquery-3.7.1.min.js HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:03,237 basehttp 14692 22716 "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:03,241 basehttp 14692 11692 "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:03,241 basehttp 14692 9508 "GET /static/rest_framework/js/load-ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:03,241 basehttp 14692 10448 "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:03,241 basehttp 14692 17480 "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:03,242 basehttp 14692 8700 "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+WARNING 2025-07-14 12:53:06,744 log 14692 8700 Forbidden: /api/
+WARNING 2025-07-14 12:53:06,748 basehttp 14692 8700 "GET /api/ HTTP/1.1" 403 4883
+INFO 2025-07-14 12:53:09,594 basehttp 14692 8700 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-07-14 12:53:09,722 basehttp 14692 8700 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4173
+INFO 2025-07-14 12:53:09,764 basehttp 14692 8700 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:09,784 basehttp 14692 11692 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:09,786 basehttp 14692 10448 "GET /static/admin/css/login.css HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:09,787 basehttp 14692 8700 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:09,787 basehttp 14692 9508 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:09,790 basehttp 14692 17480 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-07-14 12:53:09,801 basehttp 14692 17480 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+ERROR 2025-07-14 13:00:20,465 email_utils 13608 19816 Email sending error: (530, b'5.7.0 Authentication Required. For more information, go to\n5.7.0  https://support.google.com/accounts/troubleshooter/2402620. d9443c01a7336-23de428592esm91399245ad.51 - gsmtp', 'suman@cronbaytechnologies.com')
+INFO 2025-07-14 13:00:20,471 signals 13608 19816 Verification email sent to new user: user
+INFO 2025-07-14 13:00:20,472 signals 13608 19816 New user registered - ID: 2, Username: user, Email: user@gmail.com, Role: Admin
+INFO 2025-07-14 13:00:45,948 autoreload 1680 2040 Watching for file changes with StatReloader
+INFO 2025-07-14 13:00:48,689 basehttp 1680 18484 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-07-14 13:00:48,803 basehttp 1680 18484 "GET /admin/ HTTP/1.1" 200 19582
+INFO 2025-07-14 13:00:48,850 basehttp 1680 18484 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-07-14 13:00:48,858 basehttp 1680 17012 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-07-14 13:00:48,859 basehttp 1680 3940 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:00:48,864 basehttp 1680 3748 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-07-14 13:00:48,864 basehttp 1680 17744 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-07-14 13:00:48,870 basehttp 1680 17744 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:00:48,901 basehttp 1680 18484 "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2025-07-14 13:00:48,923 basehttp 1680 18484 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-07-14 13:00:48,923 basehttp 1680 17744 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-07-14 13:02:54,497 autoreload 1680 2040 C:\Users\suman\Music\Projects\mhebazar\mheback\order_management\admin.py changed, reloading.
+INFO 2025-07-14 13:02:56,022 autoreload 13268 12708 Watching for file changes with StatReloader
+INFO 2025-07-14 13:03:00,928 basehttp 13268 17548 "GET /admin/ HTTP/1.1" 200 22719
+INFO 2025-07-14 13:03:12,390 basehttp 13268 17548 "GET /api/ HTTP/1.1" 200 7417
+INFO 2025-07-14 13:03:12,469 basehttp 13268 17548 "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+INFO 2025-07-14 13:03:12,470 basehttp 13268 1756 "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+INFO 2025-07-14 13:03:12,473 basehttp 13268 18252 "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+INFO 2025-07-14 13:03:12,533 basehttp 13268 18252 "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+INFO 2025-07-14 13:03:12,541 basehttp 13268 17548 "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:03:12,542 basehttp 13268 1756 "GET /static/rest_framework/js/jquery-3.7.1.min.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:03:12,548 basehttp 13268 2356 "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:03:12,549 basehttp 13268 18252 "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:03:12,550 basehttp 13268 17548 "GET /static/rest_framework/js/load-ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:03:12,551 basehttp 13268 15300 "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:03:12,553 basehttp 13268 8476 "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:03:12,564 basehttp 13268 8476 "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+INFO 2025-07-14 13:03:16,890 basehttp 13268 8476 "GET /api/roles/ HTTP/1.1" 200 10887
+INFO 2025-07-14 13:03:17,129 basehttp 13268 8476 "GET /static/rest_framework/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+INFO 2025-07-14 13:03:22,992 basehttp 13268 8476 "GET /api/orders/ HTTP/1.1" 200 14066
+INFO 2025-07-14 13:51:52,457 basehttp 13268 19996 "GET /api/payments/ HTTP/1.1" 200 14202
+INFO 2025-07-14 13:51:52,511 basehttp 13268 14060 "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+INFO 2025-07-14 13:51:52,511 basehttp 13268 19996 "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+INFO 2025-07-14 13:51:52,513 basehttp 13268 22360 "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+INFO 2025-07-14 13:51:52,513 basehttp 13268 10412 "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+INFO 2025-07-14 13:51:52,519 basehttp 13268 4000 "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:51:52,519 basehttp 13268 7908 "GET /static/rest_framework/js/jquery-3.7.1.min.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:51:52,522 basehttp 13268 14060 "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:51:52,524 basehttp 13268 22360 "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:51:52,524 basehttp 13268 19996 "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:51:52,524 basehttp 13268 10412 "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:51:52,526 basehttp 13268 4000 "GET /static/rest_framework/js/load-ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-14 13:51:52,530 basehttp 13268 19996 "GET /static/rest_framework/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 304 0
+INFO 2025-07-14 13:51:52,531 basehttp 13268 10412 "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+WARNING 2025-07-14 13:52:29,330 log 13268 10412 Not Found: /api/login/
+WARNING 2025-07-14 13:52:29,333 basehttp 13268 10412 "GET /api/login/ HTTP/1.1" 404 39543
+WARNING 2025-07-14 13:52:36,652 log 13268 10412 Method Not Allowed: /api/google/login/
+WARNING 2025-07-14 13:52:36,653 basehttp 13268 10412 "GET /api/google/login/ HTTP/1.1" 405 5858
+INFO 2025-07-14 13:53:04,320 basehttp 13268 10412 "GET /api/ HTTP/1.1" 200 7417
+WARNING 2025-07-14 13:53:06,820 log 13268 10412 Not Found: /token/
+WARNING 2025-07-14 13:53:06,823 basehttp 13268 10412 "GET /token/ HTTP/1.1" 404 3066
+INFO 2025-07-14 13:53:10,314 basehttp 13268 10412 "GET /api/ HTTP/1.1" 200 7417
+INFO 2025-07-14 13:53:12,929 basehttp 13268 10412 "GET /api/token HTTP/1.1" 301 0
+WARNING 2025-07-14 13:53:12,951 log 13268 19996 Method Not Allowed: /api/token/
+WARNING 2025-07-14 13:53:12,952 basehttp 13268 19996 "GET /api/token/ HTTP/1.1" 405 7593
+WARNING 2025-07-14 13:53:23,677 log 13268 19996 Bad Request: /api/token/
+WARNING 2025-07-14 13:53:23,678 basehttp 13268 19996 "POST /api/token/ HTTP/1.1" 400 7609
+INFO 2025-07-14 13:55:54,204 basehttp 13268 19996 "GET /api/categories/ HTTP/1.1" 200 11240
+INFO 2025-07-14 13:58:04,853 basehttp 13268 15188 "OPTIONS /api/register/ HTTP/1.1" 200 0
+WARNING 2025-07-14 13:58:04,931 log 13268 15188 Bad Request: /api/register/
+WARNING 2025-07-14 13:58:04,932 basehttp 13268 15188 "POST /api/register/ HTTP/1.1" 400 118
+INFO 2025-07-14 13:58:53,727 autoreload 9324 21384 Watching for file changes with StatReloader
+WARNING 2025-07-14 13:58:57,983 log 9324 3312 Bad Request: /api/register/
+WARNING 2025-07-14 13:58:57,983 basehttp 9324 3312 "POST /api/register/ HTTP/1.1" 400 118
+WARNING 2025-07-14 14:00:40,493 log 9324 3312 Bad Request: /api/register/
+WARNING 2025-07-14 14:00:40,496 basehttp 9324 3312 "POST /api/register/ HTTP/1.1" 400 118
+WARNING 2025-07-14 14:02:01,521 log 9324 16016 Bad Request: /api/register/
+WARNING 2025-07-14 14:02:01,526 basehttp 9324 16016 "POST /api/register/ HTTP/1.1" 400 118
+WARNING 2025-07-14 14:03:35,028 log 9324 6932 Bad Request: /api/register/
+WARNING 2025-07-14 14:03:35,030 basehttp 9324 6932 "POST /api/register/ HTTP/1.1" 400 118
+WARNING 2025-07-14 14:03:38,183 log 9324 6932 Bad Request: /api/register/
+WARNING 2025-07-14 14:03:38,184 basehttp 9324 6932 "POST /api/register/ HTTP/1.1" 400 118
+WARNING 2025-07-14 14:03:39,090 log 9324 6932 Bad Request: /api/register/
+WARNING 2025-07-14 14:03:39,094 basehttp 9324 6932 "POST /api/register/ HTTP/1.1" 400 118
+WARNING 2025-07-14 14:04:38,918 log 9324 9520 Bad Request: /api/register/
+WARNING 2025-07-14 14:04:38,921 basehttp 9324 9520 "POST /api/register/ HTTP/1.1" 400 118
+WARNING 2025-07-14 14:05:04,821 log 9324 9520 Bad Request: /api/register/
+WARNING 2025-07-14 14:05:04,821 basehttp 9324 9520 "POST /api/register/ HTTP/1.1" 400 118
+WARNING 2025-07-14 14:05:07,309 log 9324 9520 Bad Request: /api/register/
+WARNING 2025-07-14 14:05:07,310 basehttp 9324 9520 "POST /api/register/ HTTP/1.1" 400 118
+WARNING 2025-07-14 14:05:08,508 log 9324 9520 Bad Request: /api/register/
+WARNING 2025-07-14 14:05:08,512 basehttp 9324 9520 "POST /api/register/ HTTP/1.1" 400 118
+WARNING 2025-07-14 14:05:19,442 log 9324 9520 Bad Request: /api/register/
+WARNING 2025-07-14 14:05:19,443 basehttp 9324 9520 "POST /api/register/ HTTP/1.1" 400 118
+WARNING 2025-07-14 14:07:18,306 log 9324 9520 Not Found: /api/craousels
+INFO 2025-07-14 14:07:18,306 basehttp 9324 23532 "OPTIONS /api/new_arrivals HTTP/1.1" 200 0
+WARNING 2025-07-14 14:07:18,312 basehttp 9324 9520 "GET /api/craousels HTTP/1.1" 404 39552
+INFO 2025-07-14 14:07:18,313 basehttp 9324 3280 "OPTIONS /api/top_searched HTTP/1.1" 200 0
+INFO 2025-07-14 14:07:18,314 basehttp 9324 15676 "GET /api/categories HTTP/1.1" 301 0
+WARNING 2025-07-14 14:07:18,341 log 9324 12388 Not Found: /api/most_popular
+INFO 2025-07-14 14:07:18,343 basehttp 9324 23532 "OPTIONS /api/new_arrivals HTTP/1.1" 200 0
+WARNING 2025-07-14 14:07:18,402 log 9324 9520 Not Found: /api/export_products
+INFO 2025-07-14 14:07:18,405 basehttp 9324 3280 "OPTIONS /api/top_searched HTTP/1.1" 200 0
+WARNING 2025-07-14 14:07:18,413 log 9324 8484 Not Found: /api/spare_parts
+WARNING 2025-07-14 14:07:18,414 basehttp 9324 12388 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 14:07:18,434 log 9324 8172 Not Found: /api/vendor_products
+WARNING 2025-07-14 14:07:18,460 log 9324 23532 Not Found: /api/new_arrivals
+WARNING 2025-07-14 14:07:18,460 basehttp 9324 9520 "GET /api/export_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 14:07:18,465 basehttp 9324 8484 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 14:07:18,484 log 9324 12388 Not Found: /api/top_searched
+WARNING 2025-07-14 14:07:18,485 basehttp 9324 8172 "GET /api/vendor_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 14:07:18,486 basehttp 9324 23532 "GET /api/new_arrivals HTTP/1.1" 404 39561
+WARNING 2025-07-14 14:07:18,532 log 9324 9520 Not Found: /api/craousels
+WARNING 2025-07-14 14:07:18,535 log 9324 8484 Not Found: /api/most_popular
+WARNING 2025-07-14 14:07:18,536 basehttp 9324 12388 "GET /api/top_searched HTTP/1.1" 404 39561
+WARNING 2025-07-14 14:07:18,553 log 9324 8172 Not Found: /api/export_products
+WARNING 2025-07-14 14:07:18,575 log 9324 23532 Not Found: /api/spare_parts
+WARNING 2025-07-14 14:07:18,578 basehttp 9324 8484 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 14:07:18,579 basehttp 9324 9520 "GET /api/craousels HTTP/1.1" 404 39552
+INFO 2025-07-14 14:07:18,581 basehttp 9324 3280 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 14:07:18,587 basehttp 9324 8172 "GET /api/export_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 14:07:18,597 log 9324 12388 Not Found: /api/vendor_products
+WARNING 2025-07-14 14:07:18,598 basehttp 9324 23532 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 14:07:18,600 basehttp 9324 12388 "GET /api/vendor_products HTTP/1.1" 404 39570
+INFO 2025-07-14 14:07:18,729 basehttp 9324 8172 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 14:07:29,540 log 9324 8172 Not Found: /api/craousels
+WARNING 2025-07-14 14:07:29,541 basehttp 9324 8172 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 14:07:29,580 log 9324 12388 Not Found: /api/craousels
+WARNING 2025-07-14 14:07:29,583 basehttp 9324 12388 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 14:10:25,276 log 9324 12388 Not Found: /api/craousels
+WARNING 2025-07-14 14:10:25,278 basehttp 9324 12388 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 14:10:25,291 log 9324 8172 Not Found: /api/craousels
+WARNING 2025-07-14 14:10:25,292 basehttp 9324 8172 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 14:13:35,537 log 9324 8172 Bad Request: /api/register/
+WARNING 2025-07-14 14:13:35,539 basehttp 9324 8172 "POST /api/register/ HTTP/1.1" 400 168
+WARNING 2025-07-14 14:13:50,382 log 9324 8172 Bad Request: /api/register/
+WARNING 2025-07-14 14:13:50,383 basehttp 9324 8172 "POST /api/register/ HTTP/1.1" 400 168
+INFO 2025-07-14 14:14:21,950 basehttp 9324 10920 "GET /api/roles/ HTTP/1.1" 200 10887
+INFO 2025-07-14 14:14:22,004 basehttp 9324 10920 "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+INFO 2025-07-14 14:14:22,022 basehttp 9324 14040 "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+INFO 2025-07-14 14:14:22,023 basehttp 9324 10076 "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+INFO 2025-07-14 14:14:22,023 basehttp 9324 10920 "GET /static/rest_framework/js/jquery-3.7.1.min.js HTTP/1.1" 304 0
+INFO 2025-07-14 14:14:22,035 basehttp 9324 15268 "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+INFO 2025-07-14 14:14:22,044 basehttp 9324 22812 "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-14 14:14:22,052 basehttp 9324 10076 "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+INFO 2025-07-14 14:14:22,054 basehttp 9324 14040 "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+INFO 2025-07-14 14:14:22,060 basehttp 9324 15268 "GET /static/rest_framework/js/load-ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-14 14:14:22,062 basehttp 9324 18488 "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+INFO 2025-07-14 14:14:22,065 basehttp 9324 10920 "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+INFO 2025-07-14 14:14:22,077 basehttp 9324 10920 "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+INFO 2025-07-14 14:14:22,080 basehttp 9324 18488 "GET /static/rest_framework/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 304 0
+WARNING 2025-07-14 14:14:22,163 log 9324 18488 Not Found: /favicon.ico
+WARNING 2025-07-14 14:14:22,164 basehttp 9324 18488 "GET /favicon.ico HTTP/1.1" 404 3081
+INFO 2025-07-14 14:14:33,529 basehttp 9324 18488 "POST /api/roles/ HTTP/1.1" 201 9527
+WARNING 2025-07-14 14:14:40,469 log 9324 8172 Bad Request: /api/register/
+WARNING 2025-07-14 14:14:40,471 basehttp 9324 8172 "POST /api/register/ HTTP/1.1" 400 112
+INFO 2025-07-14 14:15:08,247 serializers 9324 8172 Creating new user: SumanKumar
+ERROR 2025-07-14 14:15:12,851 email_utils 9324 8172 Email sending error: (530, b'5.7.0 Authentication Required. For more information, go to\n5.7.0  https://support.google.com/accounts/troubleshooter/2402620. d2e1a72fcca58-74eb9f1b29asm9054719b3a.87 - gsmtp', 'suman@cronbaytechnologies.com')
+INFO 2025-07-14 14:15:12,854 signals 9324 8172 Verification email sent to new user: SumanKumar
+INFO 2025-07-14 14:15:12,855 signals 9324 8172 New user registered - ID: 3, Username: SumanKumar, Email: suman@cronbaytechnologies.com, Role: User
+INFO 2025-07-14 14:15:12,856 serializers 9324 8172 User created successfully: SumanKumar
+INFO 2025-07-14 14:15:12,864 basehttp 9324 8172 "POST /api/register/ HTTP/1.1" 201 410
+INFO 2025-07-14 14:15:19,544 basehttp 9324 8172 "OPTIONS /api/token/ HTTP/1.1" 200 0
+INFO 2025-07-14 14:15:20,442 basehttp 9324 8172 "POST /api/token/ HTTP/1.1" 200 483
+INFO 2025-07-14 14:15:20,450 basehttp 9324 8172 "OPTIONS /api/users/me/ HTTP/1.1" 200 0
+INFO 2025-07-14 14:15:20,461 basehttp 9324 8172 "GET /api/users/me/ HTTP/1.1" 200 410
+WARNING 2025-07-14 14:15:21,774 log 9324 8172 Not Found: /api/craousels
+WARNING 2025-07-14 14:15:21,779 log 9324 12388 Not Found: /api/most_popular
+WARNING 2025-07-14 14:15:21,806 log 9324 22676 Not Found: /api/vendor_products
+WARNING 2025-07-14 14:15:21,828 log 9324 23156 Not Found: /api/spare_parts
+WARNING 2025-07-14 14:15:21,829 basehttp 9324 12388 "GET /api/most_popular HTTP/1.1" 404 39561
+WARNING 2025-07-14 14:15:21,829 basehttp 9324 8172 "GET /api/craousels HTTP/1.1" 404 39552
+WARNING 2025-07-14 14:15:21,836 basehttp 9324 22676 "GET /api/vendor_products HTTP/1.1" 404 39570
+WARNING 2025-07-14 14:15:21,865 log 9324 3984 Not Found: /api/export_products
+WARNING 2025-07-14 14:15:21,867 basehttp 9324 23156 "GET /api/spare_parts HTTP/1.1" 404 39558
+WARNING 2025-07-14 14:15:21,871 basehttp 9324 3984 "GET /api/export_products HTTP/1.1" 404 39570
+INFO 2025-07-14 14:15:21,938 basehttp 9324 14064 "GET /api/categories/ HTTP/1.1" 200 52
+WARNING 2025-07-14 14:22:22,234 log 9324 7344 Bad Request: /api/register/
+WARNING 2025-07-14 14:22:22,235 basehttp 9324 7344 "POST /api/register/ HTTP/1.1" 400 112
+WARNING 2025-07-14 14:22:47,522 log 9324 7344 Bad Request: /api/register/
+WARNING 2025-07-14 14:22:47,523 basehttp 9324 7344 "POST /api/register/ HTTP/1.1" 400 112
+WARNING 2025-07-14 14:28:27,487 log 9324 13156 Bad Request: /api/register/
+WARNING 2025-07-14 14:28:27,488 basehttp 9324 13156 "POST /api/register/ HTTP/1.1" 400 112
+INFO 2025-07-14 14:38:27,356 autoreload 19928 9560 Watching for file changes with StatReloader
+INFO 2025-07-14 14:38:55,574 autoreload 19928 9560 C:\Users\suman\Music\Projects\mhebazar\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-14 14:38:57,097 autoreload 17548 13828 Watching for file changes with StatReloader
