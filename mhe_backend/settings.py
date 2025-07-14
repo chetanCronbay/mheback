@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     "django_filters",
+    "order_management",
     "banners",
     "products",
     "users",

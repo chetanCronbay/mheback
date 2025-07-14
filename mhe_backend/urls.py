@@ -1,27 +1,22 @@
-"""
-URL configuration for mhe_backend project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
+# mhe_backend/urls.py
 
 from django.contrib import admin
-from rest_framework.routers import DefaultRouter
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
 from banners.views import BannerViewSet
-from products.views import ( CategoryViewSet, SubcategoryViewSet, ProductViewSet, CartViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet)
-from users.views import (RoleViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin, RegisterView, EmailTokenObtainPairView)
+from products.views import (
+    CategoryViewSet, SubcategoryViewSet, ProductViewSet,
+    CartViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet
+)
+from users.views import (
+    RoleViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin, RegisterView, EmailTokenObtainPairView
+)
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+from order_management.views import (
+    OrderViewSet, OrderItemViewSet, DeliveryViewSet, PaymentViewSet
+)
 
 router = DefaultRouter()
 router.register(r'roles', RoleViewSet, basename='role')
@@ -37,6 +32,12 @@ router.register(r'contact-forms', ContactFormViewSet, basename='contactform')
 router.register(r'banners', BannerViewSet, basename='banner') 
 router.register(r'reviews', ReviewViewSet, basename='review')  
 
+# ✅ Order Management App Routes
+router.register(r'orders', OrderViewSet, basename='order')
+router.register(r'order-items', OrderItemViewSet, basename='orderitem')
+router.register(r'deliveries', DeliveryViewSet, basename='delivery')
+router.register(r'payments', PaymentViewSet, basename='payment')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/google/login/', GoogleLogin.as_view(), name='google_login'),
@@ -45,4 +46,3 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/', include(router.urls)),
 ]
-
