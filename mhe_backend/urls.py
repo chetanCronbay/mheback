@@ -2,6 +2,8 @@
 
 from django.contrib import admin
 from django.urls import path, include
+from mhe_backend import settings
+from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 
 from banners.views import BannerViewSet
@@ -46,3 +48,6 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/', include(router.urls)),
 ]
+# ✅ Serve media files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
