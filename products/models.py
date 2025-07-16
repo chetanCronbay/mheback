@@ -133,7 +133,7 @@ class Product(models.Model):
         help_text="Product brochure/specification sheet"
     )
     type = models.CharField(
-        max_length=10, 
+        max_length=70, 
         choices=TYPE_CHOICES, 
         default='new',
         help_text="Product condition type"
