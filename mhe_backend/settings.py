@@ -21,7 +21,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # It's crucial to set this in your environment variables (e.g., Render.com)
 SECRET_KEY = os.getenv('SECRET_KEY')
 if not SECRET_KEY:
-    raise ImproperlyConfigured("SECRET_KEY environment variable not set.") # type: ignore
+    raise ImproperlyConfigured("SECRET_KEY environment variable not set.")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
@@ -36,7 +36,7 @@ if DEBUG:
 else:
     # IMPORTANT: Replace 'mheback.onrender.com' with your actual Render.com hostname
     # and 'your-production-frontend-domain.com' with your actual frontend domain.
-    ALLOWED_HOSTS = ['mheback.onrender.com', 'https://mhebazar.vercel.app']
+    ALLOWED_HOSTS = ['mheback.onrender.com', 'your-production-frontend-domain.com']
     # You might also need to add your Render internal hostname if Render requires it,
     # but typically the external one is sufficient.
 
