@@ -77,7 +77,7 @@ class User(AbstractUser, PermissionsMixin):
         ],
         help_text="User's contact phone number"
     )
-    address = models.TextField(
+    address = models.JSONField(
         blank=True, 
         null=True,
         help_text="User's physical address"
@@ -154,6 +154,30 @@ class User(AbstractUser, PermissionsMixin):
         self.failed_login_attempts = 0
         self.account_locked_until = None
         self.save()
+
+class Vendor(models.Model):
+    """
+      Vendor table
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='vendor')
+    company_name = models.CharField(max_length=20, blank=True, null=True,
+                                          validators=[
+                                              RegexValidator(
+                                                  regex=r'^\+?1?\d{9,15}$',
+                                                  message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
+                                              )
+                                          ],
+                                          help_text="User's contact phone number"
+                                      )
+    company_email = models.TextField(blank=False, null=False)
+    company_address = models.TextField(blank=False, null=False)
+    company_phone = models.TextField(blank=False, null=False)
+    brand = models.TextField(blank=True, null=True)
+    pcode = models.TextField(blank=True, null=True)
+    gst_no = models.TextField(blank=True, null=True)
+    status = models.BooleanField(default=False)
+    
+
 
 class ContactForm(models.Model):
     first_name = models.CharField(max_length=100)

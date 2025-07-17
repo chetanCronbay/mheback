@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import User, UserBanner, Role, ContactForm, Reviews, ReviewImages
+from .models import User, UserBanner, Role, ContactForm, Reviews, ReviewImages, Vendor
 from django.core.exceptions import ValidationError
 import logging
 
@@ -197,4 +197,180 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
         return {
             'access': str(refresh.access_token),
             'refresh': str(refresh),
+        }
+    
+# vendor Serializers
+
+class VendorApplicationSerializer(serializers.ModelSerializer):
+    """
+    Serializer for vendor application form.
+    Used when regular users apply to become vendors.
+    """
+    
+    class Meta:
+        model = Vendor
+        fields = [
+            'company_name', 'company_email', 'company_address', 
+            'company_phone', 'brand', 'pcode', 'gst_no'
+        ]
+        
+    def validate_company_email(self, value: str) -> str:
+        """Validate company email format and uniqueness."""
+        if Vendor.objects.filter(company_email=value).exists():
+            raise serializers.ValidationError("A vendor with this company email already exists.")
+        return value
+        
+    def validate_gst_no(self, value: str) -> str:
+        """Validate GST number format if provided."""
+        if value:
+            # Basic GST validation - adjust regex as per your requirements
+            import re
+            gst_pattern = r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$'
+            if not re.match(gst_pattern, value):
+                raise serializers.ValidationError("Invalid GST number format.")
+        return value
+        
+    def create(self, validated_data: Dict[str, Any]) -> Vendor:
+        """Create vendor application with current user."""
+        user = self.context['request'].user
+        
+        # Check if user already has a vendor application
+        if Vendor.objects.filter(user=user).exists():
+            raise serializers.ValidationError("You already have a vendor application.")
+            
+        # Create vendor application
+        vendor = Vendor.objects.create(user=user, **validated_data)
+        
+        logger.info(f"Vendor application created for user {user.username}")
+        return vendor
+
+
+class VendorDetailSerializer(serializers.ModelSerializer):
+    """
+    Detailed serializer for vendor information.
+    Includes user information and is used for retrieving vendor details.
+    """
+    user_info = serializers.SerializerMethodField()
+    application_date = serializers.DateTimeField(source='user.date_joined', read_only=True)
+    is_approved = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Vendor
+        fields = [
+            'id', 'user_info', 'company_name', 'company_email', 
+            'company_address', 'company_phone', 'brand', 'pcode', 
+            'gst_no', 'application_date', 'is_approved'
+        ]
+        read_only_fields = ['id', 'user_info', 'application_date', 'is_approved']
+        
+    def get_user_info(self, obj: Vendor) -> Dict[str, Any]:
+        """Get basic user information."""
+        user = obj.user
+        return {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'phone': user.phone,
+            'role': user.role.name if user.role else None,
+            'date_joined': user.date_joined,
+            'is_active': user.is_active,
+        }
+        
+    def get_is_approved(self, obj: Vendor) -> bool:
+        """Check if vendor is approved (has vendor role)."""
+        return obj.user.role.id == Role.VENDOR
+
+
+class VendorListSerializer(serializers.ModelSerializer):
+    """
+    Simplified serializer for vendor list view.
+    Used for displaying vendor applications in admin panel.
+    """
+    username = serializers.CharField(source='user.username', read_only=True)
+    email = serializers.EmailField(source='user.email', read_only=True)
+    full_name = serializers.CharField(source='user.get_full_name', read_only=True)
+    is_approved = serializers.SerializerMethodField()
+    application_date = serializers.DateTimeField(source='user.date_joined', read_only=True)
+    
+    class Meta:
+        model = Vendor
+        fields = [
+            'id', 'username', 'email', 'full_name', 'company_name',
+            'company_email', 'brand', 'is_approved', 'application_date'
+        ]
+        
+    def get_is_approved(self, obj: Vendor) -> bool:
+        """Check if vendor is approved."""
+        return obj.user.role.id == Role.VENDOR
+
+
+class VendorApprovalSerializer(serializers.Serializer):
+    """
+    Serializer for vendor approval/rejection by admin.
+    """
+    action = serializers.ChoiceField(choices=['approve', 'reject'])
+    reason = serializers.CharField(required=False, allow_blank=True, max_length=500)
+    
+    def validate(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate approval data."""
+        if data['action'] == 'reject' and not data.get('reason'):
+            raise serializers.ValidationError("Reason is required when rejecting an application.")
+        return data
+
+
+class VendorUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for updating vendor information.
+    Used by vendors to update their profile or by admins.
+    """
+    
+    class Meta:
+        model = Vendor
+        fields = [
+            'company_name', 'company_email', 'company_address', 
+            'company_phone', 'brand', 'pcode', 'gst_no'
+        ]
+        
+    def validate_company_email(self, value: str) -> str:
+        """Validate company email uniqueness excluding current instance."""
+        if self.instance:
+            existing = Vendor.objects.filter(company_email=value).exclude(id=self.instance.id)
+            if existing.exists():
+                raise serializers.ValidationError("A vendor with this company email already exists.")
+        return value
+        
+    def update(self, instance: Vendor, validated_data: Dict[str, Any]) -> Vendor:
+        """Update vendor information."""
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        
+        logger.info(f"Vendor information updated for {instance.user.username}")
+        return instance
+
+
+class VendorProfileSerializer(serializers.ModelSerializer):
+    """
+    Public serializer for vendor profile display.
+    Used for showing vendor information to customers.
+    """
+    user_info = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Vendor
+        fields = [
+            'company_name', 'company_email', 'company_address', 
+            'brand', 'user_info'
+        ]
+        
+    def get_user_info(self, obj: Vendor) -> Dict[str, Any]:
+        """Get public user information."""
+        user = obj.user
+        return {
+            'username': user.username,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'date_joined': user.date_joined,
         }
