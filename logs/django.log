@@ -7646,3 +7646,2355 @@ INFO 2025-07-18 12:50:03,216 autoreload 10744 716 Watching for file changes with
 INFO 2025-07-18 12:50:09,659 autoreload 10744 716 C:\Users\suman\Music\Projects\mhebazar\mheback\products\models.py changed, reloading.
 INFO 2025-07-18 12:50:10,957 autoreload 17508 23248 Watching for file changes with StatReloader
 INFO 2025-07-18 12:56:06,642 autoreload 10244 7800 Watching for file changes with StatReloader
+INFO 2025-07-18 14:17:24,043 autoreload 23176 8460 Watching for file changes with StatReloader
+INFO 2025-07-18 14:17:29,326 basehttp 23176 192 "POST /api/token/ HTTP/1.1" 200 486
+INFO 2025-07-18 14:17:29,797 basehttp 23176 18656 "GET /api/users/me/ HTTP/1.1" 200 433
+INFO 2025-07-18 14:17:29,899 basehttp 23176 3608 "GET /api/users/me/ HTTP/1.1" 200 433
+INFO 2025-07-18 14:17:30,915 basehttp 23176 192 "GET /api/users/me/ HTTP/1.1" 200 433
+INFO 2025-07-18 14:17:30,932 basehttp 23176 192 "GET /api/users/me/ HTTP/1.1" 200 433
+INFO 2025-07-18 14:17:31,051 basehttp 23176 25784 "GET /api/vendors/ HTTP/1.1" 200 316
+INFO 2025-07-18 14:17:31,063 basehttp 23176 25784 "GET /api/vendors/ HTTP/1.1" 200 316
+INFO 2025-07-18 14:17:35,213 basehttp 23176 9208 "GET /api/users/me/ HTTP/1.1" 200 433
+INFO 2025-07-18 14:17:37,871 basehttp 23176 25784 "GET /api/users/me/ HTTP/1.1" 200 433
+WARNING 2025-07-18 14:17:38,237 log 23176 18656 Not Found: /api/craousels
+WARNING 2025-07-18 14:17:38,240 basehttp 23176 18656 "GET /api/craousels HTTP/1.1" 404 42900
+WARNING 2025-07-18 14:17:38,264 log 23176 18656 Not Found: /api/spare_parts
+WARNING 2025-07-18 14:17:38,267 basehttp 23176 18656 "GET /api/spare_parts HTTP/1.1" 404 42906
+WARNING 2025-07-18 14:17:38,310 log 23176 18656 Not Found: /api/vendor_products
+WARNING 2025-07-18 14:17:38,311 basehttp 23176 18656 "GET /api/vendor_products HTTP/1.1" 404 42918
+INFO 2025-07-18 14:17:38,434 basehttp 23176 18656 "GET /api/categories/ HTTP/1.1" 200 36643
+INFO 2025-07-18 14:17:38,525 basehttp 23176 18656 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:17:38,648 log 23176 14480 Internal Server Error: /api/products/most_popular/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 181, in most_popular
+    .annotate(
+     ~~~~~~~~^
+        quote_count=Count('quotes', distinct=True),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 176, in resolve_expression
+    result = super().resolve_expression(*args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2049, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1900, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1805, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'quotes' into field. Choices are: brochure, cart, category, category_id, created_at, description, direct_sale, id, images, is_active, manufacturer, meta_description, meta_title, model, name, online_payment, orderitem, price, product_details, quote, rental, reviews, stock_quantity, subcategory, subcategory_id, type, updated_at, user, user_id, wishlist
+INFO 2025-07-18 14:17:38,731 basehttp 23176 25784 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:17:38,754 basehttp 23176 14480 "GET /api/products/most_popular/ HTTP/1.1" 500 167410
+ERROR 2025-07-18 14:17:38,949 log 23176 18656 Internal Server Error: /api/products/most_popular/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 181, in most_popular
+    .annotate(
+     ~~~~~~~~^
+        quote_count=Count('quotes', distinct=True),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 176, in resolve_expression
+    result = super().resolve_expression(*args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2049, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1900, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1805, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'quotes' into field. Choices are: brochure, cart, category, category_id, created_at, description, direct_sale, id, images, is_active, manufacturer, meta_description, meta_title, model, name, online_payment, orderitem, price, product_details, quote, rental, reviews, stock_quantity, subcategory, subcategory_id, type, updated_at, user, user_id, wishlist
+ERROR 2025-07-18 14:17:38,964 log 23176 25784 Internal Server Error: /api/products/top_rated/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 168, in top_rated
+    .annotate(avg_rating=Avg('reviews__star_count'))
+     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2065, in resolve_ref
+    transform = join_info.transform_function(targets[0], final_alias)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1923, in transform
+    return self.try_transform(wrapped, name)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1458, in try_transform
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Unsupported lookup 'star_count' for BigAutoField or join on the field not permitted.
+ERROR 2025-07-18 14:17:38,979 basehttp 23176 18656 "GET /api/products/most_popular/ HTTP/1.1" 500 167410
+ERROR 2025-07-18 14:17:39,053 log 23176 192 Internal Server Error: /api/products/new_arrival/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 159, in new_arrival
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 797, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 716, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 384, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+ERROR 2025-07-18 14:17:39,062 basehttp 23176 25784 "GET /api/products/top_rated/ HTTP/1.1" 500 161650
+ERROR 2025-07-18 14:17:39,084 basehttp 23176 192 "GET /api/products/new_arrival/ HTTP/1.1" 500 185506
+INFO 2025-07-18 14:20:14,355 basehttp 23176 12176 "POST /api/token/ HTTP/1.1" 200 486
+INFO 2025-07-18 14:20:14,822 basehttp 23176 10556 "GET /api/users/me/ HTTP/1.1" 200 404
+INFO 2025-07-18 14:20:14,952 basehttp 23176 17896 "GET /api/users/me/ HTTP/1.1" 200 404
+INFO 2025-07-18 14:20:54,386 basehttp 23176 8952 "GET /api/users/me/ HTTP/1.1" 200 404
+INFO 2025-07-18 14:21:57,232 basehttp 23176 10556 "OPTIONS /api/products/ HTTP/1.1" 200 0
+INFO 2025-07-18 14:21:57,362 basehttp 23176 12176 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:21:57,569 log 23176 12176 Internal Server Error: /api/products/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\generics.py", line 175, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\pagination.py", line 222, in paginate_queryset
+    return list(self.page)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\paginator.py", line 191, in __len__
+    return len(self.object_list)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+ERROR 2025-07-18 14:21:57,577 basehttp 23176 12176 "GET /api/products/ HTTP/1.1" 500 184920
+INFO 2025-07-18 14:21:59,396 basehttp 23176 12176 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:21:59,526 log 23176 21920 Internal Server Error: /api/products/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\generics.py", line 175, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\pagination.py", line 222, in paginate_queryset
+    return list(self.page)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\paginator.py", line 191, in __len__
+    return len(self.object_list)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+ERROR 2025-07-18 14:21:59,534 basehttp 23176 21920 "GET /api/products/ HTTP/1.1" 500 184920
+INFO 2025-07-18 14:22:01,534 basehttp 23176 6152 "GET /api/users/me/ HTTP/1.1" 200 404
+WARNING 2025-07-18 14:22:02,140 log 23176 10556 Not Found: /api/craousels
+WARNING 2025-07-18 14:22:02,141 basehttp 23176 10556 "GET /api/craousels HTTP/1.1" 404 42900
+ERROR 2025-07-18 14:22:02,248 log 23176 10556 Internal Server Error: /api/products/most_popular/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 181, in most_popular
+    .annotate(
+     ~~~~~~~~^
+        quote_count=Count('quotes', distinct=True),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 176, in resolve_expression
+    result = super().resolve_expression(*args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2049, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1900, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1805, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'quotes' into field. Choices are: brochure, cart, category, category_id, created_at, description, direct_sale, id, images, is_active, manufacturer, meta_description, meta_title, model, name, online_payment, orderitem, price, product_details, quote, rental, reviews, stock_quantity, subcategory, subcategory_id, type, updated_at, user, user_id, wishlist
+ERROR 2025-07-18 14:22:02,274 basehttp 23176 10556 "GET /api/products/most_popular/ HTTP/1.1" 500 167410
+WARNING 2025-07-18 14:22:02,298 log 23176 10556 Not Found: /api/spare_parts
+WARNING 2025-07-18 14:22:02,300 basehttp 23176 10556 "GET /api/spare_parts HTTP/1.1" 404 42906
+WARNING 2025-07-18 14:22:02,327 log 23176 10556 Not Found: /api/vendor_products
+WARNING 2025-07-18 14:22:02,330 basehttp 23176 10556 "GET /api/vendor_products HTTP/1.1" 404 42918
+ERROR 2025-07-18 14:22:02,463 log 23176 12176 Internal Server Error: /api/products/top_rated/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 168, in top_rated
+    .annotate(avg_rating=Avg('reviews__star_count'))
+     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2065, in resolve_ref
+    transform = join_info.transform_function(targets[0], final_alias)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1923, in transform
+    return self.try_transform(wrapped, name)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1458, in try_transform
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Unsupported lookup 'star_count' for BigAutoField or join on the field not permitted.
+WARNING 2025-07-18 14:22:02,537 log 23176 16928 Not Found: /api/craousels
+ERROR 2025-07-18 14:22:02,580 basehttp 23176 12176 "GET /api/products/top_rated/ HTTP/1.1" 500 161645
+WARNING 2025-07-18 14:22:02,611 log 23176 19336 Not Found: /api/spare_parts
+WARNING 2025-07-18 14:22:02,692 basehttp 23176 16928 "GET /api/craousels HTTP/1.1" 404 42900
+ERROR 2025-07-18 14:22:02,695 log 23176 21920 Internal Server Error: /api/products/new_arrival/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 159, in new_arrival
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 797, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 716, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 384, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+WARNING 2025-07-18 14:22:02,727 log 23176 9592 Not Found: /api/vendor_products
+WARNING 2025-07-18 14:22:02,727 basehttp 23176 19336 "GET /api/spare_parts HTTP/1.1" 404 42906
+INFO 2025-07-18 14:22:02,767 basehttp 23176 10556 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:22:02,773 basehttp 23176 21920 "GET /api/products/new_arrival/ HTTP/1.1" 500 185501
+WARNING 2025-07-18 14:22:02,777 basehttp 23176 9592 "GET /api/vendor_products HTTP/1.1" 404 42918
+INFO 2025-07-18 14:22:02,895 basehttp 23176 10556 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:22:03,005 log 23176 12176 Internal Server Error: /api/products/top_rated/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 168, in top_rated
+    .annotate(avg_rating=Avg('reviews__star_count'))
+     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2065, in resolve_ref
+    transform = join_info.transform_function(targets[0], final_alias)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1923, in transform
+    return self.try_transform(wrapped, name)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1458, in try_transform
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Unsupported lookup 'star_count' for BigAutoField or join on the field not permitted.
+ERROR 2025-07-18 14:22:03,088 log 23176 15380 Internal Server Error: /api/products/most_popular/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 181, in most_popular
+    .annotate(
+     ~~~~~~~~^
+        quote_count=Count('quotes', distinct=True),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 176, in resolve_expression
+    result = super().resolve_expression(*args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2049, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1900, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1805, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'quotes' into field. Choices are: brochure, cart, category, category_id, created_at, description, direct_sale, id, images, is_active, manufacturer, meta_description, meta_title, model, name, online_payment, orderitem, price, product_details, quote, rental, reviews, stock_quantity, subcategory, subcategory_id, type, updated_at, user, user_id, wishlist
+ERROR 2025-07-18 14:22:03,123 basehttp 23176 12176 "GET /api/products/top_rated/ HTTP/1.1" 500 161645
+ERROR 2025-07-18 14:22:03,162 basehttp 23176 15380 "GET /api/products/most_popular/ HTTP/1.1" 500 167410
+INFO 2025-07-18 14:22:03,190 basehttp 23176 10556 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:22:03,296 log 23176 21920 Internal Server Error: /api/products/new_arrival/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 159, in new_arrival
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 797, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 716, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 384, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+ERROR 2025-07-18 14:22:03,367 basehttp 23176 21920 "GET /api/products/new_arrival/ HTTP/1.1" 500 185501
+INFO 2025-07-18 14:22:03,410 basehttp 23176 10556 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:22:03,575 log 23176 12176 Internal Server Error: /api/products/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\generics.py", line 175, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\pagination.py", line 222, in paginate_queryset
+    return list(self.page)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\paginator.py", line 191, in __len__
+    return len(self.object_list)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+ERROR 2025-07-18 14:22:03,681 log 23176 9592 Internal Server Error: /api/products/most_popular/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 181, in most_popular
+    .annotate(
+     ~~~~~~~~^
+        quote_count=Count('quotes', distinct=True),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 176, in resolve_expression
+    result = super().resolve_expression(*args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2049, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1900, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1805, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'quotes' into field. Choices are: brochure, cart, category, category_id, created_at, description, direct_sale, id, images, is_active, manufacturer, meta_description, meta_title, model, name, online_payment, orderitem, price, product_details, quote, rental, reviews, stock_quantity, subcategory, subcategory_id, type, updated_at, user, user_id, wishlist
+INFO 2025-07-18 14:22:03,682 basehttp 23176 21920 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:22:03,713 basehttp 23176 12176 "GET /api/products/ HTTP/1.1" 500 184920
+ERROR 2025-07-18 14:22:03,725 basehttp 23176 9592 "GET /api/products/most_popular/ HTTP/1.1" 500 167410
+ERROR 2025-07-18 14:22:03,900 log 23176 10556 Internal Server Error: /api/products/most_popular/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 181, in most_popular
+    .annotate(
+     ~~~~~~~~^
+        quote_count=Count('quotes', distinct=True),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 176, in resolve_expression
+    result = super().resolve_expression(*args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2049, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1900, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1805, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'quotes' into field. Choices are: brochure, cart, category, category_id, created_at, description, direct_sale, id, images, is_active, manufacturer, meta_description, meta_title, model, name, online_payment, orderitem, price, product_details, quote, rental, reviews, stock_quantity, subcategory, subcategory_id, type, updated_at, user, user_id, wishlist
+ERROR 2025-07-18 14:22:03,933 basehttp 23176 10556 "GET /api/products/most_popular/ HTTP/1.1" 500 167410
+INFO 2025-07-18 14:22:04,044 basehttp 23176 8580 "GET /api/categories/ HTTP/1.1" 200 36643
+INFO 2025-07-18 14:22:04,189 basehttp 23176 8580 "GET /api/categories/ HTTP/1.1" 200 36643
+INFO 2025-07-18 14:22:06,718 basehttp 23176 26072 "GET /api/users/me/ HTTP/1.1" 200 404
+INFO 2025-07-18 14:22:08,366 basehttp 23176 10556 "OPTIONS /api/users/me/ HTTP/1.1" 200 0
+INFO 2025-07-18 14:22:08,396 basehttp 23176 8580 "GET /api/users/me/ HTTP/1.1" 200 404
+WARNING 2025-07-18 14:22:08,538 log 23176 10556 Not Found: /api/craousels
+WARNING 2025-07-18 14:22:08,617 log 23176 19336 Not Found: /api/vendor_products
+WARNING 2025-07-18 14:22:08,618 log 23176 15380 Not Found: /api/spare_parts
+WARNING 2025-07-18 14:22:08,619 basehttp 23176 10556 "GET /api/craousels HTTP/1.1" 404 42900
+WARNING 2025-07-18 14:22:08,623 basehttp 23176 19336 "GET /api/vendor_products HTTP/1.1" 404 42918
+WARNING 2025-07-18 14:22:08,625 basehttp 23176 15380 "GET /api/spare_parts HTTP/1.1" 404 42906
+INFO 2025-07-18 14:22:08,661 basehttp 23176 19336 "OPTIONS /api/categories/ HTTP/1.1" 200 0
+INFO 2025-07-18 14:22:08,695 basehttp 23176 19336 "OPTIONS /api/products/top_rated/ HTTP/1.1" 200 0
+INFO 2025-07-18 14:22:08,701 basehttp 23176 15380 "OPTIONS /api/products/new_arrival/ HTTP/1.1" 200 0
+INFO 2025-07-18 14:22:08,881 basehttp 23176 9416 "GET /api/categories/ HTTP/1.1" 200 36643
+INFO 2025-07-18 14:22:08,884 basehttp 23176 10556 "GET /api/categories/ HTTP/1.1" 200 36643
+INFO 2025-07-18 14:22:08,898 basehttp 23176 8580 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:22:08,977 log 23176 9592 Internal Server Error: /api/products/most_popular/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 181, in most_popular
+    .annotate(
+     ~~~~~~~~^
+        quote_count=Count('quotes', distinct=True),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 176, in resolve_expression
+    result = super().resolve_expression(*args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2049, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1900, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1805, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'quotes' into field. Choices are: brochure, cart, category, category_id, created_at, description, direct_sale, id, images, is_active, manufacturer, meta_description, meta_title, model, name, online_payment, orderitem, price, product_details, quote, rental, reviews, stock_quantity, subcategory, subcategory_id, type, updated_at, user, user_id, wishlist
+ERROR 2025-07-18 14:22:08,996 basehttp 23176 9592 "GET /api/products/most_popular/ HTTP/1.1" 500 167675
+ERROR 2025-07-18 14:22:09,062 log 23176 16928 Internal Server Error: /api/products/most_popular/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 181, in most_popular
+    .annotate(
+     ~~~~~~~~^
+        quote_count=Count('quotes', distinct=True),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 176, in resolve_expression
+    result = super().resolve_expression(*args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2049, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1900, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1805, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'quotes' into field. Choices are: brochure, cart, category, category_id, created_at, description, direct_sale, id, images, is_active, manufacturer, meta_description, meta_title, model, name, online_payment, orderitem, price, product_details, quote, rental, reviews, stock_quantity, subcategory, subcategory_id, type, updated_at, user, user_id, wishlist
+ERROR 2025-07-18 14:22:09,097 log 23176 12176 Internal Server Error: /api/products/top_rated/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 168, in top_rated
+    .annotate(avg_rating=Avg('reviews__star_count'))
+     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2065, in resolve_ref
+    transform = join_info.transform_function(targets[0], final_alias)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1923, in transform
+    return self.try_transform(wrapped, name)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1458, in try_transform
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Unsupported lookup 'star_count' for BigAutoField or join on the field not permitted.
+ERROR 2025-07-18 14:22:09,116 basehttp 23176 16928 "GET /api/products/most_popular/ HTTP/1.1" 500 167675
+ERROR 2025-07-18 14:22:09,124 basehttp 23176 12176 "GET /api/products/top_rated/ HTTP/1.1" 500 161910
+ERROR 2025-07-18 14:22:09,216 log 23176 21920 Internal Server Error: /api/products/new_arrival/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 159, in new_arrival
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 797, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\serializers.py", line 716, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 384, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+ERROR 2025-07-18 14:22:09,248 basehttp 23176 21920 "GET /api/products/new_arrival/ HTTP/1.1" 500 185766
+INFO 2025-07-18 14:22:09,317 basehttp 23176 8580 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:22:09,397 log 23176 9800 Internal Server Error: /api/products/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\generics.py", line 175, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\pagination.py", line 222, in paginate_queryset
+    return list(self.page)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\paginator.py", line 191, in __len__
+    return len(self.object_list)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+ERROR 2025-07-18 14:22:09,410 basehttp 23176 9800 "GET /api/products/ HTTP/1.1" 500 184920
+INFO 2025-07-18 14:22:12,188 basehttp 23176 9800 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:22:12,359 log 23176 8580 Internal Server Error: /api/products/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\generics.py", line 175, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\pagination.py", line 222, in paginate_queryset
+    return list(self.page)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\paginator.py", line 191, in __len__
+    return len(self.object_list)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+ERROR 2025-07-18 14:22:12,366 basehttp 23176 8580 "GET /api/products/ HTTP/1.1" 500 184920
+ERROR 2025-07-18 14:22:33,397 log 23176 9800 Internal Server Error: /api/products/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\generics.py", line 175, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\pagination.py", line 222, in paginate_queryset
+    return list(self.page)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\paginator.py", line 191, in __len__
+    return len(self.object_list)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+ERROR 2025-07-18 14:22:33,404 basehttp 23176 9800 "GET /api/products/ HTTP/1.1" 500 184920
+INFO 2025-07-18 14:22:33,413 basehttp 23176 8580 "GET /api/categories/ HTTP/1.1" 200 36643
+INFO 2025-07-18 14:22:41,912 basehttp 23176 8580 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:22:42,020 log 23176 9800 Internal Server Error: /api/products/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\generics.py", line 175, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\pagination.py", line 222, in paginate_queryset
+    return list(self.page)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\paginator.py", line 191, in __len__
+    return len(self.object_list)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+ERROR 2025-07-18 14:22:42,027 basehttp 23176 9800 "GET /api/products/ HTTP/1.1" 500 184920
+INFO 2025-07-18 14:23:42,579 basehttp 23176 9800 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:23:42,668 log 23176 8580 Internal Server Error: /api/products/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\generics.py", line 175, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\pagination.py", line 222, in paginate_queryset
+    return list(self.page)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\paginator.py", line 191, in __len__
+    return len(self.object_list)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+ERROR 2025-07-18 14:23:42,676 basehttp 23176 8580 "GET /api/products/ HTTP/1.1" 500 184920
+INFO 2025-07-18 14:23:44,788 basehttp 23176 8580 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:23:44,925 log 23176 9800 Internal Server Error: /api/products/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\generics.py", line 175, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\pagination.py", line 222, in paginate_queryset
+    return list(self.page)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\paginator.py", line 191, in __len__
+    return len(self.object_list)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+ERROR 2025-07-18 14:23:44,954 basehttp 23176 9800 "GET /api/products/ HTTP/1.1" 500 184920
+INFO 2025-07-18 14:23:56,005 basehttp 23176 9800 "GET /api/categories/ HTTP/1.1" 200 36643
+ERROR 2025-07-18 14:23:56,093 log 23176 8580 Internal Server Error: /api/products/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\generics.py", line 175, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\pagination.py", line 222, in paginate_queryset
+    return list(self.page)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\paginator.py", line 191, in __len__
+    return len(self.object_list)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column products_product.direct_sale does not exist
+LINE 1: ..._product"."type", "products_product"."is_active", "products_...
+                                                             ^
+
+ERROR 2025-07-18 14:23:56,108 basehttp 23176 8580 "GET /api/products/ HTTP/1.1" 500 184920
+INFO 2025-07-18 14:35:57,119 autoreload 23176 8460 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-18 14:35:59,351 autoreload 1740 26112 Watching for file changes with StatReloader
+INFO 2025-07-18 14:46:37,033 autoreload 12844 10532 Watching for file changes with StatReloader
+INFO 2025-07-18 14:46:40,974 basehttp 12844 2728 "GET /api/vendor/approved/?ordering=-company_name HTTP/1.1" 200 7746
+INFO 2025-07-18 14:46:41,025 basehttp 12844 2728 "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+INFO 2025-07-18 14:46:41,027 basehttp 12844 2728 "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+INFO 2025-07-18 14:46:41,029 basehttp 12844 2728 "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+INFO 2025-07-18 14:46:41,033 basehttp 12844 2728 "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+INFO 2025-07-18 14:46:41,037 basehttp 12844 2728 "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-18 14:46:41,040 basehttp 12844 2728 "GET /static/rest_framework/js/jquery-3.7.1.min.js HTTP/1.1" 304 0
+INFO 2025-07-18 14:46:41,042 basehttp 12844 2728 "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+INFO 2025-07-18 14:46:41,044 basehttp 12844 2728 "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+INFO 2025-07-18 14:46:41,047 basehttp 12844 2728 "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+INFO 2025-07-18 14:46:41,050 basehttp 12844 2728 "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+INFO 2025-07-18 14:46:41,052 basehttp 12844 2728 "GET /static/rest_framework/js/load-ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-18 14:46:41,058 basehttp 12844 2728 "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+INFO 2025-07-18 14:46:41,088 basehttp 12844 2728 "GET /static/rest_framework/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 304 0
+WARNING 2025-07-18 14:46:41,302 log 12844 2728 Not Found: /favicon.ico
+WARNING 2025-07-18 14:46:41,302 basehttp 12844 2728 "GET /favicon.ico HTTP/1.1" 404 3999
+WARNING 2025-07-18 14:46:47,343 log 12844 2728 Not Found: /role
+WARNING 2025-07-18 14:46:47,344 basehttp 12844 2728 "GET /role HTTP/1.1" 404 3978
+WARNING 2025-07-18 14:46:57,990 log 12844 2728 Not Found: /api/role
+WARNING 2025-07-18 14:46:57,993 basehttp 12844 2728 "GET /api/role HTTP/1.1" 404 42885
+INFO 2025-07-18 14:47:04,291 basehttp 12844 2728 "GET /api/roles HTTP/1.1" 301 0
+WARNING 2025-07-18 14:47:04,330 log 12844 15132 Unauthorized: /api/roles/
+WARNING 2025-07-18 14:47:04,335 basehttp 12844 15132 "GET /api/roles/ HTTP/1.1" 401 5148
+INFO 2025-07-18 14:47:10,445 basehttp 12844 15132 "GET /admin HTTP/1.1" 301 0
+INFO 2025-07-18 14:47:10,592 basehttp 12844 4744 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-07-18 14:47:11,270 basehttp 12844 4744 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4173
+INFO 2025-07-18 14:47:11,757 basehttp 12844 18976 "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+INFO 2025-07-18 14:47:11,760 basehttp 12844 4744 "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+INFO 2025-07-18 14:47:11,781 basehttp 12844 5768 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+INFO 2025-07-18 14:47:11,830 basehttp 12844 11556 "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+INFO 2025-07-18 14:47:11,924 basehttp 12844 11556 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+INFO 2025-07-18 14:47:12,044 basehttp 12844 23252 "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+INFO 2025-07-18 14:47:12,048 basehttp 12844 10552 "GET /static/admin/css/login.css HTTP/1.1" 200 951
+INFO 2025-07-18 14:47:31,815 basehttp 12844 10552 "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4351
+INFO 2025-07-18 14:47:40,352 basehttp 12844 10552 "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4354
+INFO 2025-07-18 14:47:56,668 basehttp 12844 10552 "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4351
+INFO 2025-07-18 14:48:07,653 basehttp 12844 10552 "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4339
+INFO 2025-07-18 14:48:18,934 basehttp 12844 10552 "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4354
+ERROR 2025-07-18 14:51:36,598 email_utils 10028 5052 Email sending error: (530, b'5.7.0 Authentication Required. For more information, go to\n5.7.0  https://support.google.com/accounts/troubleshooter/2402620. 41be03b00d2f7-b3f2ff61fcbsm859383a12.36 - gsmtp', 'suman@cronbaytechnologies.com')
+INFO 2025-07-18 14:51:36,602 signals 10028 5052 Verification email sent to new user: admin
+INFO 2025-07-18 14:51:36,603 signals 10028 5052 New user registered - ID: 1, Username: admin, Email: admin@mhe.com, Role: Admin
+INFO 2025-07-18 14:52:12,103 basehttp 12844 10552 "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4354
+INFO 2025-07-18 14:52:22,078 basehttp 12844 10552 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-07-18 14:52:22,317 basehttp 12844 10552 "GET /admin/ HTTP/1.1" 200 22720
+INFO 2025-07-18 14:52:22,359 basehttp 12844 10552 "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2025-07-18 14:52:22,384 basehttp 12844 10552 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-07-18 14:52:22,413 basehttp 12844 10552 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-07-18 14:52:31,067 basehttp 12844 10552 "GET /api/roles/ HTTP/1.1" 200 10904
+INFO 2025-07-18 14:52:48,998 basehttp 12844 10552 "POST /api/roles/ HTTP/1.1" 201 9563
+INFO 2025-07-18 14:53:15,947 basehttp 12844 10552 "POST /api/roles/ HTTP/1.1" 201 9557
+WARNING 2025-07-18 14:57:35,690 log 12844 8944 Unauthorized: /api/users/me/
+WARNING 2025-07-18 14:57:35,693 basehttp 12844 8944 "GET /api/users/me/ HTTP/1.1" 401 51
+WARNING 2025-07-18 14:57:36,484 log 12844 2492 Bad Request: /api/token/refresh/
+WARNING 2025-07-18 14:57:36,486 basehttp 12844 2492 "POST /api/token/refresh/ HTTP/1.1" 400 39
+INFO 2025-07-18 14:57:36,487 basehttp 12844 2492 code 400, message Bad request syntax ('f5')
+WARNING 2025-07-18 14:57:36,488 basehttp 12844 2492 "f5" 400 -
+INFO 2025-07-18 14:57:38,218 basehttp 12844 10552 "GET /api/users/me/ HTTP/1.1" 200 424
+INFO 2025-07-18 14:58:17,558 basehttp 12844 10552 "POST /api/token/ HTTP/1.1" 200 483
+INFO 2025-07-18 14:58:17,931 basehttp 12844 26188 "GET /api/users/me/ HTTP/1.1" 200 424
+INFO 2025-07-18 14:58:18,070 basehttp 12844 22888 "GET /api/users/me/ HTTP/1.1" 200 424
+INFO 2025-07-18 14:58:19,462 basehttp 12844 10552 "GET /api/users/me/ HTTP/1.1" 200 424
+INFO 2025-07-18 14:58:19,476 basehttp 12844 10552 "GET /api/vendors/ HTTP/1.1" 200 52
+INFO 2025-07-18 14:58:19,499 basehttp 12844 10552 "GET /api/users/me/ HTTP/1.1" 200 424
+INFO 2025-07-18 14:58:19,513 basehttp 12844 10552 "GET /api/vendors/ HTTP/1.1" 200 52
+INFO 2025-07-18 14:58:23,864 basehttp 12844 13568 "GET /api/users/me/ HTTP/1.1" 200 424
+INFO 2025-07-18 14:58:25,903 basehttp 12844 10552 "GET /api/users/me/ HTTP/1.1" 200 424
+INFO 2025-07-18 14:58:26,162 basehttp 12844 10552 "GET /api/users/me/ HTTP/1.1" 200 424
+INFO 2025-07-18 14:58:26,178 basehttp 12844 15744 "GET /api/vendors/ HTTP/1.1" 200 52
+INFO 2025-07-18 14:58:27,366 basehttp 12844 13568 "GET /api/users/me/ HTTP/1.1" 200 424
+INFO 2025-07-18 14:58:29,145 basehttp 12844 15744 "GET /api/users/me/ HTTP/1.1" 200 424
+WARNING 2025-07-18 14:58:29,291 log 12844 24412 Not Found: /api/vendor_products
+WARNING 2025-07-18 14:58:29,292 basehttp 12844 24412 "GET /api/vendor_products HTTP/1.1" 404 42918
+WARNING 2025-07-18 14:58:29,328 log 12844 24412 Not Found: /api/craousels
+WARNING 2025-07-18 14:58:29,331 basehttp 12844 24412 "GET /api/craousels HTTP/1.1" 404 42900
+WARNING 2025-07-18 14:58:29,381 log 12844 24412 Not Found: /api/spare_parts
+INFO 2025-07-18 14:58:29,393 basehttp 12844 15744 "GET /api/products/new_arrival/ HTTP/1.1" 200 2
+WARNING 2025-07-18 14:58:29,395 basehttp 12844 24412 "GET /api/spare_parts HTTP/1.1" 404 42906
+INFO 2025-07-18 14:58:29,432 basehttp 12844 24412 "GET /api/categories/ HTTP/1.1" 200 52
+ERROR 2025-07-18 14:58:29,508 log 12844 26188 Internal Server Error: /api/products/most_popular/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 181, in most_popular
+    .annotate(
+     ~~~~~~~~^
+        quote_count=Count('quotes', distinct=True),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 176, in resolve_expression
+    result = super().resolve_expression(*args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2049, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1900, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1805, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'quotes' into field. Choices are: brochure, cart, category, category_id, created_at, description, direct_sale, id, images, is_active, manufacturer, meta_description, meta_title, model, name, online_payment, orderitem, price, product_details, quote, rental, reviews, stock_quantity, subcategory, subcategory_id, type, updated_at, user, user_id, wishlist
+INFO 2025-07-18 14:58:29,511 basehttp 12844 24412 "GET /api/categories/ HTTP/1.1" 200 52
+INFO 2025-07-18 14:58:29,525 basehttp 12844 15744 "GET /api/categories/ HTTP/1.1" 200 52
+ERROR 2025-07-18 14:58:29,599 log 12844 10552 Internal Server Error: /api/products/top_rated/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 168, in top_rated
+    .annotate(avg_rating=Avg('reviews__star_count'))
+     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2065, in resolve_ref
+    transform = join_info.transform_function(targets[0], final_alias)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1923, in transform
+    return self.try_transform(wrapped, name)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1458, in try_transform
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Unsupported lookup 'star_count' for BigAutoField or join on the field not permitted.
+ERROR 2025-07-18 14:58:29,634 basehttp 12844 26188 "GET /api/products/most_popular/ HTTP/1.1" 500 166728
+ERROR 2025-07-18 14:58:29,659 basehttp 12844 10552 "GET /api/products/top_rated/ HTTP/1.1" 500 160953
+ERROR 2025-07-18 14:58:29,757 log 12844 24412 Internal Server Error: /api/products/most_popular/
+Traceback (most recent call last):
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\cheta\OneDrive\Documents\mheback\products\views.py", line 181, in most_popular
+    .annotate(
+     ~~~~~~~~^
+        quote_count=Count('quotes', distinct=True),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1649, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\query.py", line 1701, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1218, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 176, in resolve_expression
+    result = super().resolve_expression(*args, **kwargs)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\aggregates.py", line 63, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 300, in resolve_expression
+    expr.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\expressions.py", line 902, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 2049, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1900, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\Users\cheta\OneDrive\Documents\mheback\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1805, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'quotes' into field. Choices are: brochure, cart, category, category_id, created_at, description, direct_sale, id, images, is_active, manufacturer, meta_description, meta_title, model, name, online_payment, orderitem, price, product_details, quote, rental, reviews, stock_quantity, subcategory, subcategory_id, type, updated_at, user, user_id, wishlist
+ERROR 2025-07-18 14:58:29,774 basehttp 12844 24412 "GET /api/products/most_popular/ HTTP/1.1" 500 166728
+INFO 2025-07-18 15:01:42,491 basehttp 12844 10552 "GET /api/categories HTTP/1.1" 301 0
+INFO 2025-07-18 15:01:42,574 basehttp 12844 15744 "GET /api/categories/ HTTP/1.1" 200 11240
