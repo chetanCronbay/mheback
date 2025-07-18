@@ -1,11 +1,15 @@
-# Python __pycache__ and compiled files
+# Ignore Python cache files and directories
 __pycache__/
 *.py[cod]
-*.pyo
-*.cpython-*
+*$py.class
 
-# Ignore logs
-*.log
+# Ignore environment files
+.env
+.env.*
+
+# Ignore virtual environment directories (optional, but recommended)
+venv/
+env/
 
 # Ignore media/image files
 *.jpeg
@@ -24,9 +28,3 @@ __pycache__/
 *.psd
 *.eps
 *.pdf
-
-# Allow init files (important for module resolution)
-!**/__init__.py
-
-*.log
-
