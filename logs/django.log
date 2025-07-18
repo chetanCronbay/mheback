@@ -12820,3 +12820,5 @@ INFO 2025-07-18 14:07:44,334 basehttp 5816 11112 "GET /api/users/me/ HTTP/1.1" 2
 INFO 2025-07-18 14:07:49,665 basehttp 5816 5384 "GET /api/vendor/approved/ HTTP/1.1" 200 323
 INFO 2025-07-18 14:07:49,667 basehttp 5816 17880 "GET /api/users/me/ HTTP/1.1" 200 433
 INFO 2025-07-18 14:07:49,961 basehttp 5816 5384 "GET /api/vendor/approved/ HTTP/1.1" 200 323
+INFO 2025-07-18 14:10:16,032 autoreload 5816 3664 C:\Users\cheta\OneDrive\Documents\mheback\mhe_backend\settings.py changed, reloading.
+INFO 2025-07-18 14:10:19,736 autoreload 1204 13240 Watching for file changes with StatReloader
