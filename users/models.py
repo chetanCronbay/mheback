@@ -160,7 +160,7 @@ class Vendor(models.Model):
       Vendor table
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='vendor')
-    company_name = models.CharField(max_length=20, blank=True, null=True,
+    company_phone = models.CharField(max_length=20, blank=False, null=False,
                                           validators=[
                                               RegexValidator(
                                                   regex=r'^\+?1?\d{9,15}$',
@@ -171,7 +171,7 @@ class Vendor(models.Model):
                                       )
     company_email = models.TextField(blank=False, null=False)
     company_address = models.TextField(blank=False, null=False)
-    company_phone = models.TextField(blank=False, null=False)
+    company_name = models.TextField(blank=False, null=False)
     brand = models.TextField(blank=True, null=True)
     pcode = models.TextField(blank=True, null=True)
     gst_no = models.TextField(blank=True, null=True)

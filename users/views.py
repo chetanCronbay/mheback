@@ -18,6 +18,7 @@ from google.auth.transport import requests as google_requests
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
+from django.db import transaction
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
     """
