@@ -19,6 +19,8 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # It's crucial to set this in your environment variables (e.g., Render.com)
+from django.core.exceptions import ImproperlyConfigured
+
 SECRET_KEY = os.getenv('SECRET_KEY')
 if not SECRET_KEY:
     raise ImproperlyConfigured("SECRET_KEY environment variable not set.")
@@ -408,10 +410,3 @@ LOGGING = {
     },
 }
 
-# Ensure logs directory exists
-os.makedirs(os.path.join(BASE_DIR, 'logs'), exist_ok=True)
-
-# Handle missing SECRET_KEY more gracefully (e.g., for local setup)
-class ImproperlyConfigured(Exception):
-    """Django is somehow improperly configured"""
-    pass

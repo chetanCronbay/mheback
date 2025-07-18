@@ -7427,3 +7427,6 @@ INFO 2025-07-17 14:49:28,627 basehttp 16420 18816 "OPTIONS /api/vendor/approved/
 INFO 2025-07-17 14:49:29,862 basehttp 16420 18816 "OPTIONS /api/vendor/approved/?ordering=-company_name HTTP/1.1" 200 6000
 INFO 2025-07-17 14:49:32,552 basehttp 16420 24912 "OPTIONS /api/vendor/approved/?ordering=-company_name HTTP/1.1" 200 6000
 INFO 2025-07-17 14:49:37,994 basehttp 16420 24912 "GET /api/vendor/approved/?ordering=-company_name HTTP/1.1" 200 7811
+INFO 2025-07-18 11:30:03,067 autoreload 27272 22424 Watching for file changes with StatReloader
+INFO 2025-07-18 11:30:26,463 autoreload 10940 22244 Watching for file changes with StatReloader
+INFO 2025-07-18 11:30:54,091 autoreload 27400 9832 Watching for file changes with StatReloader
