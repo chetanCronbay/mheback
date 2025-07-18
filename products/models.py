@@ -60,6 +60,8 @@ class Product(models.Model):
         ('new', 'New'),
         ('used', 'Used'),
         ('rental', 'Rental'),
+        ('attachments', 'Attachments'),
+        
     )
 
     user = models.ForeignKey(
@@ -144,6 +146,19 @@ class Product(models.Model):
         default=True,
         help_text="Whether product is active and available"
     )
+    
+    #IF PRODUCT IS FOR DIRECT SALE
+    direct_sale = models.BooleanField(
+        default=False,
+        help_text="Whether product is available for direct sale"
+    )
+    
+    #if the product is for online payment
+    online_payment = models.BooleanField(
+        default=False,
+        help_text="Whether product is available for online payment"
+    )
+    
     stock_quantity = models.PositiveIntegerField(
         default=0,
         help_text="Available stock quantity"
