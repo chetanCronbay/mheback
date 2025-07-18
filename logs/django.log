@@ -7430,3 +7430,33 @@ INFO 2025-07-17 14:49:37,994 basehttp 16420 24912 "GET /api/vendor/approved/?ord
 INFO 2025-07-18 11:30:03,067 autoreload 27272 22424 Watching for file changes with StatReloader
 INFO 2025-07-18 11:30:26,463 autoreload 10940 22244 Watching for file changes with StatReloader
 INFO 2025-07-18 11:30:54,091 autoreload 27400 9832 Watching for file changes with StatReloader
+INFO 2025-07-18 11:30:55,883 basehttp 27400 1424 "OPTIONS /api/vendor/apply/ HTTP/1.1" 200 0
+WARNING 2025-07-18 11:30:56,004 log 27400 20556 Bad Request: /api/vendor/apply/
+WARNING 2025-07-18 11:30:56,005 basehttp 27400 20556 "POST /api/vendor/apply/ HTTP/1.1" 400 103
+INFO 2025-07-18 11:33:47,922 basehttp 27400 10624 "GET /api/ HTTP/1.1" 200 7554
+INFO 2025-07-18 11:33:47,983 basehttp 27400 10624 "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+INFO 2025-07-18 11:33:47,999 basehttp 27400 27092 "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+INFO 2025-07-18 11:33:48,002 basehttp 27400 18932 "GET /static/rest_framework/js/jquery-3.7.1.min.js HTTP/1.1" 304 0
+INFO 2025-07-18 11:33:48,002 basehttp 27400 6268 "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+INFO 2025-07-18 11:33:48,005 basehttp 27400 19804 "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-18 11:33:48,007 basehttp 27400 16284 "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+INFO 2025-07-18 11:33:48,011 basehttp 27400 10624 "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+INFO 2025-07-18 11:33:48,019 basehttp 27400 27092 "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+INFO 2025-07-18 11:33:48,020 basehttp 27400 6268 "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+INFO 2025-07-18 11:33:48,021 basehttp 27400 18932 "GET /static/rest_framework/js/load-ajax-form.js HTTP/1.1" 304 0
+INFO 2025-07-18 11:33:48,021 basehttp 27400 19804 "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+INFO 2025-07-18 11:33:48,034 basehttp 27400 19804 "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+WARNING 2025-07-18 11:33:48,146 log 27400 19804 Not Found: /favicon.ico
+WARNING 2025-07-18 11:33:48,148 basehttp 27400 19804 "GET /favicon.ico HTTP/1.1" 404 3999
+INFO 2025-07-18 11:34:00,955 basehttp 27400 19804 "GET /api/ HTTP/1.1" 200 7554
+INFO 2025-07-18 11:34:10,006 basehttp 27400 19804 "GET /api/products/ HTTP/1.1" 200 37950
+INFO 2025-07-18 11:34:10,092 basehttp 27400 19804 "GET /static/rest_framework/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 304 0
+INFO 2025-07-18 11:35:50,688 models 27400 19804 New product created: BYD Lithium Powered Electric Stacker 1400Kgs by user suman
+INFO 2025-07-18 11:35:51,009 basehttp 27400 19804 "POST /api/products/ HTTP/1.1" 201 29505
+INFO 2025-07-18 11:37:32,896 basehttp 27400 8144 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 11:37:34,823 basehttp 27400 16552 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 11:37:44,835 basehttp 27400 15992 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 11:37:46,378 basehttp 27400 16552 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 11:37:48,378 basehttp 27400 16552 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 11:37:48,399 basehttp 27400 2716 "GET /api/products/ HTTP/1.1" 200 860
+INFO 2025-07-18 11:37:56,392 basehttp 27400 19736 "GET /api/users/me/ HTTP/1.1" 200 417
