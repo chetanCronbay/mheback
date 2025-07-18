@@ -175,7 +175,6 @@ class Vendor(models.Model):
     brand = models.TextField(blank=True, null=True)
     pcode = models.TextField(blank=True, null=True)
     gst_no = models.TextField(blank=True, null=True)
-    status = models.BooleanField(default=False)
     
 
 

@@ -267,7 +267,7 @@ class VendorDetailSerializer(serializers.ModelSerializer):
         """Get basic user information."""
         user = obj.user
         return {
-            'id': user.id,
+            # 'id': user.id,
             'username': user.username,
             'email': user.email,
             'first_name': user.first_name,
