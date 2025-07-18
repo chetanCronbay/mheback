@@ -60,6 +60,8 @@ class Product(models.Model):
         ('new', 'New'),
         ('used', 'Used'),
         ('rental', 'Rental'),
+        ('attachments', 'Attachments'),
+        
     )
 
     user = models.ForeignKey(

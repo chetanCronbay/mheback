@@ -7578,3 +7578,71 @@ INFO 2025-07-18 12:36:42,032 autoreload 25428 18920 Watching for file changes wi
 INFO 2025-07-18 12:36:43,702 autoreload 25428 18920 C:\Users\suman\Music\Projects\mhebazar\mheback\products\models.py changed, reloading.
 INFO 2025-07-18 12:36:45,058 autoreload 26592 14152 Watching for file changes with StatReloader
 INFO 2025-07-18 12:37:20,016 autoreload 17744 2736 Watching for file changes with StatReloader
+INFO 2025-07-18 12:37:40,239 basehttp 17744 11580 "GET /api/products/ HTTP/1.1" 200 40403
+INFO 2025-07-18 12:43:01,359 basehttp 17744 14328 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:43:21,376 basehttp 17744 24996 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:43:29,766 basehttp 17744 3576 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:43:29,772 basehttp 17744 11140 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:43:31,228 basehttp 17744 26720 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:47:44,858 basehttp 17744 22340 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:47:47,174 basehttp 17744 20840 "OPTIONS /api/products/?category_name=Dkfh&page=1 HTTP/1.1" 200 0
+INFO 2025-07-18 12:47:47,177 basehttp 17744 7876 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:47:47,303 basehttp 17744 10308 "GET /api/products/?category_name=Dkfh&page=1 HTTP/1.1" 200 903
+INFO 2025-07-18 12:47:47,429 basehttp 17744 10308 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:47:47,530 basehttp 17744 7876 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:47:47,605 basehttp 17744 10308 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:47:47,688 basehttp 17744 7876 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:47:54,423 basehttp 17744 13596 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:47:55,511 basehttp 17744 24092 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:47:55,626 basehttp 17744 14576 "GET /api/products/?category_name=Battery&page=1 HTTP/1.1" 200 903
+INFO 2025-07-18 12:47:55,740 basehttp 17744 14576 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:47:55,840 basehttp 17744 24092 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:47:55,951 basehttp 17744 14576 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:47:56,041 basehttp 17744 14576 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:47:58,805 basehttp 17744 13540 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:47:58,971 basehttp 17744 13540 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:47:59,202 basehttp 17744 13540 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:47:59,696 basehttp 17744 13540 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:47:59,775 basehttp 17744 13540 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:48:00,145 basehttp 17744 13540 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:48:02,076 basehttp 17744 25580 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:48:02,142 basehttp 17744 25580 "GET /api/products/?category_name=Battery&page=1 HTTP/1.1" 200 903
+INFO 2025-07-18 12:48:02,290 basehttp 17744 25580 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:48:02,379 basehttp 17744 25580 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:48:02,572 basehttp 17744 25480 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:48:02,656 basehttp 17744 25480 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:48:17,859 basehttp 17744 16976 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:48:18,272 basehttp 17744 16976 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:48:18,529 basehttp 17744 16976 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:48:18,726 basehttp 17744 16976 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:48:18,921 basehttp 17744 16976 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:48:19,117 basehttp 17744 16976 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:48:27,837 basehttp 17744 25480 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:48:27,937 basehttp 17744 25480 "GET /api/products/?category_name=Battery&page=1 HTTP/1.1" 200 903
+INFO 2025-07-18 12:48:28,144 basehttp 17744 25480 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:48:28,235 basehttp 17744 25480 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:48:28,370 basehttp 17744 25580 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:48:28,478 basehttp 17744 25580 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:49:09,438 basehttp 17744 20832 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:49:10,078 basehttp 17744 23844 "OPTIONS /api/products/?category_name=Rental&page=1 HTTP/1.1" 200 0
+INFO 2025-07-18 12:49:10,079 basehttp 17744 27088 "OPTIONS /api/products/?category_name=Rental&page=1 HTTP/1.1" 200 0
+INFO 2025-07-18 12:49:10,108 basehttp 17744 25580 "GET /api/products/?category_name=Rental&page=1 HTTP/1.1" 200 903
+INFO 2025-07-18 12:49:10,158 basehttp 17744 25580 "GET /api/products/?category_name=Rental&page=1 HTTP/1.1" 200 903
+INFO 2025-07-18 12:49:10,291 basehttp 17744 25580 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:49:10,397 basehttp 17744 25480 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:49:10,541 basehttp 17744 25480 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:49:10,671 basehttp 17744 25480 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:49:14,624 basehttp 17744 17968 "GET /api/users/me/ HTTP/1.1" 200 417
+INFO 2025-07-18 12:49:15,181 basehttp 17744 27088 "OPTIONS /api/products/?category_name=Attachments&page=1 HTTP/1.1" 200 0
+INFO 2025-07-18 12:49:15,181 basehttp 17744 23844 "OPTIONS /api/products/?category_name=Attachments&page=1 HTTP/1.1" 200 0
+INFO 2025-07-18 12:49:15,210 basehttp 17744 25480 "GET /api/products/?category_name=Attachments&page=1 HTTP/1.1" 200 903
+INFO 2025-07-18 12:49:15,359 basehttp 17744 25480 "GET /api/products/?category_name=Attachments&page=1 HTTP/1.1" 200 903
+INFO 2025-07-18 12:49:15,403 basehttp 17744 25580 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:49:15,491 basehttp 17744 25580 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:49:15,559 basehttp 17744 25580 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:49:15,633 basehttp 17744 25480 "GET /api/categories/ HTTP/1.1" 200 36649
+INFO 2025-07-18 12:50:00,786 autoreload 17744 2736 C:\Users\suman\Music\Projects\mhebazar\mheback\products\models.py changed, reloading.
+INFO 2025-07-18 12:50:03,216 autoreload 10744 716 Watching for file changes with StatReloader
+INFO 2025-07-18 12:50:09,659 autoreload 10744 716 C:\Users\suman\Music\Projects\mhebazar\mheback\products\models.py changed, reloading.
+INFO 2025-07-18 12:50:10,957 autoreload 17508 23248 Watching for file changes with StatReloader
+INFO 2025-07-18 12:56:06,642 autoreload 10244 7800 Watching for file changes with StatReloader
