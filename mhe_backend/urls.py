@@ -12,7 +12,7 @@ from products.views import (
     CartViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet
 )
 from users.views import (
-    RoleViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin, RegisterView, EmailTokenObtainPairView,
+    MyVendorStatsView, RoleViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin, RegisterView, EmailTokenObtainPairView, VendorDashboardView,
     VendorViewSet, VendorApplicationView, MyVendorApplicationView, ApprovedVendorListView, VendorStatsView
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -56,6 +56,8 @@ urlpatterns = [
     path('api/vendor/my-application/', MyVendorApplicationView.as_view(), name='my-vendor-application'),
     path('api/vendor/approved/', ApprovedVendorListView.as_view(), name='approved-vendors'),
     path('api/vendor/stats/', VendorStatsView.as_view(), name='vendor-stats'),
+    path('api/vendors/my-stats/', MyVendorStatsView.as_view(), name='my-vendor-stats'),  # Individual vendor
+    path('api/vendors/dashboard/', VendorDashboardView.as_view(), name='vendor-dashboard'),  # Comprehensive dashboard
     
     # ✅ Default router URLs (includes all ViewSet routes)
     path('api/', include(router.urls)),

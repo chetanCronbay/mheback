@@ -263,7 +263,7 @@ class VendorApplicationView(generics.CreateAPIView):
 
 class VendorViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for managing vendor applications and information.
+     ViewSet for managing vendor applications and information.
     
     - GET /vendors/ - List all vendors (Admin only)
     - POST /vendors/ - Create vendor application (Authenticated users)
@@ -271,6 +271,8 @@ class VendorViewSet(viewsets.ModelViewSet):
     - PUT/PATCH /vendors/{id}/ - Update vendor info (Admin or vendor owner)
     - DELETE /vendors/{id}/ - Delete vendor (Admin only)
     - POST /vendors/{id}/approve/ - Approve/reject vendor (Admin only)
+    - GET /vendors/{id}/stats/ - Get vendor stats (Admin or vendor owner)
+    - GET /vendors/my-stats/ - Get current user's vendor stats (Authenticated)
     """
     queryset = Vendor.objects.select_related('user', 'user__role').all()
     
@@ -286,23 +288,28 @@ class VendorViewSet(viewsets.ModelViewSet):
             return VendorApprovalSerializer
         elif self.action == 'profile':
             return VendorProfileSerializer
+        elif self.action == 'stats':
+            return VendorStatsSerializer
         else:
             return VendorDetailSerializer
     
     def get_permissions(self):
-        """Return appropriate permissions based on action."""
-        if self.action == 'create':
-            permission_classes = [permissions.IsAuthenticated]
-        elif self.action in ['list', 'destroy', 'approve']:
-            permission_classes = [IsAdmin]
-        elif self.action in ['retrieve', 'update', 'partial_update']:
-            permission_classes = [IsOwnerOrAdmin]
-        elif self.action == 'profile':
-            permission_classes = [permissions.AllowAny]
-        else:
-            permission_classes = [permissions.IsAuthenticated]
-        
-        return [permission() for permission in permission_classes]
+          """Return appropriate permissions based on action."""
+          if self.action == 'create':
+              permission_classes = [permissions.IsAuthenticated]
+          elif self.action in ['list', 'destroy', 'approve']:
+              permission_classes = [IsAdmin]
+          elif self.action in ['retrieve', 'update', 'partial_update', 'stats']:
+              permission_classes = [IsOwnerOrAdmin]
+          elif self.action == 'profile':
+              permission_classes = [permissions.AllowAny]
+          elif self.action == 'my_stats':
+              permission_classes = [permissions.IsAuthenticated]
+          else:
+              permission_classes = [permissions.IsAuthenticated]
+          
+          return [permission() for permission in permission_classes]
+      
     
     def get_queryset(self):
         """Filter queryset based on user permissions."""
@@ -413,6 +420,86 @@ class VendorViewSet(viewsets.ModelViewSet):
         
         serializer = VendorProfileSerializer(vendor)
         return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'])
+    def stats(self, request, pk=None):
+        """Get vendor statistics (Admin or vendor owner)."""
+        vendor = self.get_object()
+        
+        # Basic vendor info
+        stats = {
+            'vendor_info': {
+                'company_name': vendor.company_name,
+                'brand': vendor.brand,
+                'is_approved': vendor.user.role.id == Role.VENDOR,
+                'application_date': vendor.user.date_joined,
+                'status': 'Approved' if vendor.user.role.id == Role.VENDOR else 'Pending'
+            }
+        }
+        
+        # Only show detailed stats if vendor is approved
+        if vendor.user.role.id == Role.VENDOR:
+            # Account age
+            account_age = timezone.now() - vendor.user.date_joined
+            stats['account_info'] = {
+                'days_since_joined': account_age.days,
+                'account_status': 'Active' if vendor.user.is_active else 'Inactive'
+            }
+            
+            # Performance metrics
+            stats['performance'] = {
+                'profile_completion': self._calculate_profile_completion(vendor),
+                'last_updated': vendor.user.last_login or vendor.user.date_joined
+            }
+            
+            # Add product stats if Product model exists
+            # from your_app.models import Product
+            # stats['products'] = {
+            #     'total_products': Product.objects.filter(vendor=vendor).count(),
+            #     'active_products': Product.objects.filter(vendor=vendor, is_active=True).count(),
+            #     'recent_products': Product.objects.filter(
+            #         vendor=vendor,
+            #         created_at__gte=timezone.now() - timezone.timedelta(days=30)
+            #     ).count()
+            # }
+        
+        return Response(stats)
+    
+    @action(detail=False, methods=['get'])
+    def my_stats(self, request):
+        """Get current user's vendor statistics."""
+        try:
+            vendor = Vendor.objects.select_related('user', 'user__role').get(user=request.user)
+        except Vendor.DoesNotExist:
+            return Response(
+                {'error': "You don't have a vendor application."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        # Use the same logic as the stats action
+        return self.stats(request, pk=vendor.id)
+    
+    def _calculate_profile_completion(self, vendor):
+        """Calculate profile completion percentage."""
+        total_fields = 7  # Total important fields
+        completed_fields = 0
+        
+        if vendor.company_name:
+            completed_fields += 1
+        if vendor.company_email:
+            completed_fields += 1
+        if vendor.company_address:
+            completed_fields += 1
+        if vendor.company_phone:
+            completed_fields += 1
+        if vendor.brand:
+            completed_fields += 1
+        if vendor.pcode:
+            completed_fields += 1
+        if vendor.gst_no:
+            completed_fields += 1
+            
+        return round((completed_fields / total_fields) * 100, 2)
 
 
 class MyVendorApplicationView(generics.RetrieveUpdateAPIView):
@@ -489,3 +576,212 @@ class VendorStatsView(generics.RetrieveAPIView):
             'pending_applications': pending_applications,
             'recent_applications': recent_applications,
         })
+    
+class MyVendorStatsView(generics.RetrieveAPIView):
+    """
+    View for individual vendors to get their own statistics.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_object(self):
+        """Get current user's vendor application."""
+        try:
+            return Vendor.objects.select_related('user', 'user__role').get(user=self.request.user)
+        except Vendor.DoesNotExist:
+            from rest_framework.exceptions import NotFound
+            raise NotFound("You don't have a vendor application.")
+    
+    def get(self, request, *args, **kwargs):
+        """Get vendor's own statistics."""
+        vendor = self.get_object()
+        
+        # Basic vendor info
+        stats = {
+            'vendor_info': {
+                'company_name': vendor.company_name,
+                'brand': vendor.brand,
+                'is_approved': vendor.user.role.id == Role.VENDOR,
+                'application_date': vendor.user.date_joined,
+                'status': 'Approved' if vendor.user.role.id == Role.VENDOR else 'Pending'
+            }
+        }
+        
+        # Only show detailed stats if vendor is approved
+        if vendor.user.role.id == Role.VENDOR:
+            # You can add more vendor-specific stats here
+            # For example, if you have Product model related to vendors:
+            
+            # Assuming you have a Product model with vendor foreign key
+            # from your_app.models import Product
+            # stats['products'] = {
+            #     'total_products': Product.objects.filter(vendor=vendor).count(),
+            #     'active_products': Product.objects.filter(vendor=vendor, is_active=True).count(),
+            #     'recent_products': Product.objects.filter(
+            #         vendor=vendor,
+            #         created_at__gte=timezone.now() - timezone.timedelta(days=30)
+            #     ).count()
+            # }
+            
+            # If you have Order model:
+            # from your_app.models import Order
+            # stats['orders'] = {
+            #     'total_orders': Order.objects.filter(vendor=vendor).count(),
+            #     'pending_orders': Order.objects.filter(vendor=vendor, status='pending').count(),
+            #     'completed_orders': Order.objects.filter(vendor=vendor, status='completed').count(),
+            #     'recent_orders': Order.objects.filter(
+            #         vendor=vendor,
+            #         created_at__gte=timezone.now() - timezone.timedelta(days=30)
+            #     ).count()
+            # }
+            
+            # Account age
+            account_age = timezone.now() - vendor.user.date_joined
+            stats['account_info'] = {
+                'days_since_joined': account_age.days,
+                'account_status': 'Active' if vendor.user.is_active else 'Inactive'
+            }
+            
+            # Performance metrics (example)
+            stats['performance'] = {
+                'profile_completion': self._calculate_profile_completion(vendor),
+                'last_updated': vendor.user.last_login or vendor.user.date_joined
+            }
+        
+        return Response(stats)
+    
+    def _calculate_profile_completion(self, vendor):
+        """Calculate profile completion percentage."""
+        total_fields = 7  # Total important fields
+        completed_fields = 0
+        
+        if vendor.company_name:
+            completed_fields += 1
+        if vendor.company_email:
+            completed_fields += 1
+        if vendor.company_address:
+            completed_fields += 1
+        if vendor.company_phone:
+            completed_fields += 1
+        if vendor.brand:
+            completed_fields += 1
+        if vendor.pcode:
+            completed_fields += 1
+        if vendor.gst_no:
+            completed_fields += 1
+            
+        return round((completed_fields / total_fields) * 100, 2)
+
+class VendorDashboardView(generics.RetrieveAPIView):
+    """
+    Comprehensive dashboard view for vendors with all relevant information.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_object(self):
+        """Get current user's vendor application."""
+        try:
+            return Vendor.objects.select_related('user', 'user__role').get(user=self.request.user)
+        except Vendor.DoesNotExist:
+            from rest_framework.exceptions import NotFound
+            raise NotFound("You don't have a vendor application.")
+    
+    def get(self, request, *args, **kwargs):
+        """Get comprehensive vendor dashboard data."""
+        vendor = self.get_object()
+        
+        # Use the detail serializer to get basic vendor info
+        vendor_serializer = VendorDetailSerializer(vendor)
+        
+        # Get stats from MyVendorStatsView logic
+        stats_view = MyVendorStatsView()
+        stats_view.request = request
+        stats_response = stats_view.get(request)
+        
+        # Combine vendor details with stats
+        dashboard_data = {
+            'vendor_details': vendor_serializer.data,
+            'stats': stats_response.data,
+            'quick_actions': self._get_quick_actions(vendor),
+            'notifications': self._get_vendor_notifications(vendor)
+        }
+        
+        return Response(dashboard_data)
+    
+    def _get_quick_actions(self, vendor):
+        """Get available quick actions for the vendor."""
+        actions = []
+        
+        if vendor.user.role.id == Role.VENDOR:
+            actions.extend([
+                {
+                    'action': 'add_product',
+                    'label': 'Add New Product',
+                    'url': '/api/products/',
+                    'method': 'POST'
+                },
+                {
+                    'action': 'view_orders',
+                    'label': 'View Orders',
+                    'url': '/api/orders/',
+                    'method': 'GET'
+                },
+                {
+                    'action': 'update_profile',
+                    'label': 'Update Profile',
+                    'url': '/api/vendors/my-application/',
+                    'method': 'PATCH'
+                }
+            ])
+        else:
+            actions.append({
+                'action': 'update_application',
+                'label': 'Update Application',
+                'url': '/api/vendors/my-application/',
+                'method': 'PATCH'
+            })
+        
+        return actions
+    
+    def _get_vendor_notifications(self, vendor):
+        """Get relevant notifications for the vendor."""
+        notifications = []
+        
+        # Profile completion notification
+        if vendor.user.role.id == Role.VENDOR:
+            completion_percentage = self._calculate_profile_completion(vendor)
+            if completion_percentage < 100:
+                notifications.append({
+                    'type': 'warning',
+                    'message': f'Your profile is {completion_percentage}% complete. Complete your profile to improve visibility.',
+                    'action': 'update_profile'
+                })
+        else:
+            notifications.append({
+                'type': 'info',
+                'message': 'Your vendor application is pending approval. You will be notified once it is reviewed.',
+                'action': None
+            })
+        
+        return notifications
+    
+    def _calculate_profile_completion(self, vendor):
+        """Calculate profile completion percentage."""
+        total_fields = 7
+        completed_fields = 0
+        
+        if vendor.company_name:
+            completed_fields += 1
+        if vendor.company_email:
+            completed_fields += 1
+        if vendor.company_address:
+            completed_fields += 1
+        if vendor.company_phone:
+            completed_fields += 1
+        if vendor.brand:
+            completed_fields += 1
+        if vendor.pcode:
+            completed_fields += 1
+        if vendor.gst_no:
+            completed_fields += 1
+            
+        return round((completed_fields / total_fields) * 100, 2)

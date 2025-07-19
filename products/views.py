@@ -2,7 +2,7 @@ from rest_framework import viewsets, permissions, filters, status
 from rest_framework.decorators import action
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from datetime import timedelta
@@ -91,16 +91,45 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsVendorOwnerOrAdmin]  # Read for all, write for owner/admin
+    permission_classes = [IsVendorOwnerOrAdmin]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    # 'user' is the field used for filtering by user ID
     filterset_fields = ['category', 'subcategory', 'type', 'user']
     search_fields = ['name', 'description', 'manufacturer', 'model']
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser,JSONParser]
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned products to a given user,
+        by filtering against a `user` query parameter in the URL.
+        """
+        # Start with the base queryset
+        queryset = super().get_queryset()
+        
+        # Get the user ID from the URL's query parameters
+        user_id = self.request.query_params.get('user')
+        
+        # If a user ID is provided, filter the queryset
+        if user_id:
+            queryset = queryset.filter(user_id=user_id)
+            
+        return queryset
 
     def get_permissions(self):
         if self.action in ['add_to_cart', 'add_to_wishlist']:
             return [IsAuthenticated()]
         return super().get_permissions()
+    
+    @action(detail=False, methods=['patch'], url_path='bulk-update-status')
+    def bulk_update_status(self, request):
+        ids = request.data.get('ids', [])
+        is_active = request.data.get('is_active', None)
+
+        if not isinstance(ids, list) or is_active is None:
+            return Response({"detail": "Invalid input."}, status=400)
+
+        Product.objects.filter(id__in=ids).update(is_active=is_active)
+        return Response({"detail": "Updated successfully."})
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_images(self, request, pk=None):
@@ -188,7 +217,6 @@ class ProductViewSet(viewsets.ModelViewSet):
         )
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
-
 class CartViewSet(viewsets.ModelViewSet):
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]  # Only authenticated users

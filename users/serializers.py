@@ -357,13 +357,38 @@ class VendorProfileSerializer(serializers.ModelSerializer):
     Used for showing vendor information to customers.
     """
     user_info = serializers.SerializerMethodField()
+    profile_completion = serializers.SerializerMethodField()
+    total_products = serializers.SerializerMethodField()
     
     class Meta:
         model = Vendor
         fields = [
-            'company_name', 'company_email', 'company_address', 
-            'brand', 'user_info'
+            'id','user_info', 'company_name', 'brand', 'company_address', 
+            'pcode', 'profile_completion', 'total_products'
         ]
+
+    def get_profile_completion(self, obj):
+        """Calculate public profile completion."""
+        total_fields = 4  # Fields important for customers
+        completed_fields = 0
+        
+        if obj.company_name:
+            completed_fields += 1
+        if obj.brand:
+            completed_fields += 1
+        if obj.company_address:
+            completed_fields += 1
+        if obj.pcode:
+            completed_fields += 1
+            
+        return round((completed_fields / total_fields) * 100, 2)
+    
+    def get_total_products(self, obj):
+        """Get total products count - assuming Product model exists."""
+        # Uncomment and modify based on your Product model
+        # from your_app.models import Product
+        # return Product.objects.filter(vendor=obj, is_active=True).count()
+        return 0  # Placeholder
         
     def get_user_info(self, obj: Vendor) -> Dict[str, Any]:
         """Get public user information."""
@@ -374,3 +399,27 @@ class VendorProfileSerializer(serializers.ModelSerializer):
             'last_name': user.last_name,
             'date_joined': user.date_joined,
         }
+    
+class VendorStatsSerializer(serializers.Serializer):
+    """
+    Serializer for vendor statistics.
+    """
+    vendor_info = serializers.DictField()
+    products = serializers.DictField(required=False)
+    orders = serializers.DictField(required=False)
+    account_info = serializers.DictField(required=False)
+    performance = serializers.DictField(required=False)
+
+
+class VendorDashboardSerializer(serializers.Serializer):
+    """
+    Serializer for vendor dashboard data.
+    """
+    vendor_details = VendorDetailSerializer()
+    stats = VendorStatsSerializer()
+    quick_actions = serializers.ListField(
+        child=serializers.DictField()
+    )
+    notifications = serializers.ListField(
+        child=serializers.DictField()
+    )
