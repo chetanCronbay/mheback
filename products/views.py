@@ -217,6 +217,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         )
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
+
 class CartViewSet(viewsets.ModelViewSet):
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]  # Only authenticated users

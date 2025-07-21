@@ -17,9 +17,13 @@ import logging
 # Apply Rules: Structured logging
 logger = logging.getLogger(__name__)
 
-def user_directory_path(instance, filename):
+def user_banner_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return f'user_{instance.user.id}/{filename}'
+    return f'user_banner{instance.user.id}/{filename}'
+
+def user_profile_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return f'user_profile{instance.id}/{filename}'
 
 def review_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/review_<review_id>/<filename>
@@ -47,7 +51,7 @@ class Role(models.Model):
 
 class UserBanner(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='user_banner')
-    image = models.ImageField(upload_to=user_directory_path)
+    image = models.ImageField(upload_to=user_banner_directory_path)
 
     def __str__(self):
         return f"Image for {self.user.username}"
@@ -83,7 +87,7 @@ class User(AbstractUser, PermissionsMixin):
         help_text="User's physical address"
     )
     profile_photo = models.ImageField(
-        upload_to=user_directory_path, 
+        upload_to=user_profile_directory_path, 
         blank=True, 
         null=True,
         help_text="User's profile photo"
@@ -116,6 +120,8 @@ class User(AbstractUser, PermissionsMixin):
         verbose_name='user permissions',
     )
     
+    description = models.TextField(null=True, blank=True)
+
     class Meta:
         # Apply Rules: Use database indexes for frequently queried fields
         indexes = [
