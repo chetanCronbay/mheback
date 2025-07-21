@@ -159,6 +159,12 @@ class Product(models.Model):
         help_text="Whether product is available for online payment"
     )
     
+    #if price needed to be hidden
+    hide_price = models.BooleanField(
+        default=False,
+        help_text="Whether product price should be hidden"
+    )
+    
     stock_quantity = models.PositiveIntegerField(
         default=0,
         help_text="Available stock quantity"
