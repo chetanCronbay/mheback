@@ -161,11 +161,8 @@ WSGI_APPLICATION = "mhe_backend.wsgi.application"
 
 # Simple JWT Settings for tokens and cookies
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60), # Access token validity
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7), # Access token validity
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),   # Refresh token validity
-    'ROTATE_REFRESH_TOKENS': True, # Optional: Generates a new refresh token on refresh
-    'BLACKLIST_AFTER_ROTATION': True, # Optional: Invalidates old refresh tokens
-    'UPDATE_LAST_LOGIN': True, # Optional: Updates last_login field on user model
 
     # JWT Cookies Configuration (Crucial for secure token handling)
     # The 'access_token' cookie will be HTTP-Only, protecting it from client-side JS.
@@ -412,4 +409,3 @@ LOGGING = {
         },
     },
 }
-
