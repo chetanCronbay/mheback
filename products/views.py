@@ -220,10 +220,14 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 class CartViewSet(viewsets.ModelViewSet):
     serializer_class = CartSerializer
-    permission_classes = [IsAuthenticated]  # Only authenticated users
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Cart.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        # Set the authenticated user
+        serializer.save(user=self.request.user)
 
     @action(detail=False, methods=['post'])
     def clear(self, request):
