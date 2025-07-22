@@ -7,6 +7,9 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+
+from products.models import Product
+from products.serializers import ProductSerializer
 from .models import *
 from .serializers import *
 from util.security import IPRateLimiter, SecurityLogger
@@ -19,6 +22,7 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
 from django.db import transaction
+        
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
     """
@@ -721,15 +725,38 @@ class VendorDashboardView(generics.RetrieveAPIView):
         stats_view.request = request
         stats_response = stats_view.get(request)
         
-        # Combine vendor details with stats
+        # Get vendor's products
+        vendor_products = self._get_vendor_products(request.user)
+        
+        # Combine vendor details with stats and products
         dashboard_data = {
             'vendor_details': vendor_serializer.data,
             'stats': stats_response.data,
+            'products': vendor_products,
             'quick_actions': self._get_quick_actions(vendor),
             'notifications': self._get_vendor_notifications(vendor)
         }
         
         return Response(dashboard_data)
+    
+    def _get_vendor_products(self, user):
+        """Get products belonging to this vendor."""
+        
+        # Filter products by user (vendor)
+        products = Product.objects.filter(user=user).select_related('user')
+        
+        # You can add ordering, limiting, or additional filtering here
+        # For example, to show only active products:
+        # products = products.filter(is_active=True)
+        
+        # To limit the number of products shown on dashboard:
+        # products = products[:10]  # Show only first 10 products
+        
+        # To order by creation date (newest first):
+        # products = products.order_by('-created_at')
+        
+        serializer = ProductSerializer(products, many=True)
+        return serializer.data
     
     def _get_quick_actions(self, vendor):
         """Get available quick actions for the vendor."""
@@ -747,6 +774,12 @@ class VendorDashboardView(generics.RetrieveAPIView):
                     'action': 'view_orders',
                     'label': 'View Orders',
                     'url': '/api/orders/',
+                    'method': 'GET'
+                },
+                {
+                    'action': 'view_all_products',
+                    'label': 'View All Products',
+                    'url': '/api/products/',
                     'method': 'GET'
                 },
                 {
@@ -778,6 +811,15 @@ class VendorDashboardView(generics.RetrieveAPIView):
                     'type': 'warning',
                     'message': f'Your profile is {completion_percentage}% complete. Complete your profile to improve visibility.',
                     'action': 'update_profile'
+                })
+            
+            # Check if vendor has no products
+            product_count = Product.objects.filter(user=vendor.user).count()
+            if product_count == 0:
+                notifications.append({
+                    'type': 'info',
+                    'message': 'You haven\'t added any products yet. Add your first product to start selling!',
+                    'action': 'add_product'
                 })
         else:
             notifications.append({
