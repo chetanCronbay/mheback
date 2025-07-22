@@ -36,7 +36,7 @@ router.register(r'banners', BannerViewSet, basename='banner')
 router.register(r'reviews', ReviewViewSet, basename='review')
 
 # ✅ Vendor Management Routes
-router.register(r'vendors', VendorViewSet, basename='vendor')
+router.register(r'vendor', VendorViewSet, basename='vendor')
 
 # ✅ Order Management App Routes
 router.register(r'orders', OrderViewSet, basename='order')
@@ -56,8 +56,8 @@ urlpatterns = [
     path('api/vendor/my-application/', MyVendorApplicationView.as_view(), name='my-vendor-application'),
     path('api/vendor/approved/', ApprovedVendorListView.as_view(), name='approved-vendors'),
     path('api/vendor/stats/', VendorStatsView.as_view(), name='vendor-stats'),
-    path('api/vendors/my-stats/', MyVendorStatsView.as_view(), name='my-vendor-stats'),  # Individual vendor
-    path('api/vendors/dashboard/', VendorDashboardView.as_view(), name='vendor-dashboard'),  # Comprehensive dashboard
+    path('api/vendor/my-stats/', MyVendorStatsView.as_view(), name='my-vendor-stats'),  # Individual vendor
+    path('api/vendor/dashboard/', VendorDashboardView.as_view(), name='vendor-dashboard'),  # Comprehensive dashboard
     
     # ✅ Default router URLs (includes all ViewSet routes)
     path('api/', include(router.urls)),

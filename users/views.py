@@ -55,21 +55,21 @@ class RoleViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAdmin]  # Only admins can manage users
+    permission_classes = [IsOwnerOrAdmin]  # Only admins can manage users
     authentication_classes = [JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication]
     filter_backends = [filters.SearchFilter]
     search_fields = ['username', 'email', 'phone']
     parser_classes = [MultiPartParser, FormParser]
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser],
-            authentication_classes=[JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication],
-            permission_classes=[permissions.IsAdminUser])
+            # Change this permission class!
+            permission_classes=[IsOwnerOrAdmin]) # Only the owner can upload a banner to their profile
     def upload_banner(self, request, pk=None):
         """
         Upload multiple banner images to a specific user.
         """
         user = self.get_object()
-        images = request.FILES.getlist('user_banner')
+        images = request.FILES.get('user_banner')
 
         if not images:
             return Response({"detail": "No images uploaded."}, status=status.HTTP_400_BAD_REQUEST)
@@ -81,6 +81,19 @@ class UserViewSet(viewsets.ModelViewSet):
 
         serializer = UserBannerSerializer(banners, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    @action(detail=True, methods=['delete'], url_path='delete_banner/(?P<banner_id>[^/.]+)')
+    def delete_banner(self, request, pk=None, banner_id=None):
+        user = self.get_object()
+
+        try:
+            banner = user.user_banner.get(pk=banner_id)
+        except UserBanner.DoesNotExist:
+            return Response({'detail': 'Banner not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        banner.image.delete(save=False)  # deletes the file
+        banner.delete()
+        return Response({'detail': 'Banner deleted.'}, status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=False, methods=['get'],
             authentication_classes=[JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication],
@@ -265,14 +278,14 @@ class VendorViewSet(viewsets.ModelViewSet):
     """
      ViewSet for managing vendor applications and information.
     
-    - GET /vendors/ - List all vendors (Admin only)
-    - POST /vendors/ - Create vendor application (Authenticated users)
-    - GET /vendors/{id}/ - Get vendor details (Admin or vendor owner)
-    - PUT/PATCH /vendors/{id}/ - Update vendor info (Admin or vendor owner)
-    - DELETE /vendors/{id}/ - Delete vendor (Admin only)
-    - POST /vendors/{id}/approve/ - Approve/reject vendor (Admin only)
-    - GET /vendors/{id}/stats/ - Get vendor stats (Admin or vendor owner)
-    - GET /vendors/my-stats/ - Get current user's vendor stats (Authenticated)
+    - GET /vendor/ - List all vendors (Admin only)
+    - POST /vendor/ - Create vendor application (Authenticated users)
+    - GET /vendor/me/ - Get vendor details (Admin or vendor owner)
+    - PUT/PATCH /vendor/{id}/ - Update vendor info (Admin or vendor owner)
+    - DELETE /vendor/{id}/ - Delete vendor (Admin only)
+    - POST /vendor/{id}/approve/ - Approve/reject vendor (Admin only)
+    - GET /vendor/{id}/stats/ - Get vendor stats (Admin or vendor owner)
+    - GET /vendor/my-stats/ - Get current user's vendor stats (Authenticated)
     """
     queryset = Vendor.objects.select_related('user', 'user__role').all()
     
@@ -309,6 +322,17 @@ class VendorViewSet(viewsets.ModelViewSet):
               permission_classes = [permissions.IsAuthenticated]
           
           return [permission() for permission in permission_classes]
+    
+    @action(detail=False, methods=['get'], url_path='me')
+    def my_vendor(self, request):
+        """Return the vendor profile of the logged-in user."""
+        try:
+            vendor = Vendor.objects.select_related('user', 'user__role').get(user=request.user)
+        except Vendor.DoesNotExist:
+            return Response({'error': 'No vendor found for this user.'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(vendor)
+        return Response(serializer.data)
       
     
     def get_queryset(self):

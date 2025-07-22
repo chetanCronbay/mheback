@@ -63,9 +63,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'id', 'username', 'email', 'first_name', 'last_name', 'full_name',
-            'password', 'password2', 'role', 'role_id', 'phone', 'address', 
-            'user_banner', 'is_email_verified', 'is_account_locked', 
+            'id', 'username', 'email', 'first_name', 'last_name', 'full_name', "description",
+            'password', 'password2', 'role', 'role_id', 'phone', 'address', 'profile_photo','user_banner', 'is_email_verified', 'is_account_locked', 
             'date_joined', 'last_login'
         ]
         extra_kwargs = {
@@ -267,13 +266,15 @@ class VendorDetailSerializer(serializers.ModelSerializer):
         """Get basic user information."""
         user = obj.user
         return {
-            # 'id': user.id,
+            'id': user.id,
             'username': user.username,
+            'profile_photo': user.profile_photo.url if user.profile_photo else None,
             'email': user.email,
             'first_name': user.first_name,
             'last_name': user.last_name,
             'phone': user.phone,
             'role': user.role.name if user.role else None,
+            'description': user.description,
             'date_joined': user.date_joined,
             'is_active': user.is_active,
         }

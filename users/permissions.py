@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from .models import Role
+from .models import Role, User
 
 class IsAdmin(permissions.BasePermission):
     """
@@ -35,10 +35,22 @@ class IsOwnerOrAdmin(permissions.BasePermission):
     - Owners of the specific object
     Used for protecting user-specific resources.
     """
+
     def has_object_permission(self, request, view, obj):
         if request.user.role.id == Role.ADMIN:
             return True
-        return obj.user == request.user
+        # Case 1: The object being accessed is a User instance itself.
+        # Check for direct equality.
+        if isinstance(obj, User):
+            return obj == request.user
+
+        # Case 2: The object being accessed has a `user` attribute (e.g., a Vendor or Profile model).
+        # Check if the object's user is the same as the user making the request.
+        if hasattr(obj, 'user'):
+            return obj.user == request.user
+
+        # Deny permission by default if ownership cannot be determined.
+        return False
 
 
 class IsVendorOwnerOrAdmin(permissions.BasePermission):

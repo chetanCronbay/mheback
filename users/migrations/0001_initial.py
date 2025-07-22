@@ -192,7 +192,7 @@ class Migration(migrations.Migration):
                         blank=True,
                         help_text="User's profile photo",
                         null=True,
-                        upload_to=users.models.user_directory_path,
+                        upload_to=users.models.user_profile_directory_path,
                     ),
                 ),
                 ("last_login_ip", models.GenericIPAddressField(blank=True, null=True)),
@@ -326,7 +326,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "image",
-                    models.ImageField(upload_to=users.models.user_directory_path),
+                    models.ImageField(upload_to=users.models.user_banner_directory_path),
                 ),
                 (
                     "user",

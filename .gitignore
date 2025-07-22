@@ -11,6 +11,8 @@ __pycache__/
 # Ignore virtual environment directories (optional, but recommended)
 venv/
 env/
+logs/
+
 
 # Ignore media/image files
 *.jpeg
