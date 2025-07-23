@@ -66,6 +66,7 @@ class UserViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser]
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser],
+            authentication_classes=[JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication],
             # Change this permission class!
             permission_classes=[IsOwnerOrAdmin]) # Only the owner can upload a banner to their profile
     def upload_banner(self, request, pk=None):
