@@ -373,6 +373,7 @@ class VendorProfileSerializer(serializers.ModelSerializer):
         return {
             'id': getattr(user, 'id', None),
             'username': user.username,
+            'profile_photo': user.profile_photo,
             'first_name': user.first_name,
             'last_name': user.last_name,
             'date_joined': user.date_joined,

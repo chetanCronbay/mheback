@@ -34,6 +34,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description']
     parser_classes = [MultiPartParser, FormParser]
+    pagination_class = None
 
     def get_permissions(self):
         if self.action in ['upload_Image', 'upload_Banner']:
@@ -68,6 +69,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
     filterset_fields = ['category']
     search_fields = ['name', 'description']
     parser_classes = [MultiPartParser, FormParser]
+    pagination_class = None
 
     def get_permissions(self):
         if self.action in ['upload_Image', 'upload_Banner']:

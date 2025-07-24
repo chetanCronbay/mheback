@@ -8,6 +8,7 @@ class CategorySerializer(serializers.ModelSerializer):
     subcategories = serializers.SerializerMethodField()
     cat_image = serializers.ImageField(required=False, allow_null=True)
     cat_banner = serializers.ImageField(required=False, allow_null=True)
+    product_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
@@ -15,15 +16,22 @@ class CategorySerializer(serializers.ModelSerializer):
 
     def get_subcategories(self, obj):
         return SubcategorySerializer(obj.subcategories.all(), many=True).data
+    
+    def get_product_count(self, obj):
+        return obj.products.count() 
 
 class SubcategorySerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name', read_only=True)
     sub_image = serializers.ImageField(required=False, allow_null=True)
     sub_banner = serializers.ImageField(required=False, allow_null=True)
+    product_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Subcategory
         fields = '__all__'
+
+    def get_product_count(self, obj):
+        return obj.products.count() 
 
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
