@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 from .models import User, UserBanner, Role, ContactForm, Reviews, ReviewImages, Vendor
 from django.core.exceptions import ValidationError
 import logging
@@ -358,44 +359,21 @@ class VendorProfileSerializer(serializers.ModelSerializer):
     Used for showing vendor information to customers.
     """
     user_info = serializers.SerializerMethodField()
-    profile_completion = serializers.SerializerMethodField()
-    total_products = serializers.SerializerMethodField()
     
     class Meta:
         model = Vendor
         fields = [
             'id','user_info', 'company_name', 'brand', 'company_address', 
-            'pcode', 'profile_completion', 'total_products'
+            'pcode'
         ]
 
-    def get_profile_completion(self, obj):
-        """Calculate public profile completion."""
-        total_fields = 4  # Fields important for customers
-        completed_fields = 0
-        
-        if obj.company_name:
-            completed_fields += 1
-        if obj.brand:
-            completed_fields += 1
-        if obj.company_address:
-            completed_fields += 1
-        if obj.pcode:
-            completed_fields += 1
-            
-        return round((completed_fields / total_fields) * 100, 2)
-    
-    def get_total_products(self, obj):
-        """Get total products count - assuming Product model exists."""
-        # Uncomment and modify based on your Product model
-        # from your_app.models import Product
-        # return Product.objects.filter(vendor=obj, is_active=True).count()
-        return 0  # Placeholder
-        
     def get_user_info(self, obj: Vendor) -> Dict[str, Any]:
         """Get public user information."""
         user = obj.user
         return {
+            'id': getattr(user, 'id', None),
             'username': user.username,
+            'profile_photo': user.profile_photo,
             'first_name': user.first_name,
             'last_name': user.last_name,
             'date_joined': user.date_joined,

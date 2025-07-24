@@ -12,6 +12,12 @@ from .models import *
 from .serializers import *
 from users.permissions import ReadOnlyOrAdmin, IsVendorOwnerOrAdmin, IsAdmin
 from users.models import Role  # Import Role model or constant
+from django.db import transaction
+from django.core.mail import send_mail
+from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 class QuoteThrottle(UserRateThrottle):
     scope = 'quote'
@@ -28,6 +34,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description']
     parser_classes = [MultiPartParser, FormParser]
+    pagination_class = None
 
     def get_permissions(self):
         if self.action in ['upload_Image', 'upload_Banner']:
@@ -62,6 +69,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
     filterset_fields = ['category']
     search_fields = ['name', 'description']
     parser_classes = [MultiPartParser, FormParser]
+    pagination_class = None
 
     def get_permissions(self):
         if self.action in ['upload_Image', 'upload_Banner']:
@@ -89,6 +97,24 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 class ProductViewSet(viewsets.ModelViewSet):
+    """
+    Images:
+    - DELETE /api/products/{id}/delete-images/
+      Payload: {"image_ids": [1, 2, 3]}
+
+    - PUT /api/products/{id}/update-images/
+      Payload: FormData with:
+        - images: [file1, file2, ...]
+        - image_ids: [1, 2, ...]
+
+    Brochure:
+    - DELETE /api/products/{id}/delete-brochure/
+
+    - PUT /api/products/{id}/update-brochure/
+      Payload: FormData with:
+        - brochure: file
+    """
+
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsVendorOwnerOrAdmin]
@@ -217,6 +243,186 @@ class ProductViewSet(viewsets.ModelViewSet):
         )
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
+
+    @action(detail=True, methods=['delete'], url_path='delete-images')
+    def delete_images(self, request, pk=None):
+        """Delete specified product images"""
+        product = self.get_object()
+        image_ids = request.data.get('image_ids', [])
+        
+        if not image_ids:
+            return Response({"detail": "No image IDs provided."}, status=400)
+            
+        deleted = ProductImage.objects.filter(
+            product=product,
+            id__in=image_ids
+        ).delete()
+        
+        return Response({
+            "detail": f"Deleted {deleted[0]} images.",
+            "status": "success"
+        })
+
+    @action(detail=True, methods=['put'], url_path='update-images')
+    def update_images(self, request, pk=None):
+        """Update product images"""
+        product = self.get_object()
+        images = request.FILES.getlist('images')
+        image_ids = request.data.getlist('image_ids', [])
+        
+        if len(images) != len(image_ids):
+            return Response({
+                "detail": "Number of images and image IDs must match."
+            }, status=400)
+            
+        updated_images = []
+        for image_id, new_image in zip(image_ids, images):
+            try:
+                product_image = ProductImage.objects.get(
+                    id=image_id,
+                    product=product
+                )
+                product_image.image = new_image
+                product_image.save()
+                updated_images.append(product_image)
+            except ProductImage.DoesNotExist:
+                return Response({
+                    "detail": f"Image with ID {image_id} not found."
+                }, status=404)
+                
+        serializer = ProductImageSerializer(updated_images, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['delete'], url_path='delete-brochure')
+    def delete_brochure(self, request, pk=None):
+        """Delete product brochure"""
+        product = self.get_object()
+        if product.brochure:
+            product.brochure.delete()
+            product.save()
+            return Response({
+                "detail": "Brochure deleted successfully.",
+                "status": "success"
+            })
+        return Response({
+            "detail": "No brochure found.",
+            "status": "not_found"
+        }, status=404)
+
+    @action(detail=True, methods=['put'], url_path='update-brochure')
+    def update_brochure(self, request, pk=None):
+        """Update product brochure"""
+        product = self.get_object()
+        brochure = request.FILES.get('brochure')
+        
+        if not brochure:
+            return Response({
+                "detail": "No brochure file provided."
+            }, status=400)
+            
+        # Delete old brochure if it exists
+        if product.brochure:
+            product.brochure.delete()
+            
+        product.brochure = brochure
+        product.save()
+        serializer = self.get_serializer(product)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def approve(self, request, pk=None):
+        """Approve a product (Admin only)"""
+        if not request.user.role.id == Role.ADMIN:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+            
+        product = self.get_object()
+        
+        try:
+            with transaction.atomic():
+                product.status = 'approved'
+                product.is_active = True
+                product.save()
+                
+                # Send notification email to vendor
+                send_mail(
+                    subject="Product Approved",
+                    message=(
+                        f"Dear {product.user.first_name},\n\n"
+                        f"Your product '{product.name}' has been approved "
+                        f"and is now live on our platform.\n\n"
+                        f"Best regards,\nThe Admin Team"
+                    ),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[product.user.email],
+                    fail_silently=True,
+                )
+                
+                logger.info(f"Product {product.id} approved by admin {request.user.id}")
+                
+                serializer = self.get_serializer(product)
+                return Response({
+                    'message': 'Product approved successfully.',
+                    'product': serializer.data
+                })
+                
+        except Exception as e:
+            logger.error(f"Error approving product {product.id}: {e}")
+            return Response(
+                {'error': 'Failed to approve product.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    @action(detail=True, methods=['post'])
+    def reject(self, request, pk=None):
+        """Reject a product (Admin only)"""
+        if not request.user.role.id == Role.ADMIN:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+            
+        product = self.get_object()
+        reason = request.data.get('reason', '')
+        
+        if not reason:
+            return Response(
+                {'error': 'Rejection reason is required.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            with transaction.atomic():
+                product.status = 'rejected'
+                product.is_active = False
+                product.rejection_reason = reason
+                product.save()
+                
+                # Send notification email to vendor
+                send_mail(
+                    subject="Product Rejected",
+                    message=(
+                        f"Dear {product.user.first_name},\n\n"
+                        f"Your product '{product.name}' has been rejected.\n\n"
+                        f"Reason: {reason}\n\n"
+                        f"Please make the necessary changes and submit for review again.\n\n"
+                        f"Best regards,\nThe Admin Team"
+                    ),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[product.user.email],
+                    fail_silently=True,
+                )
+                
+                logger.info(f"Product {product.id} rejected by admin {request.user.id}")
+                
+                serializer = self.get_serializer(product)
+                return Response({
+                    'message': 'Product rejected successfully.',
+                    'product': serializer.data
+                })
+                
+        except Exception as e:
+            logger.error(f"Error rejecting product {product.id}: {e}")
+            return Response(
+                {'error': 'Failed to reject product.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 class CartViewSet(viewsets.ModelViewSet):
     serializer_class = CartSerializer
