@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "banners",          # Custom app
     "products",         # Custom app
     "users",            # Custom app (contains custom user model)
+    "blog",             # Custom app for blog functionality
     "corsheaders",      # For Cross-Origin Resource Sharing
 ]
 
@@ -349,13 +350,16 @@ CORS_ALLOW_CREDENTIALS = True # Necessary when using cookies (JWT or session)
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 465)) # Changed to 465 for SMTPS
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'False').lower() == 'true' # Changed to False for SMTPS
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'True').lower() == 'true' # Added for SMTPS
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'no-reply@yourdomain.com')
 ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'admin@yourdomain.com')
+CONTACT_RECEIVER_EMAIL = os.getenv('CONTACT_RECEIVER_EMAIL', 'contact@yourdomain.com') # Added this line
+
 
 # Frontend URL (for redirects, e.g., after social login)
 FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:3000')
@@ -412,6 +416,6 @@ LOGGING = {
 
 
 # Razorpay Configuration
-RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_test_J14iSMPNxyGGgT')
-RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', '3Du0iQtYXBuBIyZXwuW6C57Ni')
+RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_test_eXK5DmzmpQXzFh')
+RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'b1xOotX38KU5QziqN37v7SVT')
 

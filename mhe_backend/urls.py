@@ -21,6 +21,9 @@ from order_management.views import (
     OrderViewSet, OrderItemViewSet, DeliveryViewSet, PaymentViewSet
 )
 
+from blog.views import BlogViewSet
+
+
 router = DefaultRouter()
 router.register(r'roles', RoleViewSet, basename='role')
 router.register(r'users', UserViewSet, basename='user')
@@ -44,6 +47,9 @@ router.register(r'order-items', OrderItemViewSet, basename='orderitem')
 router.register(r'deliveries', DeliveryViewSet, basename='delivery')
 router.register(r'payments', PaymentViewSet, basename='payment')
 
+# ✅ Blog Management Routes
+router.register(r'blogs', BlogViewSet, basename='blog')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/google/login/', GoogleLogin.as_view(), name='google_login'),
@@ -58,6 +64,11 @@ urlpatterns = [
     path('api/vendor/stats/', VendorStatsView.as_view(), name='vendor-stats'),
     path('api/vendor/my-stats/', MyVendorStatsView.as_view(), name='my-vendor-stats'),  # Individual vendor
     path('api/vendor/dashboard/', VendorDashboardView.as_view(), name='vendor-dashboard'),  # Comprehensive dashboard
+    
+    #blog URLs
+    path('api/blogs/', BlogViewSet.as_view({'get': 'list', 'post': 'create'}), name='blog-list-create'),
+    path('api/blogs/<int:pk>/', BlogViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='blog-detail'),
+    
     
     # ✅ Default router URLs (includes all ViewSet routes)
     path('api/', include(router.urls)),
