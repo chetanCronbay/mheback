@@ -1,3 +1,4 @@
+import razorpay
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -7,6 +8,9 @@ from rest_framework import filters
 from django.db import transaction
 from django.utils import timezone
 from decimal import Decimal
+import logging # Corrected import for logging
+
+from django.conf import settings
 
 from .models import Order, OrderItem, Delivery, Payment
 from .serializers import (
@@ -16,6 +20,8 @@ from .serializers import (
 from products.models import Cart
 from users.models import Role
 from users.permissions import IsAdmin
+
+logger = logging.getLogger(__name__) # Initialize logger for the module
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
@@ -91,6 +97,7 @@ class OrderViewSet(viewsets.ModelViewSet):
                     )
                     
             except Exception as e:
+                logger.error(f"Error creating order from cart: {e}")
                 return Response(
                     {'error': str(e)},
                     status=status.HTTP_400_BAD_REQUEST
@@ -215,42 +222,85 @@ class PaymentViewSet(viewsets.ModelViewSet):
     def create_razorpay_order(self, request):
         """Create Razorpay order for payment."""
         order_id = request.data.get('order_id')
-        
+
+        if not order_id:
+            return Response(
+                {'error': 'Order ID is required'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         try:
             order = Order.objects.get(id=order_id, user=request.user)
         except Order.DoesNotExist:
             return Response(
-                {'error': 'Order not found'},
+                {'error': 'Order not found for the current user'},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+
         # Check if payment already exists
         existing_payment = Payment.objects.filter(
             order=order,
             status='success'
         ).first()
-        
+
         if existing_payment:
             return Response(
                 {'error': 'Payment already completed for this order'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
-        # Create Razorpay order (you'll need to implement actual Razorpay integration)
-        # This is a placeholder for the actual Razorpay API call
-        razorpay_order_id = f"order_{order.id}_{timezone.now().timestamp()}"
-        
-        # Create payment record
-        payment = Payment.objects.create(
-            user=request.user,
-            order=order,
-            razorpay_order_id=razorpay_order_id,
-            amount=order.total_amount,
-            currency='INR'
-        )
-        
-        serializer = self.get_serializer(payment)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        try:
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            
+            # Print statements to verify the keys being used by the backend
+            # print(f"DEBUG: Razorpay Key ID being used by backend: {settings.RAZORPAY_KEY_ID}")
+            # print(f"DEBUG: Razorpay Key Secret being used by backend: {settings.RAZORPAY_KEY_SECRET}")
+
+            # FIX 1: Corrected how set_app_details receives arguments
+            client.set_app_details({'title': 'MHE Bazar', 'version': '1.0'})
+
+            # Amount in paisa
+            amount_in_paisa = int(order.total_amount * 100)
+            if amount_in_paisa <= 0:
+                 return Response(
+                    {'error': 'Total amount must be greater than zero to create a payment.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            razorpay_order = client.order.create({
+                'amount': amount_in_paisa,
+                'currency': 'INR',
+                'receipt': f"receipt_order_{order.id}",
+                'payment_capture': '1' # Auto capture payment
+            })
+
+            # Create payment record in your database
+            payment = Payment.objects.create(
+                user=request.user,
+                order=order,
+                razorpay_order_id=razorpay_order['id'], # Use Razorpay's order ID
+                amount=Decimal(razorpay_order['amount']) / 100, # Convert back to decimal for your model
+                currency=razorpay_order['currency'],
+                status='pending' # Initial status
+            )
+
+            serializer = self.get_serializer(payment)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        except razorpay.errors.BadRequestError as e:
+            logger.error(f"Razorpay BadRequestError in create_razorpay_order: {e}")
+            # FIX 2: Use str(e) as BadRequestError does not have a 'code' attribute
+            # This is the expected error if keys are mismatched/invalid
+            return Response(
+                {'error': f'Razorpay API Error: {str(e)}'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        except Exception as e:
+            logger.exception("Error creating Razorpay order:")
+            return Response(
+                {'error': 'Failed to create Razorpay order on backend. Please try again.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     @action(detail=False, methods=['post'])
     def verify_payment(self, request):
@@ -260,34 +310,58 @@ class PaymentViewSet(viewsets.ModelViewSet):
             razorpay_order_id = serializer.validated_data['razorpay_order_id']
             razorpay_payment_id = serializer.validated_data['razorpay_payment_id']
             razorpay_signature = serializer.validated_data['razorpay_signature']
-            
+
             try:
                 payment = Payment.objects.get(
                     razorpay_order_id=razorpay_order_id,
                     user=request.user
                 )
-                
-                # Here you would implement actual Razorpay signature verification
-                # For now, we'll just update the payment as successful
-                payment.razorpay_payment_id = razorpay_payment_id
-                payment.razorpay_signature = razorpay_signature
-                payment.status = 'success'
-                payment.save()
-                
-                # Update order status
-                order = payment.order
-                order.status = 'confirmed'
-                order.save()
-                
-                return Response(
-                    {'message': 'Payment verified successfully'},
-                    status=status.HTTP_200_OK
-                )
-                
+
+                # Initialize Razorpay client for verification
+                client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+                # Verify the payment signature
+                try:
+                    client.utility.verify_payment_signature({
+                        'razorpay_order_id': razorpay_order_id,
+                        'razorpay_payment_id': razorpay_payment_id,
+                        'razorpay_signature': razorpay_signature
+                    })
+                    # If verification passes, no exception is raised
+
+                    payment.razorpay_payment_id = razorpay_payment_id
+                    payment.razorpay_signature = razorpay_signature
+                    payment.status = 'success'
+                    payment.save()
+
+                    # Update order status
+                    order = payment.order
+                    order.status = 'confirmed'
+                    order.save()
+
+                    return Response(
+                        {'message': 'Payment verified successfully', 'order_status': order.status},
+                        status=status.HTTP_200_OK
+                    )
+                except Exception as e:
+                    logger.error(f"Razorpay signature verification failed for order {razorpay_order_id}: {e}")
+                    payment.status = 'failed' # Mark payment as failed
+                    payment.save()
+                    return Response(
+                        {'error': 'Payment verification failed due to invalid signature or details.'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
             except Payment.DoesNotExist:
                 return Response(
-                    {'error': 'Payment not found'},
+                    {'error': 'Payment record not found for the provided Razorpay Order ID or user.'},
                     status=status.HTTP_404_NOT_FOUND
                 )
-        
+            except Exception as e:
+                logger.exception("Unexpected error during payment verification:")
+                return Response(
+                    {'error': 'An unexpected error occurred during payment verification.'},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
