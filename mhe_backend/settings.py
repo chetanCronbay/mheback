@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "banners",          # Custom app
     "products",         # Custom app
     "users",            # Custom app (contains custom user model)
+    "blog",             # Custom app for blog functionality
     "corsheaders",      # For Cross-Origin Resource Sharing
 ]
 
