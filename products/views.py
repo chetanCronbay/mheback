@@ -36,6 +36,14 @@ class CategoryViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser]
     pagination_class = None
 
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        name = self.request.query_params.get('name')
+        if name:
+            queryset = queryset.filter(name__iexact=name)
+        return queryset
+
     def get_permissions(self):
         if self.action in ['upload_Image', 'upload_Banner']:
             return [IsAdmin()]
@@ -131,9 +139,16 @@ class ProductViewSet(viewsets.ModelViewSet):
         """
         # Start with the base queryset
         queryset = super().get_queryset()
+        category_name = self.request.query_params.get('category_name')
+        subcategory_name = self.request.query_params.get('subcategory_name')
         
         # Get the user ID from the URL's query parameters
         user_id = self.request.query_params.get('user')
+
+        if category_name:
+            queryset = queryset.filter(category__name__iexact=category_name)
+        if subcategory_name:
+            queryset = queryset.filter(subcategory__name__iexact=subcategory_name)
         
         # If a user ID is provided, filter the queryset
         if user_id:
@@ -141,6 +156,21 @@ class ProductViewSet(viewsets.ModelViewSet):
             
         return queryset
 
+    @action(detail=False, methods=['get'], url_path='unique-manufacturers')
+    def unique_manufacturers(self, request):
+        """
+        Return a list of unique manufacturer names from the Product model.
+        """
+        manufacturers = (
+            Product.objects
+            .exclude(manufacturer__isnull=True)
+            .exclude(manufacturer__exact="")
+            .values_list('manufacturer', flat=True)
+            .distinct()
+        )
+        return Response({
+            "results": [{"manufacturer": name} for name in manufacturers]
+        })
     def get_permissions(self):
         if self.action in ['add_to_cart', 'add_to_wishlist']:
             return [IsAuthenticated()]
