@@ -367,14 +367,22 @@ FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:3000')
 # Structured logging configuration
 # settings.py
 
+# In settings.py
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        # ... your formatters ...
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
     },
     'handlers': {
-        'file': { # You can leave this definition, it just won't be used
+        'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
@@ -387,19 +395,16 @@ LOGGING = {
         },
     },
     'root': {
-        # REMOVE 'file' from here
-        'handlers': ['console'], 
+        'handlers': ['console'],
         'level': 'INFO',
     },
     'loggers': {
         'django': {
-            # REMOVE 'file' from here
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
         'security': {
-            # REMOVE 'file' from here
             'handlers': ['console'],
             'level': 'WARNING',
             'propagate': False,
