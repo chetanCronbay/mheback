@@ -365,21 +365,16 @@ CONTACT_RECEIVER_EMAIL = os.getenv('CONTACT_RECEIVER_EMAIL', 'contact@yourdomain
 FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:3000')
 
 # Structured logging configuration
+# settings.py
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
-        },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        },
+        # ... your formatters ...
     },
     'handlers': {
-        'file': {
+        'file': { # You can leave this definition, it just won't be used
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
@@ -392,29 +387,26 @@ LOGGING = {
         },
     },
     'root': {
-        'handlers': ['console', 'file'],
+        # REMOVE 'file' from here
+        'handlers': ['console'], 
         'level': 'INFO',
     },
     'loggers': {
         'django': {
-            'handlers': ['file', 'console'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        'security': {
-            'handlers': ['file', 'console'],
-            'level': 'WARNING',
-            'propagate': False,
-        },
-        'corsheaders': { # Add specific logger for corsheaders for debugging CORS issues
+            # REMOVE 'file' from here
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
+        'security': {
+            # REMOVE 'file' from here
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        # ... other loggers ...
     },
 }
-
-
 # Razorpay Configuration
 RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_test_eXK5DmzmpQXzFh')
 RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'b1xOotX38KU5QziqN37v7SVT')
