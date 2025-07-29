@@ -367,13 +367,27 @@ class VendorProfileSerializer(serializers.ModelSerializer):
             'pcode'
         ]
 
+    # users/serializers.py
+
     def get_user_info(self, obj: Vendor) -> Dict[str, Any]:
         """Get public user information."""
         user = obj.user
+        request = self.context.get('request')
+        
+        profile_photo_url = None
+        # Check if the photo exists before trying to get its URL
+        if user.profile_photo and hasattr(user.profile_photo, 'url'):
+            # If the request object exists, build a full URL
+            if request:
+                profile_photo_url = request.build_absolute_uri(user.profile_photo.url)
+            # Otherwise, fall back to the relative URL
+            else:
+                profile_photo_url = user.profile_photo.url
+
         return {
             'id': getattr(user, 'id', None),
             'username': user.username,
-            'profile_photo': user.profile_photo,
+            'profile_photo': profile_photo_url, # Use the generated URL
             'first_name': user.first_name,
             'last_name': user.last_name,
             'date_joined': user.date_joined,

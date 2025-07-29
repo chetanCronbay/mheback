@@ -15,16 +15,16 @@ import logging
 logger = logging.getLogger(__name__)
 
 def category_image_upload_path(instance, filename):
-    return f'category/{instance.name}/{filename}'
+    return f'category/{instance.id}/{filename}'
 
 def subcategory_image_upload_path(instance, filename):
-    return f'subcategory/{instance.name}/{filename}'
+    return f'subcategory/{instance.id}/{filename}'
 
 def product_image_upload_path(instance, filename):
-    return f'products/{instance.product.name}/{filename}'
+    return f'products/{instance.product.id}/{filename}'
 
 def product_brochure_upload_path(instance, filename):
-    return f'products/{instance.name}/brochure/{filename}'
+    return f'products/{instance.id}/brochure/{filename}'
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -252,7 +252,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to=product_image_upload_path)
+    image = models.ImageField(upload_to=product_image_upload_path, max_length=500)
 
     def __str__(self):
         return f"Image for {self.product.name}"
