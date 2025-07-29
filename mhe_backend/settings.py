@@ -34,11 +34,11 @@ DEBUG = ENVIRONMENT == 'development'
 # Do NOT include paths like /api.
 ALLOWED_HOSTS: List[str] = []
 if DEBUG:
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'localhost:3000', '192.168.0.135:3000', 'mheback.onrender.com','https://mhebazar.vercel.app']
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'localhost:3000', '192.168.0.135:3000', 'mheback.onrender.com','mhebazar.vercel.app']
 else:
     # IMPORTANT: Replace 'mheback.onrender.com' with your actual Render.com hostname
     # and 'your-production-frontend-domain.com' with your actual frontend domain.
-    ALLOWED_HOSTS = ['mheback.onrender.com', 'your-production-frontend-domain.com','https://mhebazar.vercel.app']
+    ALLOWED_HOSTS = ['mheback.onrender.com', 'your-production-frontend-domain.com','mhebazar.vercel.app']
     # You might also need to add your Render internal hostname if Render requires it,
     # but typically the external one is sufficient.
 
