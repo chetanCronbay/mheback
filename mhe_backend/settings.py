@@ -34,7 +34,7 @@ DEBUG = ENVIRONMENT == 'development'
 # Do NOT include paths like /api.
 ALLOWED_HOSTS: List[str] = []
 if DEBUG:
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'localhost:3000', '192.168.0.135:3000']
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'localhost:3000', '192.168.0.135:3000', 'mheback.onrender.com']
 else:
     # IMPORTANT: Replace 'mheback.onrender.com' with your actual Render.com hostname
     # and 'your-production-frontend-domain.com' with your actual frontend domain.
