@@ -317,6 +317,7 @@ else:
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "http://192.168.0.135:3000", # For testing from a specific IP on local network
+        "https://mhebazar.vercel.app",
         # Add other development origins as needed
     ]
 
@@ -342,6 +343,7 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
     "x-api-key", # Custom API key header, if used
+    "content-disposition",
 ]
 
 # Allow credentials (cookies, HTTP authentication) to be sent with cross-origin requests
