@@ -7,6 +7,9 @@ from datetime import timedelta
 from dotenv import load_dotenv
 import logging.config # For structured logging (already good)
 from typing import List, Dict, Any # For type hints (already good)
+from corsheaders.defaults import default_headers
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -343,6 +346,9 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
     "x-api-key", # Custom API key header, if used
+    "content-disposition",
+]
+CORS_ALLOW_HEADERS = list(default_headers) + [
     "content-disposition",
 ]
 
