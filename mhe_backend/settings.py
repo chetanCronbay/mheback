@@ -7,6 +7,9 @@ from datetime import timedelta
 from dotenv import load_dotenv
 import logging.config # For structured logging (already good)
 from typing import List, Dict, Any # For type hints (already good)
+from corsheaders.defaults import default_headers
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,11 +37,11 @@ DEBUG = ENVIRONMENT == 'development'
 # Do NOT include paths like /api.
 ALLOWED_HOSTS: List[str] = []
 if DEBUG:
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'localhost:3000', '192.168.0.135:3000']
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'localhost:3000', '192.168.0.135:3000', 'mheback.onrender.com','mhebazar.vercel.app']
 else:
     # IMPORTANT: Replace 'mheback.onrender.com' with your actual Render.com hostname
     # and 'your-production-frontend-domain.com' with your actual frontend domain.
-    ALLOWED_HOSTS = ['mheback.onrender.com', 'your-production-frontend-domain.com']
+    ALLOWED_HOSTS = ['mheback.onrender.com', 'your-production-frontend-domain.com','mhebazar.vercel.app']
     # You might also need to add your Render internal hostname if Render requires it,
     # but typically the external one is sufficient.
 
@@ -317,6 +320,7 @@ else:
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "http://192.168.0.135:3000", # For testing from a specific IP on local network
+        "https://mhebazar.vercel.app",
         # Add other development origins as needed
     ]
 
@@ -342,6 +346,10 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
     "x-api-key", # Custom API key header, if used
+    "content-disposition",
+]
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "content-disposition",
 ]
 
 # Allow credentials (cookies, HTTP authentication) to be sent with cross-origin requests
@@ -365,6 +373,9 @@ CONTACT_RECEIVER_EMAIL = os.getenv('CONTACT_RECEIVER_EMAIL', 'contact@yourdomain
 FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:3000')
 
 # Structured logging configuration
+# settings.py
+
+# In settings.py
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -379,12 +390,6 @@ LOGGING = {
         },
     },
     'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
-            'formatter': 'verbose',
-        },
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
@@ -392,29 +397,23 @@ LOGGING = {
         },
     },
     'root': {
-        'handlers': ['console', 'file'],
+        'handlers': ['console'],
         'level': 'INFO',
     },
     'loggers': {
         'django': {
-            'handlers': ['file', 'console'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        'security': {
-            'handlers': ['file', 'console'],
-            'level': 'WARNING',
-            'propagate': False,
-        },
-        'corsheaders': { # Add specific logger for corsheaders for debugging CORS issues
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
+        'security': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        # ... other loggers ...
     },
 }
-
-
 # Razorpay Configuration
 RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_test_eXK5DmzmpQXzFh')
 RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'b1xOotX38KU5QziqN37v7SVT')

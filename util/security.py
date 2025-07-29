@@ -78,19 +78,11 @@ class SecurityLogger:
 class IPRateLimiter:
     @staticmethod
     def check_ip(request, limit: int = 10, timeout: int = 3600) -> bool:
-        """Check if IP has exceeded rate limit, except for whitelisted paths."""
+        """Check if IP has exceeded rate limit, but skip all GET requests."""
 
-        # ⛔ Paths that should NOT be rate-limited
-        exempt_paths = [
-            '/api/products/',
-            '/api/categories/',
-            '/api/subcategories/',
-            '/api/reviews/'
-        ]
-
-        # Allow any method for these paths
-        if any(request.path.startswith(path) for path in exempt_paths):
-            return True  # ⬅️ Skip limiting
+        # Skip rate limiting for all GET requests
+        if request.method == 'GET':
+            return True
 
         ip = request.META.get('REMOTE_ADDR')
         key = f'ip_limit:{ip}'
