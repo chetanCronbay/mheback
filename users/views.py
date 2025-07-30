@@ -338,6 +338,24 @@ class VendorViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(vendor)
         return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'], url_path='by-brand/(?P<brand_name>[^/.]+)')
+    def by_brand(self, request, brand_name=None):
+        """
+        Get vendor details by brand name.
+        """
+        if not brand_name:
+            return Response({'error': 'Brand name is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            # Using iexact for case-insensitive exact match
+            vendor = self.queryset.get(brand__iexact=brand_name)
+            serializer = VendorProfileSerializer(vendor) # Re-using VendorProfileSerializer
+            return Response(serializer.data)
+        except Vendor.DoesNotExist:
+            return Response({'error': 'Vendor with this brand name not found.'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            logger.error(f"Error fetching vendor by brand: {e}")
+            return Response({'error': 'An internal error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
       
     
     def get_queryset(self):
