@@ -300,6 +300,7 @@ class VendorListSerializer(serializers.ModelSerializer):
     Used for displaying vendor applications in admin panel.
     """
     username = serializers.CharField(source='user.username', read_only=True)
+    user_id = serializers.IntegerField(source='user.id', read_only=True)
     email = serializers.EmailField(source='user.email', read_only=True)
     full_name = serializers.CharField(source='user.get_full_name', read_only=True)
     is_approved = serializers.SerializerMethodField()
@@ -308,7 +309,7 @@ class VendorListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendor
         fields = [
-            'id', 'username', 'email', 'full_name', 'company_name',
+            'id','user_id', 'username', 'email', 'full_name', 'company_name',
             'company_email', 'brand', 'is_approved', 'application_date'
         ]
         
