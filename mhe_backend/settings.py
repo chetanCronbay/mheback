@@ -314,7 +314,7 @@ if not DEBUG:
     CORS_ALLOWED_ORIGINS = [
         "https://your-production-frontend-domain.com",
         "https://mheback.onrender.com", # If your backend itself needs to make CORS requests to itself
-        'http://162.240.152.29:8000/',
+        # 'http://162.240.152.29:8000/',
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
@@ -322,7 +322,7 @@ else:
         "http://127.0.0.1:3000",
         "http://192.168.0.135:3000", # For testing from a specific IP on local network
         "https://mhebazar.vercel.app",
-        'http://162.240.152.29:8000/',
+        # 'http://162.240.152.29:8000/',
         # Add other development origins as needed
     ]
 
