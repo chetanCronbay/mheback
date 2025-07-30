@@ -106,14 +106,14 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer', # Useful for development/testing via browser
     ],
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle', # Rate limit for unauthenticated users
-        'rest_framework.throttling.UserRateThrottle'  # Rate limit for authenticated users
-    ],
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': os.getenv('API_THROTTLE_ANON', '100/hour'),
-        'user': os.getenv('API_THROTTLE_USER', '1000/hour')
-    },
+    # 'DEFAULT_THROTTLE_CLASSES': [
+    #     'rest_framework.throttling.AnonRateThrottle', # Rate limit for unauthenticated users
+    #     'rest_framework.throttling.UserRateThrottle'  # Rate limit for authenticated users
+    # ],
+    # 'DEFAULT_THROTTLE_RATES': {
+    #     'anon': os.getenv('API_THROTTLE_ANON', '100/hour'),
+    #     'user': os.getenv('API_THROTTLE_USER', '1000/hour')
+    # },
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning', # API versioning strategy
     'DEFAULT_VERSION': 'v1',
     'ALLOWED_VERSIONS': ['v1', 'v2'], # Supported API versions
