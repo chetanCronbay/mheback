@@ -283,7 +283,8 @@ class VendorViewSet(viewsets.ModelViewSet):
     """
      ViewSet for managing vendor applications and information.
     
-    - GET /vendor/ - List all vendors (Admin only)
+    - GET /vendor/ - List all vendors (Public, queryable by anyone)
+      - Query params: /vendor/?brand=some_brand&username=some_user
     - POST /vendor/ - Create vendor application (Authenticated users)
     - GET /vendor/me/ - Get vendor details (Admin or vendor owner)
     - PUT/PATCH /vendor/{id}/ - Update vendor info (Admin or vendor owner)
@@ -312,21 +313,24 @@ class VendorViewSet(viewsets.ModelViewSet):
             return VendorDetailSerializer
     
     def get_permissions(self):
-          """Return appropriate permissions based on action."""
-          if self.action == 'create':
-              permission_classes = [permissions.IsAuthenticated]
-          elif self.action in ['list', 'destroy', 'approve']:
-              permission_classes = [IsAdmin]
-          elif self.action in ['retrieve', 'update', 'partial_update', 'stats']:
-              permission_classes = [IsOwnerOrAdmin]
-          elif self.action == 'profile':
-              permission_classes = [permissions.AllowAny]
-          elif self.action == 'my_stats':
-              permission_classes = [permissions.IsAuthenticated]
-          else:
-              permission_classes = [permissions.IsAuthenticated]
-          
-          return [permission() for permission in permission_classes]
+        """Return appropriate permissions based on action."""
+        # ✅ Action #1: Allow anyone to perform the 'list' action
+        if self.action == 'list':
+            permission_classes = [permissions.AllowAny]
+        elif self.action == 'create':
+            permission_classes = [permissions.IsAuthenticated]
+        elif self.action in ['destroy', 'approve']:
+            permission_classes = [IsAdmin]
+        elif self.action in ['retrieve', 'update', 'partial_update', 'stats']:
+            permission_classes = [IsOwnerOrAdmin]
+        elif self.action == 'profile':
+            permission_classes = [permissions.AllowAny]
+        elif self.action == 'my_stats':
+            permission_classes = [permissions.IsAuthenticated]
+        else:
+            permission_classes = [permissions.IsAuthenticated]
+        
+        return [permission() for permission in permission_classes]
     
     @action(detail=False, methods=['get'], url_path='me')
     def my_vendor(self, request):
@@ -341,19 +345,34 @@ class VendorViewSet(viewsets.ModelViewSet):
       
     
     def get_queryset(self):
-        """Filter queryset based on user permissions."""
+        """
+        Filter queryset based on context.
+        - For 'list' action, it's public and searchable.
+        - For other actions, it's restricted by user role.
+        """
+        queryset = super().get_queryset()
         user = self.request.user
         
+        # ✅ Action #2: If the action is 'list', apply search filters and return
+        if self.action == 'list':
+            brand = self.request.query_params.get('brand')
+            username = self.request.query_params.get('username')
+            
+            if brand:
+                queryset = queryset.filter(brand__icontains=brand)
+            if username:
+                queryset = queryset.filter(user__username__icontains=username)
+            
+            return queryset
+
+        # For all other actions (retrieve, update, etc.), apply strict permissions
         if not user.is_authenticated:
             return Vendor.objects.none()
             
         if user.role.id == Role.ADMIN:
-            return self.queryset
-        elif user.role.id == Role.VENDOR:
-            return self.queryset.filter(user=user)
+            return queryset
         else:
-            # Regular users can only see their own vendor application
-            return self.queryset.filter(user=user)
+            return queryset.filter(user=user)
     
     def create(self, request, *args, **kwargs):
         """Create vendor application."""
