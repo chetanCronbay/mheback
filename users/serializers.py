@@ -12,6 +12,8 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from products.models import Product
+
 from .models import User, UserBanner, Role, ContactForm, Reviews, ReviewImages, Vendor
 from django.core.exceptions import ValidationError
 import logging
@@ -167,10 +169,17 @@ class ReviewSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='user.username', read_only=True)
     review_images = ReviewsImageSerializer(many=True, read_only=True)
 
+    # 1. Add this field to accept the product's ID from the request
+    # It looks for 'product_id' in the data and links it to the 'product' field on the model
+    product = serializers.PrimaryKeyRelatedField(
+        queryset=Product.objects.all(),
+    )
+
     class Meta:
         model = Reviews
-        fields = ['id', 'user', 'user_name', 'stars', 'review', 'review_images']
-        read_only_fields = ['user_name']
+        # 2. Add 'product' to the list of fields
+        fields = ['id', 'user', 'user_name', 'product', 'stars', 'review', 'review_images']
+        read_only_fields = ['user_name', 'user']
 
     def validate_stars(self, value):
         if not (1 <= value <= 5):

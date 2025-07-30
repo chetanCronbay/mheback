@@ -143,7 +143,15 @@ class ReviewViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser]
 
     def get_queryset(self):
-        return Reviews.objects.all()
+        """
+        Optionally restricts the returned reviews to a given product,
+        by filtering against a `product_id` query parameter in the URL.
+        """
+        queryset = Reviews.objects.all()
+        product_id = self.request.query_params.get('product')
+        if product_id is not None:
+            queryset = queryset.filter(product_id=product_id)
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
