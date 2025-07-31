@@ -14,7 +14,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from products.models import Product
 
-from .models import User, UserBanner, Role, ContactForm, Reviews, ReviewImages, Vendor
+from .models import NewsletterSubscription, TrainingRegistration, User, UserBanner, Role, ContactForm, Reviews, ReviewImages, Vendor
 from django.core.exceptions import ValidationError
 import logging
 
@@ -427,3 +427,23 @@ class VendorDashboardSerializer(serializers.Serializer):
     notifications = serializers.ListField(
         child=serializers.DictField()
     )
+    
+    
+class TrainingRegistrationSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the TrainingRegistration model.
+    """
+    class Meta:
+        model = TrainingRegistration
+        fields = '__all__'
+        read_only_fields = ['submitted_at']
+
+# New Serializer for Newsletter Subscription
+class NewsletterSubscriptionSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the NewsletterSubscription model.
+    """
+    class Meta:
+        model = NewsletterSubscription
+        fields = '__all__'
+        read_only_fields = ['subscribed_at']
