@@ -779,7 +779,7 @@ class VendorDashboardView(generics.RetrieveAPIView):
             'vendor_details': vendor_serializer.data,
             'stats': stats_response.data,
             'products': vendor_products,
-            'quick_actions': self._get_quick_actions(vendor),
+            # 'quick_actions': self._get_quick_actions(vendor),
             'notifications': self._get_vendor_notifications(vendor)
         }
         
@@ -804,46 +804,46 @@ class VendorDashboardView(generics.RetrieveAPIView):
         serializer = ProductSerializer(products, many=True)
         return serializer.data
     
-    def _get_quick_actions(self, vendor):
-        """Get available quick actions for the vendor."""
-        actions = []
+    # def _get_quick_actions(self, vendor):
+    #     """Get available quick actions for the vendor."""
+    #     actions = []
         
-        if vendor.user.role.id == Role.VENDOR:
-            actions.extend([
-                {
-                    'action': 'add_product',
-                    'label': 'Add New Product',
-                    'url': '/api/products/',
-                    'method': 'POST'
-                },
-                {
-                    'action': 'view_orders',
-                    'label': 'View Orders',
-                    'url': '/api/orders/',
-                    'method': 'GET'
-                },
-                {
-                    'action': 'view_all_products',
-                    'label': 'View All Products',
-                    'url': '/api/products/',
-                    'method': 'GET'
-                },
-                {
-                    'action': 'update_profile',
-                    'label': 'Update Profile',
-                    'url': '/api/vendors/my-application/',
-                    'method': 'PATCH'
-                }
-            ])
-        else:
-            actions.append({
-                'action': 'update_application',
-                'label': 'Update Application',
-                'url': '/api/vendors/my-application/',
-                'method': 'PATCH'
-            })
+    #     if vendor.user.role.id == Role.VENDOR:
+    #         actions.extend([
+    #             {
+    #                 'action': 'add_product',
+    #                 'label': 'Add New Product',
+    #                 'url': '/api/products/',
+    #                 'method': 'POST'
+    #             },
+    #             {
+    #                 'action': 'view_orders',
+    #                 'label': 'View Orders',
+    #                 'url': '/api/orders/',
+    #                 'method': 'GET'
+    #             },
+    #             {
+    #                 'action': 'view_all_products',
+    #                 'label': 'View All Products',
+    #                 'url': '/api/products/',
+    #                 'method': 'GET'
+    #             },
+    #             {
+    #                 'action': 'update_profile',
+    #                 'label': 'Update Profile',
+    #                 'url': '/api/vendors/my-application/',
+    #                 'method': 'PATCH'
+    #             }
+    #         ])
+    #     else:
+    #         actions.append({
+    #             'action': 'update_application',
+    #             'label': 'Update Application',
+    #             'url': '/api/vendors/my-application/',
+    #             'method': 'PATCH'
+    #         })
         
-        return actions
+    #     return actions
     
     def _get_vendor_notifications(self, vendor):
         """Get relevant notifications for the vendor."""
