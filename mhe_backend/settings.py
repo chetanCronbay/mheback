@@ -66,8 +66,8 @@ INSTALLED_APPS = [
     "banners",          # Custom app
     "products",         # Custom app
     "users",            # Custom app (contains custom user model)
-    "blog",             # Custom app for blog functionality
     "corsheaders",      # For Cross-Origin Resource Sharing
+    "blogs"
 ]
 
 # Allauth Social Account Providers Configuration
@@ -196,6 +196,7 @@ DATABASES = {
         'CONN_MAX_AGE': 600, # Connection pooling
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
         },
     }
 }

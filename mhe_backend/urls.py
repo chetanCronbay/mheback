@@ -21,7 +21,7 @@ from order_management.views import (
     OrderViewSet, OrderItemViewSet, DeliveryViewSet, PaymentViewSet
 )
 
-from blog.views import BlogViewSet
+from blogs.views import BlogViewSet
 
 
 router = DefaultRouter()

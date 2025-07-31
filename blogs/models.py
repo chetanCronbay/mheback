@@ -4,7 +4,7 @@ from products.models import Category
 class Blog(models.Model):
     blog_title = models.CharField(max_length=100)
     blog_category = models.ForeignKey(Category,on_delete=models.CASCADE, related_name='blogCategory', help_text="Blog category")
-    image1 = models.CharField(max_length=500, null=True, blank=True)
+    image1 = models.CharField(max_length=500, null=False, blank=False)
     description = models.TextField(null=True, blank=True)
     meta_title = models.CharField(max_length=200, null=True, blank=True)
     description1 = models.CharField(max_length=500, null=True, blank=True)
@@ -16,4 +16,3 @@ class Blog(models.Model):
 
     class Meta:
         db_table = 'blog_blog'
-

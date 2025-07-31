@@ -260,13 +260,14 @@ class VendorDetailSerializer(serializers.ModelSerializer):
     Includes user information and is used for retrieving vendor details.
     """
     user_info = serializers.SerializerMethodField()
+    user_banner = UserBannerSerializer(many=True, read_only=True, source='user.user_banner')
     application_date = serializers.DateTimeField(source='user.date_joined', read_only=True)
     is_approved = serializers.SerializerMethodField()
     
     class Meta:
         model = Vendor
         fields = [
-            'id', 'user_info', 'company_name', 'company_email', 
+            'id', 'user_info','user_banner', 'company_name', 'company_email', 
             'company_address', 'company_phone', 'brand', 'pcode', 
             'gst_no', 'application_date', 'is_approved'
         ]
