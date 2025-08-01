@@ -13,7 +13,7 @@ from products.serializers import ProductSerializer
 from .models import *
 from .serializers import *
 from util.security import IPRateLimiter, SecurityLogger
-from .permissions import IsAdmin, IsVendor, IsUser, IsOwnerOrAdmin, CanCreateReview
+from .permissions import IsAdmin, IsVendor, IsUser, IsOwnerOrAdmin, CanCreateReview, VendorAccessPermission
 import os
 from rest_framework.views import APIView
 from google.oauth2 import id_token
@@ -322,21 +322,23 @@ class VendorViewSet(viewsets.ModelViewSet):
     
     def get_permissions(self):
         """Return appropriate permissions based on action."""
-        # ✅ Action #1: Allow anyone to perform the 'list' action
-        if self.action == 'list':
-            permission_classes = [permissions.AllowAny]
-        elif self.action == 'create':
-            permission_classes = [permissions.IsAuthenticated]
+        
+        # 🎯 Use your new permission class as the default for most actions
+        if self.action in ['list', 'retrieve', 'create', 'update', 'partial_update']:
+            permission_classes = [VendorAccessPermission]
+        
+        # Keep specific overrides for admin-only or special actions
         elif self.action in ['destroy', 'approve']:
             permission_classes = [IsAdmin]
-        elif self.action in ['retrieve', 'update', 'partial_update', 'stats']:
-            permission_classes = [IsOwnerOrAdmin]
+            
         elif self.action == 'profile':
             permission_classes = [permissions.AllowAny]
-        elif self.action == 'my_stats':
+            
+        elif self.action in ['my_stats', 'my_vendor']:
             permission_classes = [permissions.IsAuthenticated]
+            
         else:
-            permission_classes = [permissions.IsAuthenticated]
+            permission_classes = [permissions.IsAuthenticated] # A safe default
         
         return [permission() for permission in permission_classes]
     

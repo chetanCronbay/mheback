@@ -28,30 +28,30 @@ class IsUser(permissions.BasePermission):
         return request.user.is_authenticated and request.user.role.id == Role.USER
 
 
+# In users/permissions.py
+# Replace your old IsOwnerOrAdmin with this one.
+
 class IsOwnerOrAdmin(permissions.BasePermission):
     """
-    Object-level permission that allows access to:
-    - Admins for any object
-    - Owners of the specific object
-    Used for protecting user-specific resources.
+    Allows anyone to view a user profile (read-only), but only the
+    profile owner or an admin can edit it.
     """
-
     def has_object_permission(self, request, view, obj):
-        if request.user.role.id == Role.ADMIN:
+        # 1. Allow read-only (GET, HEAD, OPTIONS) requests for everyone.
+        # This lets the public view user profiles.
+        if request.method in permissions.SAFE_METHODS:
             return True
-        # Case 1: The object being accessed is a User instance itself.
-        # Check for direct equality.
-        if isinstance(obj, User):
-            return obj == request.user
 
-        # Case 2: The object being accessed has a `user` attribute (e.g., a Vendor or Profile model).
-        # Check if the object's user is the same as the user making the request.
-        if hasattr(obj, 'user'):
-            return obj.user == request.user
+        # 2. For any other request method (PUT, PATCH, DELETE),
+        # the user must be authenticated.
+        if not request.user.is_authenticated:
+            return False
 
-        # Deny permission by default if ownership cannot be determined.
-        return False
-
+        # 3. If the user is authenticated, allow access if they are an
+        # admin OR they are the owner of the profile.
+        # 'obj' here is the user profile being accessed.
+        is_admin = hasattr(request.user, 'role') and request.user.role and request.user.role.id == Role.ADMIN
+        return is_admin or obj == request.user
 
 class IsVendorOwnerOrAdmin(permissions.BasePermission):
     """
@@ -108,3 +108,44 @@ class PublicReadOnly(permissions.BasePermission):
     """
     def has_permission(self, request, view):
         return request.method in permissions.SAFE_METHODS
+    
+
+class VendorAccessPermission(permissions.BasePermission):
+    """
+    Handles permissions for the VendorViewSet.
+    - Allows anyone to read (list/retrieve).
+    - Allows any authenticated user to create (apply).
+    - Allows the owner or an admin to update.
+    - Allows only an admin to delete.
+    """
+
+    def has_permission(self, request, view):
+        # Allow public read access for list view.
+        if view.action in ['list', 'retrieve', 'by_brand', 'profile']:
+            return True
+        # Allow any authenticated user to create a vendor application.
+        elif view.action == 'create':
+            return request.user.is_authenticated
+        # For other actions (like 'my_stats', 'approve'), they are handled by get_permissions in the view.
+        # Or you can define them here. For now, we assume the default is authenticated.
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        # Allow public read access for detail view.
+        if view.action == 'retrieve':
+            return True
+        
+        # At this point, for any write action, user must be authenticated.
+        if not request.user.is_authenticated:
+            return False
+
+        # Admins can do anything.
+        if hasattr(request.user, 'role') and request.user.role and request.user.role.id == Role.ADMIN:
+            return True
+
+        # Check if the user is the owner of the vendor profile for updating.
+        if view.action in ['update', 'partial_update']:
+            return obj.user == request.user
+
+        # By default, deny other actions like 'destroy' for non-admins.
+        return False
