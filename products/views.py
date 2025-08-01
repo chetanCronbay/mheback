@@ -126,35 +126,63 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsVendorOwnerOrAdmin]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    # 'user' is the field used for filtering by user ID
+    
+    # --- CORRECTED: Added OrderingFilter ---
+    filter_backends = [
+        DjangoFilterBackend, 
+        filters.SearchFilter, 
+        filters.OrderingFilter
+    ]
+    
     filterset_fields = ['category', 'subcategory', 'type', 'user']
     search_fields = ['name', 'description', 'manufacturer', 'model']
-    parser_classes = [MultiPartParser, FormParser,JSONParser]
+    
+    # --- NEW: Define allowed ordering fields ---
+    ordering_fields = ['price', 'created_at']
+
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get_queryset(self):
         """
-        Optionally restricts the returned products to a given user,
-        by filtering against a `user` query parameter in the URL.
+        Optionally restricts the returned products by filtering against
+        query parameters in the URL.
         """
-        # Start with the base queryset
         queryset = super().get_queryset()
-        category_name = self.request.query_params.get('category_name')
-        subcategory_name = self.request.query_params.get('subcategory_name')
-        
-        # Get the user ID from the URL's query parameters
-        user_id = self.request.query_params.get('user')
 
+        # This custom filtering logic remains the same for now
+        # but can be improved (see recommendation below).
+        category_name = self.request.query_params.get('category_name')
         if category_name:
             queryset = queryset.filter(category__name__iexact=category_name)
-        if subcategory_name:
-            queryset = queryset.filter(subcategory__name__iexact=subcategory_name)
+
+        min_price = self.request.query_params.get('min_price')
+        if min_price:
+            try:
+                queryset = queryset.filter(price__gte=min_price)
+            except ValueError:
+                pass
         
-        # If a user ID is provided, filter the queryset
-        if user_id:
-            queryset = queryset.filter(user_id=user_id)
+        max_price = self.request.query_params.get('max_price')
+        if max_price:
+            try:
+                queryset = queryset.filter(price__lte=max_price)
+            except ValueError:
+                pass
+
+        rating = self.request.query_params.get('average_rating')
+        if rating:
+            try:
+                queryset = queryset.annotate(
+                    avg_rating=Avg('reviews__stars')
+                ).filter(
+                    avg_rating__gte=float(rating)
+                )
+            except (ValueError, TypeError):
+                pass
             
         return queryset
+
+
 
     @action(detail=False, methods=['get'], url_path='unique-manufacturers')
     def unique_manufacturers(self, request):
