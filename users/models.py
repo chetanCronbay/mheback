@@ -253,3 +253,46 @@ class Reviews(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.stars} stars"
+    
+    
+# New Model for Training Registrations
+class TrainingRegistration(models.Model):
+    """
+    Model to store submissions from the training registration form.
+    """
+    training_name = models.CharField(max_length=255)
+    full_name = models.CharField(max_length=255)
+    company_name = models.CharField(max_length=255)
+    phone = models.CharField(max_length=20, validators=[
+        RegexValidator(
+            regex=r'^\+?1?\d{9,15}$',
+            message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
+        )
+    ])
+    email = models.EmailField()
+    message = models.TextField(blank=True, null=True)
+    submitted_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Training Registration'
+        verbose_name_plural = 'Training Registrations'
+        ordering = ['-submitted_at']
+
+    def __str__(self):
+        return f"Training: {self.training_name} - {self.full_name}"
+
+# New Model for Newsletter Subscriptions
+class NewsletterSubscription(models.Model):
+    """
+    Model to store email addresses for newsletter subscriptions.
+    """
+    email = models.EmailField(unique=True)
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Newsletter Subscription'
+        verbose_name_plural = 'Newsletter Subscriptions'
+        ordering = ['-subscribed_at']
+
+    def __str__(self):
+        return self.email

@@ -897,3 +897,134 @@ class VendorDashboardView(generics.RetrieveAPIView):
             completed_fields += 1
             
         return round((completed_fields / total_fields) * 100, 2)
+    
+    
+    
+class TrainingRegistrationViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows training registrations to be viewed or edited.
+    Anyone can submit a training registration.
+    """
+    queryset = TrainingRegistration.objects.all()
+    serializer_class = TrainingRegistrationSerializer
+    permission_classes = [permissions.AllowAny] # Anyone can perform CRUD operations
+    authentication_classes = [] # No authentication required
+
+    def perform_create(self, serializer):
+        """
+        Save the training registration and send confirmation/notification emails.
+        """
+        instance = serializer.save()
+        
+        # Send confirmation email to the registrant
+        try:
+            send_mail(
+                subject=f"Training Registration Confirmation - {instance.training_name}",
+                message=(
+                    f"Dear {instance.full_name},\n\n"
+                    f"Thank you for registering for our '{instance.training_name}' training program.\n"
+                    f"We have received your details and will get in touch with you shortly.\n\n"
+                    f"Here are your submitted details:\n"
+                    f"Full Name: {instance.full_name}\n"
+                    f"Company Name: {instance.company_name}\n"
+                    f"Phone: {instance.phone}\n"
+                    f"Email: {instance.email}\n"
+                    f"Message: {instance.message or 'N/A'}\n\n"
+                    f"Best regards,\nThe MHE Bazar Team"
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[instance.email],
+                fail_silently=True,
+            )
+        except Exception as e:
+            logger.error(f"Failed to send training registration confirmation email to {instance.email}: {e}")
+
+        # Send notification email to the admin
+        try:
+            send_mail(
+                subject=f"New Training Registration - {instance.training_name}",
+                message=(
+                    f"A new training registration has been submitted.\n\n"
+                    f"Training Name: {instance.training_name}\n"
+                    f"Full Name: {instance.full_name}\n"
+                    f"Company Name: {instance.company_name}\n"
+                    f"Phone: {instance.phone}\n"
+                    f"Email: {instance.email}\n"
+                    f"Message: {instance.message or 'N/A'}\n"
+                    f"Submitted At: {instance.submitted_at}\n"
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[settings.ADMIN_EMAIL], # Or a specific training admin email
+                fail_silently=True,
+            )
+        except Exception as e:
+            logger.error(f"Failed to send new training registration notification email to admin: {e}")
+
+# New ViewSet for Newsletter Subscriptions
+class NewsletterSubscriptionViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows newsletter subscriptions to be created, viewed, or deleted.
+    Anyone can subscribe to the newsletter.
+    """
+    queryset = NewsletterSubscription.objects.all()
+    serializer_class = NewsletterSubscriptionSerializer
+    permission_classes = [permissions.AllowAny] # Anyone can subscribe
+    authentication_classes = [] # No authentication required
+
+    def create(self, request, *args, **kwargs):
+        """
+        Handle newsletter subscription creation.
+        Ensures unique emails and sends confirmation.
+        """
+        email = request.data.get('email')
+        if not email:
+            return Response({'detail': 'Email is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if email already subscribed
+        if NewsletterSubscription.objects.filter(email=email).exists():
+            return Response({'detail': 'This email is already subscribed.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        """
+        Save the newsletter subscription and send confirmation/notification emails.
+        """
+        instance = serializer.save()
+
+        # Send confirmation email to the subscriber
+        try:
+            send_mail(
+                subject="Newsletter Subscription Confirmation",
+                message=(
+                    f"Dear Subscriber,\n\n"
+                    f"Thank you for subscribing to our newsletter! You'll now receive updates on our latest products, offers, and news.\n\n"
+                    f"If you wish to unsubscribe at any time, please contact us.\n\n"
+                    f"Best regards,\nThe MHE Bazar Team"
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[instance.email],
+                fail_silently=True,
+            )
+        except Exception as e:
+            logger.error(f"Failed to send newsletter confirmation email to {instance.email}: {e}")
+
+        # Send notification email to the admin
+        try:
+            send_mail(
+                subject="New Newsletter Subscriber",
+                message=(
+                    f"A new email has subscribed to the newsletter:\n\n"
+                    f"Email: {instance.email}\n"
+                    f"Subscribed At: {instance.subscribed_at}\n"
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[settings.ADMIN_EMAIL], # Or a specific marketing admin email
+                fail_silently=True,
+            )
+        except Exception as e:
+            logger.error(f"Failed to send new newsletter subscriber notification email to admin: {e}")

@@ -12,7 +12,7 @@ from products.views import (
     CartViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet
 )
 from users.views import (
-    MyVendorStatsView, RoleViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin, RegisterView, EmailTokenObtainPairView, VendorDashboardView,
+    MyVendorStatsView, NewsletterSubscriptionViewSet, RoleViewSet, TrainingRegistrationViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin, RegisterView, EmailTokenObtainPairView, VendorDashboardView,
     VendorViewSet, VendorApplicationView, MyVendorApplicationView, ApprovedVendorListView, VendorStatsView
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -37,6 +37,10 @@ router.register(r'rentals', RentalViewSet, basename='rental')
 router.register(r'contact-forms', ContactFormViewSet, basename='contactform')
 router.register(r'banners', BannerViewSet, basename='banner') 
 router.register(r'reviews', ReviewViewSet, basename='review')
+
+
+router.register(r'training-registrations', TrainingRegistrationViewSet, basename='training-registration')
+router.register(r'newsletter-subscriptions', NewsletterSubscriptionViewSet, basename='newsletter-subscription')
 
 # ✅ Vendor Management Routes
 router.register(r'vendor', VendorViewSet, basename='vendor')
