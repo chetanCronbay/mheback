@@ -193,7 +193,7 @@ DATABASES = {
         'PASSWORD': os.getenv('DB_PASSWORD', 'pass'),
         'HOST': os.getenv('DB_HOST', 'localhost'),
         'PORT': os.getenv('DB_PORT', '3306'),
-        'CONN_MAX_AGE': 600, # Connection pooling
+        'CONN_MAX_AGE': 600,  # Connection pooling
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4',
@@ -202,14 +202,18 @@ DATABASES = {
 }
 
 # Use dj_database_url for dynamic database configuration based on DATABASE_URL env var (e.g., Render.com)
+# This check is crucial for handling different database types in different environments.
 if os.getenv('DATABASE_URL'):
+    # If DATABASE_URL is set, we assume it's a production-like environment
+    # and completely replace the default database configuration.
     db_config = dj_database_url.config(
         default=os.environ.get("DATABASE_URL"),
-        conn_max_age=600, # Same as above
-        ssl_require=ENVIRONMENT == 'production' # Require SSL in production
+        conn_max_age=600,
+        ssl_require=ENVIRONMENT == 'production'  # Require SSL in production
     )
-    DATABASES['default'].update(db_config)
-
+    # The key change is to use assignment (=) instead of update()
+    # to prevent mixing MySQL-specific options with the new PostgreSQL configuration.
+    DATABASES['default'] = db_config
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
