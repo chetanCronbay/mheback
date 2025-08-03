@@ -262,27 +262,35 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer = WishlistSerializer(wishlist_item)
         return Response(serializer.data)
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='new-arrival')
     def new_arrival(self, request):
         """
         Get top 10 products by creation date (most recent first).
         """
-        products = Product.objects.order_by('-created_at')[:10]
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
+        products = Product.objects.filter(is_active=True, status='approved').order_by('-created_at')[:10]
+        serializer = self.get_serializer(products, many=True)
+        return Response({
+            'count': products.count(),
+            'products': serializer.data
+        })
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='top-rated')
     def top_rated(self, request):
         """
         Get top 10 products by average review star count.
+        Products without reviews are excluded.
         """
         products = (
-            Product.objects
+            Product.objects.filter(is_active=True, status='approved')
             .annotate(avg_rating=Avg('reviews__stars'))
+            .filter(avg_rating__isnull=False) # Ensure only products with ratings are included
             .order_by('-avg_rating', '-created_at')[:10]
         )
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
+        serializer = self.get_serializer(products, many=True)
+        return Response({
+            'count': products.count(),
+            'products': serializer.data
+        })
 
     @action(detail=False, methods=['get'])
     def most_popular(self, request):
