@@ -278,7 +278,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         """
         products = (
             Product.objects
-            .annotate(avg_rating=Avg('reviews__star_count'))
+            .annotate(avg_rating=Avg('reviews__stars'))
             .order_by('-avg_rating', '-created_at')[:10]
         )
         serializer = ProductSerializer(products, many=True)
@@ -290,16 +290,17 @@ class ProductViewSet(viewsets.ModelViewSet):
         Get top 10 products by popularity (sum of quotes, wishlists, carts).
         """
         products = (
-            Product.objects
+            Product.objects.filter(is_active=True, status='approved')
             .annotate(
-                quote_count=Count('quotes', distinct=True),
-                wishlist_count=Count('wishlist_items', distinct=True),
-                cart_count=Count('cart_items', distinct=True),
+                # CORRECTED: Use the correct reverse relationship names
+                quote_count=Count('quote', distinct=True),
+                wishlist_count=Count('wishlist', distinct=True),
+                cart_count=Count('cart', distinct=True),
                 popularity=F('quote_count') + F('wishlist_count') + F('cart_count')
             )
             .order_by('-popularity', '-created_at')[:10]
         )
-        serializer = ProductSerializer(products, many=True)
+        serializer = self.get_serializer(products, many=True)
         return Response(serializer.data)
 
     @action(detail=True, methods=['delete'], url_path='delete-images')
