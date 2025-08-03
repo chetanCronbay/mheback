@@ -41,7 +41,7 @@ if DEBUG:
 else:
     # IMPORTANT: Replace 'mheback.onrender.com' with your actual Render.com hostname
     # and 'your-production-frontend-domain.com' with your actual frontend domain.
-    ALLOWED_HOSTS = ['mheback.onrender.com', 'your-production-frontend-domain.com','mhebazar.vercel.app','162.240.152.29']
+    ALLOWED_HOSTS = ['mheback.onrender.com', 'mhebazar.in','mhebazar.vercel.app','162.240.152.29']
     # You might also need to add your Render internal hostname if Render requires it,
     # but typically the external one is sufficient.
 
@@ -317,9 +317,9 @@ CORS_ALLOWED_ORIGINS: List[str] = []
 if not DEBUG:
     # IMPORTANT: Replace with your actual production frontend domains
     CORS_ALLOWED_ORIGINS = [
-        "https://your-production-frontend-domain.com",
+        "https://www.mhebazar.in/",
         "https://mheback.onrender.com", # If your backend itself needs to make CORS requests to itself
-        # 'http://162.240.152.29:8000/',
+        'http://162.240.152.29:8000/',
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
@@ -327,7 +327,8 @@ else:
         "http://127.0.0.1:3000",
         "http://192.168.0.135:3000", # For testing from a specific IP on local network
         "https://mhebazar.vercel.app",
-        # 'http://162.240.152.29:8000/',
+        'http://162.240.152.29:8000/',
+        "https://www.mhebazar.in/",
         # Add other development origins as needed
     ]
 
