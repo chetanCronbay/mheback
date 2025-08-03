@@ -41,7 +41,7 @@ if DEBUG:
 else:
     # IMPORTANT: Replace 'mheback.onrender.com' with your actual Render.com hostname
     # and 'your-production-frontend-domain.com' with your actual frontend domain.
-    ALLOWED_HOSTS = ['mheback.onrender.com', 'mhebazar.in','mhebazar.vercel.app','162.240.152.29']
+    ALLOWED_HOSTS = ['mheback.onrender.com', 'mhebazar.in','mhebazar.vercel.app','162.240.152.29','localhost', '127.0.0.1', 'localhost:3000',]
     # You might also need to add your Render internal hostname if Render requires it,
     # but typically the external one is sufficient.
 
