@@ -8,6 +8,6 @@ class BlogViewSet(viewsets.ModelViewSet):
     - Public can read (list and detail).
     - Authenticated users can create, update, and delete.
     """
-    queryset = Blog.objects.all()
+    queryset = Blog.objects.all().order_by('-created_at')
     serializer_class = BlogSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly] 
