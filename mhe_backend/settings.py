@@ -37,11 +37,11 @@ DEBUG = ENVIRONMENT == 'development'
 # Do NOT include paths like /api.
 ALLOWED_HOSTS: List[str] = []
 if DEBUG:
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'localhost:3000', '192.168.0.135:3000', 'mheback.onrender.com','mhebazar.vercel.app','162.240.152.29']
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'localhost:3000', 'api.mhebazar.in', 'mheback.onrender.com','mhebazar.vercel.app','162.240.152.29']
 else:
     # IMPORTANT: Replace 'mheback.onrender.com' with your actual Render.com hostname
     # and 'your-production-frontend-domain.com' with your actual frontend domain.
-    ALLOWED_HOSTS = ['mheback.onrender.com', 'mhebazar.in','mhebazar.vercel.app','162.240.152.29','localhost', '127.0.0.1', 'localhost:3000']
+    ALLOWED_HOSTS = ['mheback.onrender.com', 'mhebazar.in', 'api.mhebazar.in','mhebazar.vercel.app','162.240.152.29','localhost', '127.0.0.1', 'localhost:3000']
     # You might also need to add your Render internal hostname if Render requires it,
     # but typically the external one is sufficient.
 
@@ -320,6 +320,13 @@ if not DEBUG:
         "https://www.mhebazar.in",
         "https://mheback.onrender.com", # If your backend itself needs to make CORS requests to itself
         'http://162.240.152.29:8000',
+        "https://mhebazar.vercel.app",
+        "https://mhebazar.in",
+        "https://api.mhebazar.in"
+      
+        # If you have a specific port for production
+        # Add other production origins as needed
+        
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
@@ -329,6 +336,8 @@ else:
         "https://mhebazar.vercel.app",
         'http://162.240.152.29:8000',
         "https://www.mhebazar.in",
+        "https://api.mhebazar.in"
+        
         # Add other development origins as needed
     ]
 
