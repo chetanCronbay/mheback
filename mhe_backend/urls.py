@@ -13,7 +13,7 @@ from products.views import (
 )
 from users.views import (
     MyVendorStatsView, NewsletterSubscriptionViewSet, RoleViewSet, TrainingRegistrationViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin, RegisterView, EmailTokenObtainPairView, VendorDashboardView,
-    VendorViewSet, VendorApplicationView, MyVendorApplicationView, ApprovedVendorListView, VendorStatsView
+    VendorViewSet, VendorApplicationView, MyVendorApplicationView, ApprovedVendorListView, VendorStatsView, ForgotPasswordRequestView, ResetPasswordView
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -68,6 +68,10 @@ urlpatterns = [
     path('api/vendor/stats/', VendorStatsView.as_view(), name='vendor-stats'),
     path('api/vendor/my-stats/', MyVendorStatsView.as_view(), name='my-vendor-stats'),  # Individual vendor
     path('api/vendor/dashboard/', VendorDashboardView.as_view(), name='vendor-dashboard'),  # Comprehensive dashboard
+
+    # ✅ Forgot Password Endpoints
+    path('api/forgot-password/', ForgotPasswordRequestView.as_view(), name='forgot-password'),
+    path('api/reset-password/', ResetPasswordView.as_view(), name='reset-password'),
     
     #blog URLs
     path('api/blogs/', BlogViewSet.as_view({'get': 'list', 'post': 'create'}), name='blog-list-create'),

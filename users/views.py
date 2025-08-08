@@ -22,6 +22,10 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
 from django.db import transaction
+from django.core.mail import send_mail
+from django.conf import settings
+import random
+from django.core.cache import cache
         
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -234,6 +238,77 @@ class GoogleLogin(APIView):
             print("Google login error:", e)  # Add this line for debugging
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+# forget password
+class ForgotPasswordRequestView(APIView):
+    permission_classes = []
+
+    def post(self, request):
+        email = request.data.get("email")
+        if not email:
+            return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # We don't need to assign the user object here, just check for existence
+            User.objects.get(email=email)
+        except User.DoesNotExist:
+            # Security best practice: Don't reveal if an email exists or not.
+            # Pretend the email was sent successfully to prevent user enumeration attacks.
+            return Response({"detail": "If an account with this email exists, an OTP has been sent."}, status=status.HTTP_200_OK)
+
+        otp = str(random.randint(100000, 999999))
+
+        # --- SECURITY FIX ---
+        # Store the OTP in the cache with a 10-minute expiry (600 seconds)
+        # The key is unique to the email to avoid conflicts.
+        cache.set(f"otp_{email}", otp, timeout=600)
+
+        # Send OTP via email
+        send_mail(
+            subject="Password Reset OTP",
+            message=f"Your OTP is {otp}. It is valid for 10 minutes.",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[email],
+        )
+
+        # --- SECURITY FIX ---
+        # DO NOT return the OTP in the response.
+        return Response({"detail": "If an account with this email exists, an OTP has been sent."}, status=status.HTTP_200_OK)
+
+class ResetPasswordView(APIView):
+    permission_classes = []
+
+    def post(self, request):
+        email = request.data.get("email")
+        otp = request.data.get("otp")  # Get OTP from request
+        new_password = request.data.get("new_password")
+
+        if not all([email, otp, new_password]):
+            return Response({"error": "Email, OTP, and new password are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # --- SECURITY FIX ---
+        # Verify the OTP
+        stored_otp = cache.get(f"otp_{email}")
+        if not stored_otp:
+            return Response({"error": "OTP has expired or is invalid. Please request a new one."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if stored_otp != otp:
+            return Response({"error": "Invalid OTP."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            # This case is unlikely if the OTP was valid, but good to have
+            return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # If OTP is correct, set the new password and save
+        user.set_password(new_password)
+        user.save()
+
+        # --- SECURITY FIX ---
+        # OTP has been used, so delete it from the cache
+        cache.delete(f"otp_{email}")
+
+        return Response({"detail": "Password reset successfully"}, status=status.HTTP_200_OK)
 
 # vendor Views
 class VendorApplicationView(generics.CreateAPIView):
