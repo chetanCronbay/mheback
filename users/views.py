@@ -604,6 +604,19 @@ class VendorViewSet(viewsets.ModelViewSet):
                 'last_updated': vendor.user.last_login or vendor.user.date_joined
             }
             
+            total_quotes = Quote.objects.filter(product__user=vendor.user).count()
+            pending_quotes = Quote.objects.filter(product__user=vendor.user, status='pending').count()
+            
+            total_rentals = Rental.objects.filter(product__user=vendor.user).count()
+            pending_rentals = Rental.objects.filter(product__user=vendor.user, status='pending').count()
+
+            stats['enquiry_stats'] = {
+                'total_quotes': total_quotes,
+                'pending_quotes': pending_quotes,
+                'total_rentals': total_rentals,
+                'pending_rentals': pending_rentals,
+                'total_enquiries': total_quotes + total_rentals
+            }
             # Add product stats if Product model exists
             # from your_app.models import Product
             # stats['products'] = {
@@ -760,6 +773,19 @@ class MyVendorStatsView(generics.RetrieveAPIView):
         
         # Only show detailed stats if vendor is approved
         if vendor.user.role.id == Role.VENDOR:
+            total_quotes = Quote.objects.filter(product__user=vendor.user).count()
+            pending_quotes = Quote.objects.filter(product__user=vendor.user, status='pending').count()
+            
+            total_rentals = Rental.objects.filter(product__user=vendor.user).count()
+            pending_rentals = Rental.objects.filter(product__user=vendor.user, status='pending').count()
+
+            stats['enquiry_stats'] = {
+                'total_quotes': total_quotes,
+                'pending_quotes': pending_quotes,
+                'total_rentals': total_rentals,
+                'pending_rentals': pending_rentals,
+                'total_enquiries': total_quotes + total_rentals
+            }
             # You can add more vendor-specific stats here
             # For example, if you have Product model related to vendors:
             
