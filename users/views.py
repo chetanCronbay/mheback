@@ -26,6 +26,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 import random
 from django.core.cache import cache
+from products.models import Product, Quote, Rental
         
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
