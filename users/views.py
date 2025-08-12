@@ -975,7 +975,79 @@ class VendorDashboardView(generics.RetrieveAPIView):
             
         return round((completed_fields / total_fields) * 100, 2)
     
-    
+class VendorNotificationListView(generics.ListAPIView):
+    """
+    A dedicated endpoint to list all aggregated event notifications
+    for the currently authenticated vendor.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    # We don't define a serializer_class because we are building the response manually.
+
+    def list(self, request, *args, **kwargs):
+        """
+        Overrides the default list method to aggregate data from multiple models.
+        """
+        try:
+            vendor = Vendor.objects.get(user=request.user)
+        except Vendor.DoesNotExist:
+            return Response({"error": "No vendor profile found for this user."}, status=status.HTTP_404_NOT_FOUND)
+
+        notifications = []
+        vendor_user = request.user
+        since_date = timezone.now() - timezone.timedelta(days=30) # Look back 30 days
+
+        # 1. Fetch new quote requests
+        quote_requests = Quote.objects.filter(product__user=vendor_user, created_at__gte=since_date)
+        for quote in quote_requests:
+            notifications.append({
+                'type': 'new_quote',
+                'message': f"You have a new quote request for '{quote.product.name}' from user {quote.user.username}.",
+                'timestamp': quote.created_at,
+                'related_object': {'product_id': quote.product.id, 'quote_id': quote.id}
+            })
+
+        # 2. Fetch new rental requests
+        rental_requests = Rental.objects.filter(product__user=vendor_user, created_at__gte=since_date)
+        for rental in rental_requests:
+            notifications.append({
+                'type': 'new_rental',
+                'message': f"You have a new rental request for '{rental.product.name}' from user {rental.user.username}.",
+                'timestamp': rental.created_at,
+                'related_object': {'product_id': rental.product.id, 'rental_id': rental.id}
+            })
+
+        # 3. Fetch product status changes (approved/rejected)
+        product_status_updates = Product.objects.filter(user=vendor_user, status__in=['approved', 'rejected'], updated_at__gte=since_date)
+        for product in product_status_updates:
+            if product.status == 'approved':
+                message = f"Congratulations! Your product '{product.name}' has been approved."
+                notif_type = 'product_approved'
+            else:
+                message = f"Your product '{product.name}' was rejected. Reason: {product.rejection_reason or 'Not specified'}."
+                notif_type = 'product_rejected'
+            
+            notifications.append({
+                'type': notif_type,
+                'message': message,
+                'timestamp': product.updated_at,
+                'related_object': {'product_id': product.id}
+            })
+
+        # 4. Fetch low stock warnings
+        LOW_STOCK_THRESHOLD = 5
+        low_stock_products = Product.objects.filter(user=vendor_user, is_active=True, stock_quantity__gt=0, stock_quantity__lte=LOW_STOCK_THRESHOLD)
+        for product in low_stock_products:
+             notifications.append({
+                'type': 'low_stock',
+                'message': f"Warning: Stock is low for '{product.name}'. Only {product.stock_quantity} left.",
+                'timestamp': product.updated_at,
+                'related_object': {'product_id': product.id}
+            })
+            
+        # Sort all aggregated notifications by timestamp, newest first
+        sorted_notifications = sorted(notifications, key=lambda x: x['timestamp'], reverse=True)
+        
+        return Response(sorted_notifications)
     
 class TrainingRegistrationViewSet(viewsets.ModelViewSet):
     """
