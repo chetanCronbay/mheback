@@ -524,9 +524,14 @@ class QuoteViewSet(viewsets.ModelViewSet):
     throttle_classes = [QuoteThrottle]
 
     def get_queryset(self):
-        if self.request.user.role.id == Role.ADMIN:  # Assuming you have Role model
+        user = self.request.user
+        if user.role.id == Role.ADMIN:
             return Quote.objects.all()
-        return Quote.objects.filter(user=self.request.user)
+        # Allow vendors to see quotes for products they own
+        elif user.role.name == 'Vendor':
+            return Quote.objects.filter(product__user=user)
+        # Allow normal users to see their own quotes
+        return Quote.objects.filter(user=user)
 
     def perform_create(self, serializer):
         recent_requests = Quote.objects.filter(
@@ -565,9 +570,14 @@ class RentalViewSet(viewsets.ModelViewSet):
     throttle_classes = [RentalThrottle]
 
     def get_queryset(self):
-        if self.request.user.role.id == Role.ADMIN:
+        user = self.request.user
+        if user.role.id == Role.ADMIN:
             return Rental.objects.all()
-        return Rental.objects.filter(user=self.request.user)
+        # Allow vendors to see rentals for products they own
+        elif user.role.name == 'Vendor':
+            return Rental.objects.filter(product__user=user)
+        # Allow normal users to see their own rentals
+        return Rental.objects.filter(user=user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
