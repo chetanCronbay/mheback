@@ -313,6 +313,13 @@ AUTH_USER_MODEL = 'users.User'
 # IMPORTANT: Never use CORS_ALLOW_ALL_ORIGINS = True in production!
 CORS_ALLOW_ALL_ORIGINS = DEBUG # Allows all origins ONLY in DEBUG mode
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://api.mhebazar.in",
+    "https://mhebazar.in",            # if needed for admin login from main domain
+    "https://www.mhebazar.in",        # optional if you also use www
+]
+
+
 CORS_ALLOWED_ORIGINS: List[str] = []
 if not DEBUG:
     # IMPORTANT: Replace with your actual production frontend domains
@@ -322,7 +329,7 @@ if not DEBUG:
         'http://162.240.152.29:8000',
         "https://mhebazar.vercel.app",
         "https://mhebazar.in",
-        "https://api.mhebazar.in"
+        "https://api.mhebazar.in",
       
         # If you have a specific port for production
         # Add other production origins as needed
