@@ -22,11 +22,13 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
 from django.db import transaction
+from django.db.models import Count
 from django.core.mail import send_mail
 from django.conf import settings
 import random
 from django.core.cache import cache
 from products.models import Product, Quote, Rental
+from rest_framework.filters import OrderingFilter
         
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -704,17 +706,54 @@ class MyVendorApplicationView(generics.RetrieveUpdateAPIView):
 
 class ApprovedVendorListView(generics.ListAPIView):
     """
-    Public view to list all approved vendors.
+    Public view to list all approved vendors with filtering and ordering
+    handled directly within the view.
     """
     serializer_class = VendorProfileSerializer
     permission_classes = [permissions.AllowAny]
     
+    # OrderingFilter is still used for sorting
+    filter_backends = [OrderingFilter]
+    ordering_fields = ['company_name', 'user__date_joined', 'product_count']
+    ordering = ['-user__date_joined']
+
     def get_queryset(self):
-        """Return only approved vendors."""
-        return Vendor.objects.select_related('user', 'user__role').filter(
+        """
+        Builds the queryset, annotates it, and applies filters from
+        URL query parameters.
+        """
+        # Start with the base queryset
+        queryset = Vendor.objects.select_related('user', 'user__role').filter(
             user__role__id=Role.VENDOR,
             user__is_active=True
+        ).annotate(
+            product_count=Count('user__products')
         )
+
+        # --- Manual Filtering Logic ---
+        params = self.request.query_params
+
+        # Filter by brand (case-insensitive contains)
+        if brand_query := params.get('brand__icontains'):
+            queryset = queryset.filter(brand__icontains=brand_query)
+
+        # Filter by minimum product count
+        if min_products := params.get('product_count_min'):
+            queryset = queryset.filter(product_count__gte=int(min_products))
+
+        # Filter by maximum product count
+        if max_products := params.get('product_count_max'):
+            queryset = queryset.filter(product_count__lte=int(max_products))
+        
+        # Filter by date joined (after a certain date)
+        if date_after := params.get('date_joined_after'):
+            queryset = queryset.filter(user__date_joined__gte=date_after)
+
+        # Filter by date joined (before a certain date)
+        if date_before := params.get('date_joined_before'):
+            queryset = queryset.filter(user__date_joined__lte=date_before)
+
+        return queryset
 
 
 class VendorStatsView(generics.RetrieveAPIView):

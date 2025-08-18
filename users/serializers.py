@@ -370,12 +370,13 @@ class VendorProfileSerializer(serializers.ModelSerializer):
     Used for showing vendor information to customers.
     """
     user_info = serializers.SerializerMethodField()
+    product_count = serializers.IntegerField(read_only=True)
     
     class Meta:
         model = Vendor
         fields = [
             'id','user_info', 'company_name', 'brand', 'company_address', 
-            'pcode'
+            'pcode', 'product_count',
         ]
 
     # users/serializers.py
