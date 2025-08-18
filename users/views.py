@@ -81,7 +81,7 @@ class UserViewSet(viewsets.ModelViewSet):
         Upload multiple banner images to a specific user.
         """
         user = self.get_object()
-        images = request.FILES.get('user_banner')
+        images = request.FILES.getlist('user_banner')
 
         if not images:
             return Response({"detail": "No images uploaded."}, status=status.HTTP_400_BAD_REQUEST)
