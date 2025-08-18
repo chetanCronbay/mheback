@@ -182,7 +182,20 @@ class ProductViewSet(viewsets.ModelViewSet):
             
         return queryset
 
-
+    @action(detail=False, methods=['get'], url_path='map-user')
+    def map_user(self, request):
+        """
+        Provides a simple list mapping each product ID to its owner's user ID.
+        This is a lightweight endpoint optimized for frontend filtering.
+        """
+        # 1. Get the optimized queryset
+        queryset = Product.objects.only('id', 'user')
+        
+        # 2. Serialize the data
+        serializer = ProductUserMapSerializer(queryset, many=True)
+        
+        # 3. Return the serialized data in a Response object
+        return Response(serializer.data)
 
     @action(detail=False, methods=['get'], url_path='unique-manufacturers')
     def unique_manufacturers(self, request):
@@ -611,3 +624,4 @@ class RentalViewSet(viewsets.ModelViewSet):
         rental.save()
         serializer = self.get_serializer(rental)
         return Response(serializer.data)
+    

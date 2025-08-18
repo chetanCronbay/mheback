@@ -58,6 +58,14 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_average_rating(self, obj):
         return obj.get_average_rating()
 
+class ProductUserMapSerializer(serializers.ModelSerializer):
+    """
+    A lean serializer that only outputs the product ID and its associated user ID.
+    """
+    class Meta:
+        model = Product
+        fields = ['id', 'user']        
+
 class CartSerializer(serializers.ModelSerializer):
     product_details = ProductSerializer(source='product', read_only=True)
     total_price = serializers.SerializerMethodField()
