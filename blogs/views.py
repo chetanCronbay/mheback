@@ -11,3 +11,4 @@ class BlogViewSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all().order_by('-created_at')
     serializer_class = BlogSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly] 
+    lookup_field = 'blog_url' 

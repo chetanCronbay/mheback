@@ -75,8 +75,18 @@ urlpatterns = [
     path('api/reset-password/', ResetPasswordView.as_view(), name='reset-password'),
     
     #blog URLs
-    path('api/blogs/', BlogViewSet.as_view({'get': 'list', 'post': 'create'}), name='blog-list-create'),
-    path('api/blogs/<int:pk>/', BlogViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='blog-detail'),
+    path('api/blogs/', BlogViewSet.as_view({
+          'get': 'list',
+          'post': 'create'
+      }), name='blog-list-create'),
+      
+      # Change this line from <int:pk> to <str:blog_url>
+      path('api/blogs/<str:blog_url>/', BlogViewSet.as_view({
+          'get': 'retrieve',
+          'put': 'update',
+          'patch': 'partial_update',
+          'delete': 'destroy'
+      }), name='blog-detail'),
     
     
     # ✅ Default router URLs (includes all ViewSet routes)
