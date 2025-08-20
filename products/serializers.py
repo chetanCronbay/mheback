@@ -42,6 +42,8 @@ class ProductSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name', read_only=True)
     subcategory_name = serializers.CharField(source='subcategory.name', read_only=True)
     user_name = serializers.CharField(source='user.username', read_only=True)
+    user_image = serializers.ImageField(source='user.profile_photo', read_only=True)
+    user_description = serializers.CharField(source='user.description')
     images = ProductImageSerializer(many=True, read_only=True)
     brochure = serializers.FileField(required=False, allow_null=True)
     average_rating = serializers.SerializerMethodField()
