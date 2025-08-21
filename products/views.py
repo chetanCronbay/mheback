@@ -532,19 +532,41 @@ class WishlistViewSet(viewsets.ModelViewSet):
 
 
 class QuoteViewSet(viewsets.ModelViewSet):
+    """
+    A ViewSet for viewing and managing quotes.
+    - Admins can see all quotes.
+    - Vendors can see quotes related to their products.
+    - Users can see their own quotes.
+    - Supports filtering by status, searching, and ordering.
+    """
     serializer_class = QuoteSerializer
-    permission_classes = [IsAuthenticated]  # Only authenticated users
-    throttle_classes = [QuoteThrottle]
+    permission_classes = [IsAuthenticated]
+    # throttle_classes = [QuoteThrottle] # Uncomment if you have this
+
+    # 1. Add Filter Backends
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    
+    # 2. Define fields for each backend
+    filterset_fields = ['status']  # Enables: /quotes/?status=pending
+    search_fields = ['product__name', 'user__username', 'product__user__username'] # Enables: /quotes/?search=some_term
+    ordering_fields = ['created_at', 'product__name'] # Enables: /quotes/?ordering=-created_at
 
     def get_queryset(self):
+        """
+        Dynamically filter the queryset based on the user's role.
+        """
         user = self.request.user
+        
+        # Use select_related to optimize DB queries by pre-fetching related objects
+        base_queryset = Quote.objects.select_related('product', 'user', 'product__user')
+
         if user.role.id == Role.ADMIN:
-            return Quote.objects.all()
-        # Allow vendors to see quotes for products they own
-        elif user.role.name == 'Vendor':
-            return Quote.objects.filter(product__user=user)
-        # Allow normal users to see their own quotes
-        return Quote.objects.filter(user=user)
+            return base_queryset.all().order_by('-created_at')
+        
+        if user.role.name == 'Vendor':
+            return base_queryset.filter(product__user=user).order_by('-created_at')
+            
+        return base_queryset.filter(user=user).order_by('-created_at')
 
     def perform_create(self, serializer):
         recent_requests = Quote.objects.filter(
@@ -582,15 +604,22 @@ class RentalViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]  # Only authenticated users
     throttle_classes = [RentalThrottle]
 
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['status']  # For filtering by status (e.g., /rentals/?status=pending)
+    search_fields = ['product__name', 'user__username', 'product__user__username'] # For search
+    ordering_fields = ['created_at', 'product__name'] # For sorting
+
     def get_queryset(self):
         user = self.request.user
+        
+        # Use select_related for query optimization
+        base_queryset = Rental.objects.select_related('product', 'user', 'product__user')
+
         if user.role.id == Role.ADMIN:
-            return Rental.objects.all()
-        # Allow vendors to see rentals for products they own
+            return base_queryset.all().order_by('-created_at')
         elif user.role.name == 'Vendor':
-            return Rental.objects.filter(product__user=user)
-        # Allow normal users to see their own rentals
-        return Rental.objects.filter(user=user)
+            return base_queryset.filter(product__user=user).order_by('-created_at')
+        return base_queryset.filter(user=user).order_by('-created_at')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
