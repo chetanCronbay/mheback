@@ -51,9 +51,9 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
         return obj.user == request.user
     
-class ContactFormThrottle(UserRateThrottle):
-    scope = 'contact_form'
-    rate = '5/hour'
+# class ContactFormThrottle(UserRateThrottle):
+#     scope = 'contact_form'
+#     rate = '5/hour'
 
 class RoleViewSet(viewsets.ModelViewSet):
     queryset = Role.objects.all()
@@ -143,7 +143,7 @@ class ContactFormViewSet(viewsets.ModelViewSet):
     # --- CHANGE THIS: Add default ordering ---
     queryset = ContactForm.objects.all().order_by('-created_at')
     serializer_class = ContactFormSerializer
-    throttle_classes = [ContactFormThrottle]
+    # throttle_classes = [ContactFormThrottle]
 
     # --- CHANGE THIS: Add OrderingFilter ---
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]

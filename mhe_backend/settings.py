@@ -67,7 +67,8 @@ INSTALLED_APPS = [
     "products",         # Custom app
     "users",            # Custom app (contains custom user model)
     "corsheaders",      # For Cross-Origin Resource Sharing
-    "blogs"
+    "blogs",
+    "util"
 ]
 
 # Allauth Social Account Providers Configuration
@@ -106,14 +107,14 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer', # Useful for development/testing via browser
     ],
-    # 'DEFAULT_THROTTLE_CLASSES': [
-    #     'rest_framework.throttling.AnonRateThrottle', # Rate limit for unauthenticated users
-    #     'rest_framework.throttling.UserRateThrottle'  # Rate limit for authenticated users
-    # ],
-    # 'DEFAULT_THROTTLE_RATES': {
-    #     'anon': os.getenv('API_THROTTLE_ANON', '100/hour'),
-    #     'user': os.getenv('API_THROTTLE_USER', '1000/hour')
-    # },
+    'DEFAULT_THROTTLE_CLASSES': [
+        'util.throttle.WriteOnlyAnonRateThrottle',  # Custom throttle for anonymous users
+        'util.throttle.WriteOnlyUserRateThrottle'   # Custom throttle for authenticated users
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': os.getenv('API_THROTTLE_ANON', '5/hour'),   # e.g., 20 unsafe requests per minute
+        'user': os.getenv('API_THROTTLE_USER', '20/hour')  # e.g., 100 unsafe requests per minute
+    },
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning', # API versioning strategy
     'DEFAULT_VERSION': 'v1',
     'ALLOWED_VERSIONS': ['v1', 'v2'], # Supported API versions
@@ -215,6 +216,13 @@ if os.getenv('DATABASE_URL'):
     # to prevent mixing MySQL-specific options with the new PostgreSQL configuration.
     DATABASES['default'] = db_config
 
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake', # This can be any unique string
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [

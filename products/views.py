@@ -19,13 +19,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class QuoteThrottle(UserRateThrottle):
-    scope = 'quote'
-    rate = '10/hour'
+# class QuoteThrottle(UserRateThrottle):
+#     scope = 'quote'
+#     rate = '10/hour'
 
-class RentalThrottle(UserRateThrottle):
-    scope = 'rental'
-    rate = '10/hour'
+# class RentalThrottle(UserRateThrottle):
+#     scope = 'rental'
+#     rate = '10/hour'
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -602,7 +602,7 @@ class QuoteViewSet(viewsets.ModelViewSet):
 class RentalViewSet(viewsets.ModelViewSet):
     serializer_class = RentalSerializer
     permission_classes = [IsAuthenticated]  # Only authenticated users
-    throttle_classes = [RentalThrottle]
+    # throttle_classes = [RentalThrottle]
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['status']  # For filtering by status (e.g., /rentals/?status=pending)
