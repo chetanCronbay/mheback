@@ -175,7 +175,7 @@ class ContactFormViewSet(viewsets.ModelViewSet):
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, CanCreateReview, IsOwnerOrAdmin]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     authentication_classes = [JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication]
     parser_classes = [MultiPartParser, FormParser]
 

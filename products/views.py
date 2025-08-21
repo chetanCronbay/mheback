@@ -14,6 +14,7 @@ from users.permissions import ReadOnlyOrAdmin, IsVendorOwnerOrAdmin, IsAdmin
 from users.models import Role  # Import Role model or constant
 from django.db import transaction
 from django.core.mail import send_mail
+from rest_framework.pagination import PageNumberPagination
 from django.conf import settings
 import logging
 
@@ -104,6 +105,26 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(subcategory)
         return Response(serializer.data)
 
+class ProductPagination(PageNumberPagination):
+    page_size = 10 # Default page size
+    page_size_query_param = 'page_size' # Allows client to set page size e.g. /?page_size=20
+    max_page_size = 100
+
+    def get_paginated_response(self, data):
+        # Get the full filtered queryset before it was paginated
+        unpaginated_queryset = self.page.paginator.object_list
+        
+        # Calculate the count of non-active products within the filtered results
+        not_approved = unpaginated_queryset.filter(is_active=False).count()
+        
+        return Response({
+            'next': self.get_next_link(),
+            'previous': self.get_previous_link(),
+            'count': self.page.paginator.count,
+            'not_approved_count': not_approved, # Add the custom count here
+            'results': data
+        })
+
 class ProductViewSet(viewsets.ModelViewSet):
     """
     Images:
@@ -126,6 +147,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsVendorOwnerOrAdmin]
+    pagination_class = ProductPagination
     
     # --- CORRECTED: Added OrderingFilter ---
     filter_backends = [
@@ -138,7 +160,9 @@ class ProductViewSet(viewsets.ModelViewSet):
     search_fields = ['name', 'description', 'manufacturer', 'model']
     
     # --- NEW: Define allowed ordering fields ---
-    ordering_fields = ['price', 'created_at']
+    ordering_fields = ['price', 'created_at', 'updated_at', 'name']
+    # Default ordering if none is specified by the client
+    ordering = ['-updated_at']
 
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
