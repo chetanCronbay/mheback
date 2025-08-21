@@ -64,13 +64,26 @@ class RoleViewSet(viewsets.ModelViewSet):
     search_fields = ['name', 'description']
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
     permission_classes = [IsOwnerOrAdmin]  # Only admins can manage users
     authentication_classes = [JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['username', 'email', 'phone']
     parser_classes = [MultiPartParser, FormParser]
+
+    filter_backends = [
+        filters.SearchFilter,
+        filters.OrderingFilter,
+        DjangoFilterBackend,
+    ]
+
+    # 1. Configuration for SearchFilter
+    search_fields = ['username', 'email', 'phone', 'first_name', 'last_name', 'full_name']
+
+    # 2. Configuration for OrderingFilter
+    ordering_fields = ['username', 'email', 'date_joined', 'full_name']
+    
+    # 3. Configuration for DjangoFilterBackend
+    filterset_fields = ['is_email_verified', 'role__name']
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser],
             authentication_classes=[JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication],
