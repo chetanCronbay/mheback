@@ -135,15 +135,32 @@ class EmailTokenObtainPairView(TokenObtainPairView):
     serializer_class = EmailTokenObtainPairSerializer
 
 class ContactFormViewSet(viewsets.ModelViewSet):
-    queryset = ContactForm.objects.all()
+    """
+    API endpoint for contact form submissions.
+    - Anyone can CREATE a submission.
+    - Only Admins can LIST, RETRIEVE, or DESTROY submissions.
+    """
+    # --- CHANGE THIS: Add default ordering ---
+    queryset = ContactForm.objects.all().order_by('-created_at')
     serializer_class = ContactFormSerializer
-    permission_classes = [permissions.AllowAny]  # Anyone can submit contact forms
-    authentication_classes = []
     throttle_classes = [ContactFormThrottle]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['first_name', 'last_name', 'email', 'company_name']
+
+    # --- CHANGE THIS: Add OrderingFilter ---
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['first_name', 'last_name', 'email', 'company_name', 'location']
+    ordering_fields = ['created_at', 'last_name', 'company_name']
+
+    # --- ADD THIS: Implement secure permissions ---
+    def get_permissions(self):
+        """
+        Allow anyone to create, but require admin for all other actions.
+        """
+        if self.action == 'create':
+            return [permissions.AllowAny()]
+        return [permissions.IsAdminUser()]
 
     def create(self, request, *args, **kwargs):
+        # ... your existing create logic remains unchanged ...
         IPRateLimiter.check_ip(request, limit=5, timeout=3600)
         try:
             return super().create(request, *args, **kwargs)
@@ -1130,13 +1147,28 @@ class VendorNotificationListView(generics.ListAPIView):
     
 class TrainingRegistrationViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows training registrations to be viewed or edited.
-    Anyone can submit a training registration.
+    API endpoint for training registrations.
+    - Anyone can CREATE a registration.
+    - Only Admins can LIST, RETRIEVE, UPDATE, or DESTROY registrations.
     """
-    queryset = TrainingRegistration.objects.all()
+    queryset = TrainingRegistration.objects.all().order_by('-submitted_at')
     serializer_class = TrainingRegistrationSerializer
-    permission_classes = [permissions.AllowAny] # Anyone can perform CRUD operations
-    authentication_classes = [] # No authentication required
+    
+    # --- ADD THIS FOR FILTERING, SEARCHING, AND SORTING ---
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['training_name']  # e.g., /training-registrations/?training_name=Forklift
+    search_fields = ['full_name', 'company_name', 'email', 'phone', 'training_name']
+    ordering_fields = ['submitted_at', 'training_name', 'full_name']
+
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action == 'create':
+            # Allow anyone to submit the form
+            return [permissions.AllowAny()]
+        # For all other actions (list, retrieve, etc.), require admin user
+        return [permissions.IsAdminUser()]
 
     def perform_create(self, serializer):
         """
@@ -1191,24 +1223,35 @@ class TrainingRegistrationViewSet(viewsets.ModelViewSet):
 # New ViewSet for Newsletter Subscriptions
 class NewsletterSubscriptionViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows newsletter subscriptions to be created, viewed, or deleted.
-    Anyone can subscribe to the newsletter.
+    API endpoint for newsletter subscriptions.
+    - Anyone can CREATE a subscription.
+    - Only Admins can LIST, RETRIEVE, or DESTROY subscriptions.
     """
-    queryset = NewsletterSubscription.objects.all()
+    queryset = NewsletterSubscription.objects.all().order_by('-subscribed_at')
     serializer_class = NewsletterSubscriptionSerializer
-    permission_classes = [permissions.AllowAny] # Anyone can subscribe
-    authentication_classes = [] # No authentication required
+
+    # --- ADD THIS FOR SEARCHING AND SORTING ---
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['email'] # e.g., /newsletter-subscriptions/?search=example.com
+    ordering_fields = ['subscribed_at', 'email']
+
+    def get_permissions(self):
+        """
+        Set permissions: Allow anyone to create, but require admin for other actions.
+        """
+        if self.action == 'create':
+            return [permissions.AllowAny()]
+        return [permissions.IsAdminUser()]
 
     def create(self, request, *args, **kwargs):
         """
-        Handle newsletter subscription creation.
-        Ensures unique emails and sends confirmation.
+        Handle subscription creation, ensuring unique emails and sending confirmation.
         """
+        # ... your existing create and perform_create logic remains unchanged ...
         email = request.data.get('email')
         if not email:
             return Response({'detail': 'Email is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Check if email already subscribed
         if NewsletterSubscription.objects.filter(email=email).exists():
             return Response({'detail': 'This email is already subscribed.'}, status=status.HTTP_400_BAD_REQUEST)
 
