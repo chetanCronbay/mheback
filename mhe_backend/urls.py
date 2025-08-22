@@ -21,7 +21,7 @@ from order_management.views import (
     OrderViewSet, OrderItemViewSet, DeliveryViewSet, PaymentViewSet
 )
 
-from blogs.views import BlogViewSet
+from blogs.views import BlogViewSet, blog_image_upload_view
 
 
 router = DefaultRouter()
@@ -87,6 +87,8 @@ urlpatterns = [
           'patch': 'partial_update',
           'delete': 'destroy'
       }), name='blog-detail'),
+
+      path('api/upload/<str:blog_url>/', blog_image_upload_view, name='blog-image-upload'),
     
     
     # ✅ Default router URLs (includes all ViewSet routes)
