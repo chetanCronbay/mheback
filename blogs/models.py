@@ -3,7 +3,7 @@ from products.models import Category
 
 def blog_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return f'user_banner{instance.user.id}/{filename}'
+    return f'blog/{instance.blog_url}/{filename}'
 
 class Blog(models.Model):
     blog_title = models.CharField(max_length=100)
