@@ -106,7 +106,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 class ProductPagination(PageNumberPagination):
-    page_size = 10 # Default page size
+    page_size = 12 # Default page size
     page_size_query_param = 'page_size' # Allows client to set page size e.g. /?page_size=20
     max_page_size = 100
 
