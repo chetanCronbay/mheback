@@ -15,6 +15,7 @@ from users.models import Role  # Import Role model or constant
 from django.db import transaction
 from django.core.mail import send_mail
 from rest_framework.pagination import PageNumberPagination
+import django_filters
 from django.conf import settings
 import logging
 
@@ -125,6 +126,29 @@ class ProductPagination(PageNumberPagination):
             'results': data
         })
 
+class ProductFilter(django_filters.FilterSet):
+    # This explicitly defines the 'types' filter.
+    # It tells Django to expect a text value and use it in a 'contains' query
+    # against the 'types' JSONField.
+    type = django_filters.CharFilter(field_name='type', lookup_expr='contains')
+
+    # You can also move your other filters here for cleaner code
+    min_price = django_filters.NumberFilter(field_name="price", lookup_expr='gte')
+    max_price = django_filters.NumberFilter(field_name="price", lookup_expr='lte')
+    average_rating = django_filters.NumberFilter(method='filter_by_rating')
+
+    class Meta:
+        model = Product
+        # These are the fields that can be filtered with a simple 'exact' match
+        fields = ['category', 'subcategory', 'user']
+
+    def filter_by_rating(self, queryset, name, value):
+        # This custom method handles the rating annotation and filtering
+        return queryset.annotate(
+            avg_rating=Avg('reviews__stars')
+        ).filter(avg_rating__gte=value)
+
+
 class ProductViewSet(viewsets.ModelViewSet):
     """
     Images:
@@ -156,7 +180,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         filters.OrderingFilter
     ]
     
-    filterset_fields = ['category', 'subcategory', 'type', 'user']
+    filterset_class = ProductFilter
     search_fields = ['name', 'description', 'manufacturer', 'model']
     
     # --- NEW: Define allowed ordering fields ---

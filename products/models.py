@@ -134,12 +134,11 @@ class Product(models.Model):
         null=True,
         help_text="Product brochure/specification sheet"
     )
-    type = models.CharField(
-        max_length=70, 
-        choices=TYPE_CHOICES, 
-        default='new',
-        help_text="Product condition type"
-    )
+    type = models.JSONField(
+            default=list,  # Defaults to an empty list []
+            blank=True,
+            help_text="A list of product types (e.g., ['new', 'rental'])"
+        )
     
     # Apply Rules: Additional fields for better product management
     is_active = models.BooleanField(
@@ -194,7 +193,6 @@ class Product(models.Model):
             models.Index(fields=['manufacturer']),
             models.Index(fields=['category']),
             models.Index(fields=['subcategory']),
-            models.Index(fields=['type']),
             models.Index(fields=['is_active']),
             models.Index(fields=['price']),
             models.Index(fields=['created_at']),
