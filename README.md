@@ -226,8 +226,3 @@ curl -X POST http://127.0.0.1:8000/api/orders/create_from_cart/ \
 - Follow the `Rules` and `GEMINI.md` guidelines in the repository.
 
 ---
-
-If you want, I can:
-- generate a Postman collection for the endpoints,
-- add example request/response bodies for each endpoint,
-- or prepare a small tutorial on extending the API or adding new features.
