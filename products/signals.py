@@ -143,8 +143,8 @@ def validate_rental_before_save(sender, instance, **kwargs):
         raise ValueError("Rental end date must be after start date")
     
     # Check if product is available for rental
-    if instance.product.type != 'rental' and instance.product.type != 'used':
-        raise ValueError("Product is not available for rental or used sale")
+    if 'rental' not in instance.product.type:
+        raise ValueError("Product is not available for rental.")
     
     # Check for conflicting rentals (if updating existing rental)
     if instance.pk:
