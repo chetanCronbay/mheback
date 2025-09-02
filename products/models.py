@@ -134,12 +134,11 @@ class Product(models.Model):
         null=True,
         help_text="Product brochure/specification sheet"
     )
-    type = models.CharField(
-        max_length=70, 
-        choices=TYPE_CHOICES, 
-        default='new',
-        help_text="Product condition type"
-    )
+    type = models.JSONField(
+            default=list,  # Defaults to an empty list []
+            blank=True,
+            help_text="A list of product types (e.g., ['new', 'rental'])"
+        )
     
     # Apply Rules: Additional fields for better product management
     is_active = models.BooleanField(
@@ -194,7 +193,6 @@ class Product(models.Model):
             models.Index(fields=['manufacturer']),
             models.Index(fields=['category']),
             models.Index(fields=['subcategory']),
-            models.Index(fields=['type']),
             models.Index(fields=['is_active']),
             models.Index(fields=['price']),
             models.Index(fields=['created_at']),
@@ -288,6 +286,10 @@ class Quote(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='quotes')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     message = models.TextField()
+    full_name = models.CharField(max_length=100, blank=False, null=True)
+    company_name = models.CharField(max_length=200, blank=True, null=True)
+    email = models.EmailField(max_length=200, blank=False, null=True)
+    phone = models.CharField(max_length=100, blank=False, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -316,6 +318,10 @@ class Rental(models.Model):
     end_date = models.DateField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     notes = models.TextField(blank=True, null=True)
+    full_name = models.CharField(max_length=100, blank=False, null=True)
+    address = models.CharField(max_length=500, blank=True, null=True)
+    email = models.EmailField(max_length=200, blank=False, null=True)
+    phone = models.CharField(max_length=100, blank=False, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     last_request_time = models.DateTimeField(auto_now=True)

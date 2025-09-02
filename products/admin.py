@@ -18,8 +18,8 @@ class SubcategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'user', 'category', 'subcategory', 'type', 'price', 'created_at')
-    list_filter = ('type', 'category', 'subcategory', 'user')
+    list_display = ('name', 'user', 'category', 'subcategory', 'price', 'created_at')
+    list_filter = ('category', 'subcategory', 'user')
     search_fields = ('name', 'description', 'manufacturer', 'model')
 
 @admin.register(Cart)
