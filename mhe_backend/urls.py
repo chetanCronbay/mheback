@@ -1,6 +1,7 @@
 # mhe_backend/urls.py
 
 from django.contrib import admin
+from django.http import HttpResponse
 from django.urls import path, include
 from mhe_backend import settings
 from django.conf.urls.static import static
@@ -55,6 +56,7 @@ router.register(r'payments', PaymentViewSet, basename='payment')
 router.register(r'blogs', BlogViewSet, basename='blog')
 
 urlpatterns = [
+    path('', lambda request: HttpResponse("Hello MHE")), 
     path('admin/', admin.site.urls),
     path('api/google/login/', GoogleLogin.as_view(), name='google_login'),
     path('api/register/', RegisterView.as_view(), name='user-register'),
