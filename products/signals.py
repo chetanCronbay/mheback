@@ -147,17 +147,17 @@ def validate_rental_before_save(sender, instance, **kwargs):
         raise ValueError("Product is not available for rental.")
     
     # Check for conflicting rentals (if updating existing rental)
-    if instance.pk:
+    if instance.status == 'approved':
         conflicting_rentals = Rental.objects.filter(
             product=instance.product,
-            status__in=['approved', 'pending'],
+            status='approved',  # Only check against other APPROVED rentals
             start_date__lte=instance.end_date,
             end_date__gte=instance.start_date
-        ).exclude(pk=instance.pk)
+        ).exclude(pk=instance.pk) # Exclude the current instance itself
         
         if conflicting_rentals.exists():
-            raise ValueError("Product is not available for the selected dates")
-    
+            raise ValueError("Product is not available for the selected dates as it conflicts with another approved rental.")
+
     # Apply Rules: Log validation events
     logger.debug(f"Rental validation passed for user {instance.user.username}")
 
