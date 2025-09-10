@@ -1,16 +1,13 @@
 import os
-import time
 import re
-from django.conf import settings
-from django.core.files.storage import default_storage # ✅ IMPORT ADDED
+from django.core.files.storage import default_storage
 from rest_framework import viewsets, permissions, filters, status
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Blog
 from .serializers import BlogSerializer
 
+# The sanitize_filename function remains the same
 def sanitize_filename(filename):
     """
     Sanitizes a filename by removing unsafe characters,
@@ -18,7 +15,6 @@ def sanitize_filename(filename):
     """
     name, ext = os.path.splitext(filename)
     name = name.replace(' ', '_')
-    # Remove all characters that are not alphanumeric, underscore, or hyphen
     name = re.sub(r'[^a-zA-Z0-9_-]', '', name)
     return name + ext
 
@@ -26,7 +22,9 @@ class BlogViewSet(viewsets.ModelViewSet):
     """
     API endpoint for blogs.
     """
-    queryset = Blog.objects.all().order_by('-created_at')
+    # ✅ Set the base queryset here without any limits.
+    # The ordering and limiting will be handled in get_queryset.
+    queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     lookup_field = 'blog_url'
@@ -35,7 +33,25 @@ class BlogViewSet(viewsets.ModelViewSet):
     search_fields = ['blog_title', 'description', 'description1', 'meta_title']
     ordering_fields = ['created_at', 'updated_at', 'blog_title', 'author_name']
 
-    # ✅ --- METHODS MOVED INSIDE THE CLASS --- ✅
+    # ✅ --- DYNAMIC QUERYSET METHOD --- ✅
+    def get_queryset(self):
+        """
+        Overrides the default queryset to allow for dynamic limiting
+        via a 'limit' query parameter. Defaults to ordering by '-created_at'.
+        """
+        # Start with the base queryset and apply default ordering
+        queryset = super().get_queryset().order_by('-created_at')
+
+        # Check for a 'limit' parameter in the request's query string
+        limit_param = self.request.query_params.get('limit')
+
+        # If 'limit' exists and is a valid positive integer, apply the slice
+        if limit_param and limit_param.isdigit():
+            limit = int(limit_param)
+            if limit > 0:
+                queryset = queryset[:limit]
+        
+        return queryset
 
     def _process_blog_content(self, blog_instance, description_html, editor_images):
         """
@@ -48,7 +64,6 @@ class BlogViewSet(viewsets.ModelViewSet):
         blog_slug = blog_instance.blog_url
         
         for i, uploaded_file in enumerate(editor_images):
-            # Sanitize the filename before saving for better security
             safe_filename = sanitize_filename(uploaded_file.name)
             file_path = f'blog/{blog_slug}/{safe_filename}'
             saved_path = default_storage.save(file_path, uploaded_file)
