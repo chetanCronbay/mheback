@@ -22,7 +22,7 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
 from django.db import transaction
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.core.mail import send_mail
 from django.conf import settings
 import random
@@ -757,7 +757,10 @@ class ApprovedVendorListView(generics.ListAPIView):
             user__role__id=Role.VENDOR,
             user__is_active=True
         ).annotate(
-            product_count=Count('user__products')
+             product_count=Count(
+                'user__products', 
+                filter=Q(user__products__is_active=True, user__products__status='approved')
+            )
         )
 
         # --- Manual Filtering Logic ---
