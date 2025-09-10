@@ -192,29 +192,25 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        Dynamically filters the queryset based on the request user's role and
-        product status.
-        - Admins see all products.
-        - Other users only see products from active, approved vendors that are
-          themselves active and approved.
+        This method acts as the "menu," filtering what users can see
+        after the "bouncer" (permission class) lets them in.
         """
         queryset = super().get_queryset()
         user = self.request.user
 
-        # 1. Admins have unrestricted access to view all products
-        if user.is_authenticated and user.role.id == Role.ADMIN:
+        # Admins see everything, including pending and inactive products.
+        if user.is_authenticated and hasattr(user, 'role') and user.role.id == Role.ADMIN:
             return queryset
 
-        # 2. For all other users (including anonymous), apply strict visibility rules
+        # All other users (including anonymous ones) see a filtered list.
         return queryset.filter(
-            # Rule 1: The product's owner must be an active, approved vendor.
+            # Product's owner must be an active, approved vendor
             user__role__id=Role.VENDOR,
             user__is_active=True,
-
-            # Rule 2: The product itself must be active and approved.
+            # Product itself must be active and approved
             is_active=True,
             status='approved'
-        ).select_related('user', 'category', 'subcategory')
+        )
 
     @action(detail=False, methods=['get'], url_path='map-user')
     def map_user(self, request):
