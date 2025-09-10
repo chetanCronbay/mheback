@@ -192,43 +192,29 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        Optionally restricts the returned products by filtering against
-        query parameters in the URL.
+        Dynamically filters the queryset based on the request user's role and
+        product status.
+        - Admins see all products.
+        - Other users only see products from active, approved vendors that are
+          themselves active and approved.
         """
         queryset = super().get_queryset()
+        user = self.request.user
 
-        # This custom filtering logic remains the same for now
-        # but can be improved (see recommendation below).
-        category_name = self.request.query_params.get('category_name')
-        if category_name:
-            queryset = queryset.filter(category__name__iexact=category_name)
+        # 1. Admins have unrestricted access to view all products
+        if user.is_authenticated and user.role.id == Role.ADMIN:
+            return queryset
 
-        min_price = self.request.query_params.get('min_price')
-        if min_price:
-            try:
-                queryset = queryset.filter(price__gte=min_price)
-            except ValueError:
-                pass
-        
-        max_price = self.request.query_params.get('max_price')
-        if max_price:
-            try:
-                queryset = queryset.filter(price__lte=max_price)
-            except ValueError:
-                pass
+        # 2. For all other users (including anonymous), apply strict visibility rules
+        return queryset.filter(
+            # Rule 1: The product's owner must be an active, approved vendor.
+            user__role__id=Role.VENDOR,
+            user__is_active=True,
 
-        rating = self.request.query_params.get('average_rating')
-        if rating:
-            try:
-                queryset = queryset.annotate(
-                    avg_rating=Avg('reviews__stars')
-                ).filter(
-                    avg_rating__gte=float(rating)
-                )
-            except (ValueError, TypeError):
-                pass
-            
-        return queryset
+            # Rule 2: The product itself must be active and approved.
+            is_active=True,
+            status='approved'
+        ).select_related('user', 'category', 'subcategory')
 
     @action(detail=False, methods=['get'], url_path='map-user')
     def map_user(self, request):
