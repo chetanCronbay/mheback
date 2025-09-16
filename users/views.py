@@ -412,41 +412,50 @@ class VendorViewSet(viewsets.ModelViewSet):
     queryset = Vendor.objects.select_related('user', 'user__role').all()
     
     def get_serializer_class(self):
-        """Return appropriate serializer based on action."""
-        if self.action == 'create':
-            return VendorApplicationSerializer
-        elif self.action == 'list':
-            return VendorListSerializer
-        elif self.action in ['update', 'partial_update']:
-            return VendorUpdateSerializer
-        elif self.action == 'approve':
-            return VendorApprovalSerializer
-        elif self.action == 'profile':
-            return VendorProfileSerializer
-        elif self.action == 'stats':
-            return VendorStatsSerializer
-        else:
-            return VendorDetailSerializer
-    
+            """Return appropriate serializer based on action."""
+            if self.action == 'create':
+                return VendorApplicationSerializer
+            elif self.action == 'list':
+                return VendorListSerializer
+            elif self.action in ['update', 'partial_update']:
+                return VendorUpdateSerializer
+            elif self.action == 'approve':
+                return VendorApprovalSerializer
+            elif self.action == 'profile':
+                return VendorProfileSerializer
+            elif self.action == 'stats':
+                return VendorStatsSerializer
+            else:
+                return VendorDetailSerializer
+        
     def get_permissions(self):
-        """Return appropriate permissions based on action."""
+        """
+        Returns appropriate permissions based on the requested action.
+
+        - Public access: `list`, `retrieve`, `by_slug`, and `profile` actions are publicly accessible.
+        - Authenticated access: Users must be logged in to `create` a vendor application, view their own `my_stats` or `my_vendor` data.
+        - Admin access: Only admins can `destroy` or `approve` applications.
+        - Owner or Admin access: Only the profile owner or an admin can `update` or `partial_update` their vendor information.
+        """
         
-        # 🎯 Use your new permission class as the default for most actions
-        if self.action in ['list', 'retrieve', 'create', 'update', 'partial_update']:
-            permission_classes = [VendorAccessPermission]
+        if self.action in ['list', 'retrieve', 'by_slug', 'profile']:
+            permission_classes = [permissions.AllowAny]
         
-        # Keep specific overrides for admin-only or special actions
+        elif self.action == 'create':
+            permission_classes = [permissions.IsAuthenticated]
+        
+        elif self.action in ['update', 'partial_update']:
+            permission_classes = [IsOwnerOrAdmin]
+        
         elif self.action in ['destroy', 'approve']:
             permission_classes = [IsAdmin]
-            
-        elif self.action == 'profile':
-            permission_classes = [permissions.AllowAny]
             
         elif self.action in ['my_stats', 'my_vendor']:
             permission_classes = [permissions.IsAuthenticated]
             
         else:
-            permission_classes = [permissions.IsAuthenticated] # A safe default
+            # A safe default for any other authenticated-only actions
+            permission_classes = [permissions.IsAuthenticated]
         
         return [permission() for permission in permission_classes]
     
