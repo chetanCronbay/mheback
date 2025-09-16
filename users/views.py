@@ -478,6 +478,31 @@ class VendorViewSet(viewsets.ModelViewSet):
         except Exception as e:
             logger.error(f"Error fetching vendor by brand: {e}")
             return Response({'error': 'An internal error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        
+        
+    @action(detail=False, methods=['get'], url_path='by-slug/(?P<brand_slug>[^/.]+)')
+    def by_slug(self, request, brand_slug=None):
+            """
+            Get vendor details by brand slug.
+            """
+            if not brand_slug:
+                return Response({'error': 'Brand slug is required.'}, status=status.HTTP_400_BAD_REQUEST)
+            try:
+                # Reconstruct the original name from the slug.
+                # Replace hyphens with spaces and capitalize each word.
+                brand_name = brand_slug.replace('-', ' ').title()
+                
+                # Use iexact for case-insensitive exact match
+                vendor = self.queryset.get(brand__iexact=brand_name)
+                serializer = VendorProfileSerializer(vendor)
+                return Response(serializer.data)
+            except Vendor.DoesNotExist:
+                return Response({'error': 'Vendor with this brand name not found.'}, status=status.HTTP_404_NOT_FOUND)
+            except Exception as e:
+                logger.error(f"Error fetching vendor by slug: {e}")
+                return Response({'error': 'An internal error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
       
     
     def get_queryset(self):
