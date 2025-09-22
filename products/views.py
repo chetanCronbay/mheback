@@ -18,6 +18,7 @@ from rest_framework.pagination import PageNumberPagination
 import django_filters
 from django.conf import settings
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -189,6 +190,60 @@ class ProductViewSet(viewsets.ModelViewSet):
     ordering = ['updated_at']
 
     parser_classes = [MultiPartParser, FormParser, JSONParser]
+    
+    # Override create to handle the JSONField and files correctly
+    def create(self, request, *args, **kwargs):
+        # The serializer handles validation and saving, but we need to
+        # manually handle product_details from FormData before passing it.
+        # The request.data will be a MultiPartDict.
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        # Manually parse the JSON string for product_details
+        product_details_json = request.data.get('product_details', '{}')
+        try:
+            product_details = json.loads(product_details_json)
+        except json.JSONDecodeError:
+            return Response({'error': 'Invalid JSON format for product_details.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Save the product, passing the parsed product_details
+        self.perform_create(serializer, product_details=product_details)
+        
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        
+    def perform_create(self, serializer, product_details=None):
+        if product_details is not None:
+            serializer.save(user=self.request.user, product_details=product_details)
+        else:
+            serializer.save(user=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        
+        # Manually parse the JSON string for product_details
+        product_details_json = request.data.get('product_details')
+        product_details = None
+        if product_details_json is not None:
+            try:
+                product_details = json.loads(product_details_json)
+            except json.JSONDecodeError:
+                return Response({'error': 'Invalid JSON format for product_details.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Update the product, passing the parsed product_details if it exists
+        self.perform_update(serializer, product_details=product_details)
+        
+        return Response(serializer.data)
+
+    def perform_update(self, serializer, product_details=None):
+        if product_details is not None:
+            serializer.save(product_details=product_details)
+        else:
+            serializer.save()
+
 
     def get_queryset(self):
         """
@@ -684,3 +739,4 @@ class RentalViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(rental)
         return Response(serializer.data)
     
+
