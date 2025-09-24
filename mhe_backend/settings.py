@@ -396,9 +396,9 @@ EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'True').lower() == 'true' # Added for
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'no-reply@yourdomain.com')
-ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'admin@yourdomain.com')
-CONTACT_RECEIVER_EMAIL = os.getenv('CONTACT_RECEIVER_EMAIL', 'contact@yourdomain.com') # Added this line
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'sumedh.ramteke@mhebazar.com')
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'sumedh.ramteke@mhebazar.com')
+CONTACT_RECEIVER_EMAIL = os.getenv('CONTACT_RECEIVER_EMAIL', 'sumedh.ramteke@mhebazar.com') # Added this line
 
 
 # Frontend URL (for redirects, e.g., after social login)

@@ -588,6 +588,19 @@ class ProductViewSet(viewsets.ModelViewSet):
                 {'error': 'Failed to reject product.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+            
+            
+class ProductSearchViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for a lean, fast search of all active, approved products.
+    It returns only the product ID and name for quick suggestions.
+    """
+    queryset = Product.objects.filter(is_active=True, status='approved').only('id', 'name')
+    serializer_class = ProductSearchSerializer
+    permission_classes = [AllowAny]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'manufacturer', 'model']
+    pagination_class = None # No pagination needed for a fast search endpoint
 
 class CartViewSet(viewsets.ModelViewSet):
     serializer_class = CartSerializer

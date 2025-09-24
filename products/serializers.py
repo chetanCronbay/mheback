@@ -4,6 +4,15 @@ from .models import (
     Cart, Wishlist, Quote, Rental
 )
 
+class ProductSearchSerializer(serializers.ModelSerializer):
+    """
+    A lean serializer for fast product search suggestions.
+    It returns only the product ID and name.
+    """
+    class Meta:
+        model = Product
+        fields = ['id', 'name']
+
 class CategorySerializer(serializers.ModelSerializer):
     subcategories = serializers.SerializerMethodField()
     cat_image = serializers.ImageField(required=False, allow_null=True)

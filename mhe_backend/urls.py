@@ -9,7 +9,7 @@ from rest_framework.routers import DefaultRouter
 
 from banners.views import BannerViewSet
 from products.views import (
-    CategoryViewSet, SubcategoryViewSet, ProductViewSet,
+    CategoryViewSet, ProductSearchViewSet, SubcategoryViewSet, ProductViewSet,
     CartViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet
 )
 from users.views import (
@@ -42,6 +42,10 @@ router.register(r'reviews', ReviewViewSet, basename='review')
 
 router.register(r'training-registrations', TrainingRegistrationViewSet, basename='training-registration')
 router.register(r'newsletter-subscriptions', NewsletterSubscriptionViewSet, basename='newsletter-subscription')
+
+# You need to add this line to your existing router registration section
+router.register(r'products-search', ProductSearchViewSet, basename='product-search')
+
 
 # ✅ Vendor Management Routes
 router.register(r'vendor', VendorViewSet, basename='vendor')
