@@ -59,26 +59,16 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = '__all__'
-
-    def to_internal_value(self, data):
-        # Create a mutable copy of the data before processing
-        data = data.copy()
-
-        # Handle subcategory: Convert an empty string or 'null' string to None
-        subcategory_value = data.get('subcategory')
-        if subcategory_value is not None and subcategory_value in ('', 'null'):
-            data['subcategory'] = None
-
-        # Call the parent method with the cleaned data
-        return super().to_internal_value(data)
+        fields = '__all__'  # or add 'average_rating' if you use explicit fields
 
     def validate_price(self, value):
+        if value < 0:
+            raise serializers.ValidationError("Price cannot be negative")
         return value
 
     def get_average_rating(self, obj):
         return obj.get_average_rating()
-    
+
 class ProductUserMapSerializer(serializers.ModelSerializer):
     """
     A lean serializer that only outputs the product ID and its associated user ID.
