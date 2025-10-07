@@ -594,7 +594,8 @@ class QuoteViewSet(viewsets.ModelViewSet):
     - Supports filtering by status, searching, and ordering.
     """
     serializer_class = QuoteSerializer
-    permission_classes = [IsAuthenticated]
+    # --- UPDATED: Allow submissions from non-logged-in users ---
+    permission_classes = [AllowAny]
     # throttle_classes = [QuoteThrottle] # Uncomment if you have this
 
     # 1. Add Filter Backends
@@ -611,6 +612,10 @@ class QuoteViewSet(viewsets.ModelViewSet):
         """
         user = self.request.user
         
+        # Non-authenticated users cannot view quotes (GET requests)
+        if not user.is_authenticated:
+            return Quote.objects.none()
+
         # Use select_related to optimize DB queries by pre-fetching related objects
         base_queryset = Quote.objects.select_related('product', 'user', 'product__user')
 
@@ -623,15 +628,26 @@ class QuoteViewSet(viewsets.ModelViewSet):
         return base_queryset.filter(user=user).order_by('-created_at')
 
     def perform_create(self, serializer):
-        recent_requests = Quote.objects.filter(
-            user=self.request.user,
-            last_request_time__gte=timezone.now() - timedelta(hours=1)
-        ).count()
+        user = self.request.user
         
-        if recent_requests >= 5:
-            raise serializers.ValidationError("Too many quote requests recently. Please wait before submitting another.")
+        # --- UPDATED: Handle throttling for logged-in users and allow anonymous submission ---
+        if user and user.is_authenticated:
+            # Check for throttling on authenticated users
+            recent_requests = Quote.objects.filter(
+                user=user,
+                last_request_time__gte=timezone.now() - timedelta(hours=1)
+            ).count()
             
-        serializer.save(user=self.request.user)
+            if recent_requests >= 5:
+                # If using a proper DRF throttle, this would be handled automatically, 
+                # but with manual check, we raise a validation error.
+                raise serializers.ValidationError("Too many quote requests recently. Please wait before submitting another.")
+            
+            serializer.save(user=user)
+        else:
+            # For anonymous users, we save without a user object (requires model.user to be null=True)
+            serializer.save(user=None)
+        # ------------------------------------------------------------------------------------------
 
     @action(detail=True, methods=['post'])
     def approve(self, request, pk=None):
@@ -655,7 +671,8 @@ class QuoteViewSet(viewsets.ModelViewSet):
 
 class RentalViewSet(viewsets.ModelViewSet):
     serializer_class = RentalSerializer
-    permission_classes = [IsAuthenticated]  # Only authenticated users
+    # --- UPDATED: Allow submissions from non-logged-in users ---
+    permission_classes = [AllowAny]
     # throttle_classes = [RentalThrottle]
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
@@ -666,6 +683,10 @@ class RentalViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         
+        # Non-authenticated users cannot view rentals (GET requests)
+        if not user.is_authenticated:
+            return Rental.objects.none()
+            
         # Use select_related for query optimization
         base_queryset = Rental.objects.select_related('product', 'user', 'product__user')
 
@@ -676,7 +697,15 @@ class RentalViewSet(viewsets.ModelViewSet):
         return base_queryset.filter(user=user).order_by('-created_at')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        user = self.request.user
+        
+        # --- UPDATED: Allow anonymous submission ---
+        if user and user.is_authenticated:
+            serializer.save(user=user)
+        else:
+            # For anonymous users, we save without a user object (requires model.user to be null=True)
+            serializer.save(user=None)
+        # -------------------------------------------
 
     @action(detail=True, methods=['post'])
     def approve(self, request, pk=None):

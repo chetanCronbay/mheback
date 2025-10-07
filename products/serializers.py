@@ -104,7 +104,9 @@ class QuoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quote
         fields = '__all__'
+        # --- UPDATED: Only 'user' and 'status' are read_only, allowing other fields to be set by anyone.
         read_only_fields = ['user', 'status']
+        # ------------------------------------------------------------------------------------------------
     
     def validate_message(self, value):
         if len(value) > 2000:
@@ -120,7 +122,9 @@ class RentalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rental
         fields = '__all__'
+        # --- UPDATED: Only 'user' and 'status' are read_only, allowing other fields to be set by anyone.
         read_only_fields = ['user', 'status']
+        # ------------------------------------------------------------------------------------------------
 
     def validate(self, attrs):
         if attrs['start_date'] >= attrs['end_date']:

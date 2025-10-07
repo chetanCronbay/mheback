@@ -10,8 +10,22 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.utils.html import strip_tags
 import logging
+from django.template.defaultfilters import slugify
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
+
+# --- STATIC ASSETS ---
+MHE_WEBSITE_URL = "https://www.mhebazar.in"
+MHE_LOGO_URL = "https://www.mhebazar.in/mhe-logo.png"
+# ---------------------
+
+
+def get_product_url(product) -> str:
+    """Generate the full, user-facing URL for the product."""
+    product_slug = slugify(product.name)
+    # URL format: https://www.mhebazar.in/product/[product-name-in-slug]-[id]
+    return f"{MHE_WEBSITE_URL}/product/{product_slug}-{product.id}"
 
 
 class EmailService:
@@ -27,8 +41,6 @@ class EmailService:
     ) -> bool:
         """
         Send email using HTML template with automatic plain text fallback.
-        
-        Apply Rules: Implement email templates with proper HTML and plain text versions.
         """
         try:
             from_email = from_email or settings.DEFAULT_FROM_EMAIL
@@ -48,7 +60,6 @@ class EmailService:
             )
             msg.attach_alternative(html_content, "text/html")
             
-            # Send email
             result = msg.send()
             
             if result:
@@ -59,32 +70,122 @@ class EmailService:
             return bool(result)
             
         except Exception as e:
-            logger.error(f"Email sending error: {str(e)}")
+            # Logging the specific template error is crucial for debugging
+            logger.error(f"Email sending error (Template: {template_name}.html): {e}") 
             return False
     
     @staticmethod
-    def send_quote_confirmation(quote) -> bool:
-        """Send quote confirmation email to customer."""
+    def _build_enquiry_context(instance, enquiry_type: str) -> Dict[str, Any]:
+        """Builds context with safe access and professional details."""
+        
+        # 1. Get Vendor Info safely from product owner
+        vendor_info = {
+            'company_name': 'N/A',
+            'email': 'N/A',
+            'phone': 'N/A'
+        }
         try:
-            context = {'quote': quote}
-            subject = f"Quote Request Confirmation - {quote.product.name}"
+            vendor_object = instance.product.user.vendor.first()
+            if vendor_object:
+                vendor_info['company_name'] = vendor_object.company_name
+                vendor_info['email'] = vendor_object.company_email
+                vendor_info['phone'] = vendor_object.company_phone
+        except AttributeError:
+            pass 
+
+        # 2. Build common context
+        context = {
+            f'{enquiry_type}': instance,
+            'product_url': get_product_url(instance.product),
+            'website_url': MHE_WEBSITE_URL, # New: Global website URL
+            'logo_url': MHE_LOGO_URL, # New: Logo URL
+            'current_date': timezone.now().strftime("%d %b, %Y"), # Fallback date
             
+            # --- SAFE VARIABLES for templates ---
+            'customer_name': instance.full_name, 
+            'customer_email': instance.email,
+            
+            # Vendor Details
+            'vendor_company_name': vendor_info['company_name'],
+            'vendor_email': vendor_info['email'],
+            
+            # All fields for detailed display tables (using underscores)
+            'full_details': {
+                'Customer_Name': instance.full_name,
+                'Email': instance.email,
+                'Phone': instance.phone,
+                'Product': instance.product.name,
+                'Vendor_Company': vendor_info['company_name'],
+                'Submitted_On': instance.created_at.strftime("%d %b, %Y %I:%M %p"),
+                'Status': instance.status.capitalize(),
+            }
+        }
+        
+        # 3. Add type-specific details
+        if enquiry_type == 'quote':
+            # FIXED: Using underscore key for consistency
+            context['full_details']['Company_Name'] = instance.company_name or 'N/A'
+            context['full_details']['Message'] = instance.message
+        elif enquiry_type == 'rental':
+            context['full_details']['Address'] = instance.address or 'N/A'
+            context['full_details']['Start_Date'] = instance.start_date.strftime("%d %b, %Y")
+            context['full_details']['End_Date'] = instance.end_date.strftime("%d %b, %Y")
+            context['full_details']['Notes'] = instance.notes or 'N/A'
+
+        return context
+
+    # --- QUOTE EMAILS (Methods remain the same) ---
+    @staticmethod
+    def send_quote_confirmation(quote) -> bool:
+        """Send quote confirmation email to customer (uses quote.email)."""
+        try:
+            context = EmailService._build_enquiry_context(quote, 'quote')
+            subject = f"Confirmation: Your Quote Request for {quote.product.name}"
+            recipient_email = quote.email 
+            
+            if not recipient_email:
+                logger.warning(f"Skipping quote confirmation: No email found for quote ID {quote.id}")
+                return False
+
             return EmailService.send_template_email(
                 template_name='quote_customer_confirmation',
                 context=context,
                 subject=subject,
-                to_emails=[quote.user.email]
+                to_emails=[recipient_email]
             )
         except Exception as e:
             logger.error(f"Failed to send quote confirmation: {str(e)}")
+            return False
+            
+    @staticmethod
+    def send_quote_to_vendor(quote) -> bool:
+        """Send quote notification email to the product's vendor."""
+        try:
+            context = EmailService._build_enquiry_context(quote, 'quote')
+            vendor_email = context['vendor_email']
+            
+            if vendor_email == 'N/A':
+                 logger.warning(f"Skipping vendor quote notification: Vendor email not found for product {quote.product.id}")
+                 return False
+
+            subject = f"Action Required: New Quote Request for {quote.product.name}"
+            
+            return EmailService.send_template_email(
+                template_name='quote_vendor_notification',
+                context=context,
+                subject=subject,
+                to_emails=[vendor_email]
+            )
+        except Exception as e:
+            logger.error(f"Failed to send quote to vendor: {str(e)}")
             return False
     
     @staticmethod
     def send_quote_admin_notification(quote) -> bool:
         """Send quote notification email to admin."""
         try:
-            context = {'quote': quote}
-            subject = f"New Quote Request - {quote.product.name}"
+            context = EmailService._build_enquiry_context(quote, 'quote')
+            subject = f"ALERT: New Quote Request - {quote.product.name}"
             
             return EmailService.send_template_email(
                 template_name='quote_admin_notification',
@@ -95,30 +196,79 @@ class EmailService:
         except Exception as e:
             logger.error(f"Failed to send quote admin notification: {str(e)}")
             return False
+
+    @staticmethod
+    def send_quote_status_update(quote, status_change: str) -> bool:
+        """Send email when a quote status is approved/rejected."""
+        try:
+            context = EmailService._build_enquiry_context(quote, 'quote')
+            context['status_change'] = status_change.capitalize()
+            
+            subject = f"Update: Your Quote Request for {quote.product.name} is {status_change.capitalize()}"
+            recipient_email = quote.email 
+            
+            return EmailService.send_template_email(
+                template_name=f'quote_status_{status_change}',
+                context=context,
+                subject=subject,
+                to_emails=[recipient_email]
+            )
+        except Exception as e:
+            logger.error(f"Failed to send quote status update ({status_change}): {str(e)}")
+            return False
     
+    # --- RENTAL EMAILS ---
     @staticmethod
     def send_rental_confirmation(rental) -> bool:
-        """Send rental confirmation email to customer."""
+        """Send rental confirmation email to customer (uses rental.email)."""
         try:
-            context = {'rental': rental}
-            subject = f"Rental Request Confirmation - {rental.product.name}"
+            context = EmailService._build_enquiry_context(rental, 'rental')
+            subject = f"Confirmation: Your Rental Request for {rental.product.name}"
+            recipient_email = rental.email
             
+            if not recipient_email:
+                logger.warning(f"Skipping rental confirmation: No email found for rental ID {rental.id}")
+                return False
+
             return EmailService.send_template_email(
                 template_name='rental_customer_confirmation',
                 context=context,
                 subject=subject,
-                to_emails=[rental.user.email]
+                to_emails=[recipient_email]
             )
         except Exception as e:
             logger.error(f"Failed to send rental confirmation: {str(e)}")
+            return False
+
+    @staticmethod
+    def send_rental_to_vendor(rental) -> bool:
+        """Send rental notification email to the product's vendor."""
+        try:
+            context = EmailService._build_enquiry_context(rental, 'rental')
+            vendor_email = context['vendor_email']
+            
+            if vendor_email == 'N/A':
+                 logger.warning(f"Skipping vendor rental notification: Vendor email not found for product {rental.product.id}")
+                 return False
+
+            subject = f"Action Required: New Rental Request for {rental.product.name}"
+            
+            return EmailService.send_template_email(
+                template_name='rental_vendor_notification',
+                context=context,
+                subject=subject,
+                to_emails=[vendor_email]
+            )
+        except Exception as e:
+            logger.error(f"Failed to send rental to vendor: {str(e)}")
             return False
     
     @staticmethod
     def send_rental_admin_notification(rental) -> bool:
         """Send rental notification email to admin."""
         try:
-            context = {'rental': rental}
-            subject = f"New Rental Request - {rental.product.name}"
+            context = EmailService._build_enquiry_context(rental, 'rental')
+            subject = f"ALERT: New Rental Request - {rental.product.name}"
             
             return EmailService.send_template_email(
                 template_name='rental_admin_notification',
@@ -129,101 +279,23 @@ class EmailService:
         except Exception as e:
             logger.error(f"Failed to send rental admin notification: {str(e)}")
             return False
-    
+            
     @staticmethod
-    def send_user_verification_email(user, verification_token: str) -> bool:
-        """Send email verification to new user."""
+    def send_rental_status_update(rental, status_change: str) -> bool:
+        """Send email when a rental status is approved/rejected/returned."""
         try:
-            context = {
-                'user': user,
-                'verification_token': verification_token,
-                'verification_url': f"{settings.FRONTEND_URL}/verify-email/{verification_token}"
-            }
-            subject = "Please verify your email address"
+            context = EmailService._build_enquiry_context(rental, 'rental')
+            context['status_change'] = status_change.capitalize()
+            
+            subject = f"Update: Your Rental Request for {rental.product.name} is {status_change.capitalize()}"
+            recipient_email = rental.email 
             
             return EmailService.send_template_email(
-                template_name='user_verification',
+                template_name=f'rental_status_{status_change}',
                 context=context,
                 subject=subject,
-                to_emails=[user.email]
+                to_emails=[recipient_email]
             )
         except Exception as e:
-            logger.error(f"Failed to send user verification email: {str(e)}")
-            return False
-    
-    @staticmethod
-    def send_password_reset_email(user, reset_token: str) -> bool:
-        """Send password reset email."""
-        try:
-            context = {
-                'user': user,
-                'reset_token': reset_token,
-                'reset_url': f"{settings.FRONTEND_URL}/reset-password/{reset_token}"
-            }
-            subject = "Password Reset Request"
-            
-            return EmailService.send_template_email(
-                template_name='password_reset',
-                context=context,
-                subject=subject,
-                to_emails=[user.email]
-            )
-        except Exception as e:
-            logger.error(f"Failed to send password reset email: {str(e)}")
-            return False
-
-
-class EmailValidator:
-    """Email validation utilities."""
-    
-    @staticmethod
-    def is_valid_email_domain(email: str, allowed_domains: Optional[List[str]] = None) -> bool:
-        """Validate email domain against whitelist."""
-        if not allowed_domains:
-            return True
-            
-        domain = email.split('@')[-1].lower()
-        return domain in [d.lower() for d in allowed_domains]
-    
-    @staticmethod
-    def is_disposable_email(email: str) -> bool:
-        """Check if email is from a disposable email service."""
-        # List of common disposable email domains
-        disposable_domains = [
-            '10minutemail.com', 'tempmail.org', 'guerrillamail.com',
-            'mailinator.com', 'throwaway.email', 'temp-mail.org'
-        ]
-        
-        domain = email.split('@')[-1].lower()
-        return domain in disposable_domains
-
-
-class EmailQueue:
-    """Email queue management for high-volume sending."""
-    
-    @staticmethod
-    def queue_email(template_name: str, context: Dict[str, Any], 
-                   subject: str, to_emails: List[str]) -> bool:
-        """
-        Queue email for background processing.
-        
-        Apply Rules: Implement email queue for high-volume sending.
-        Note: This would require Celery or similar task queue in production.
-        """
-        try:
-            # In development, send immediately
-            if settings.DEBUG:
-                return EmailService.send_template_email(
-                    template_name, context, subject, to_emails
-                )
-            
-            # In production, this would queue the task
-            # For now, we'll send immediately but log it as queued
-            logger.info(f"Email queued: {subject} to {len(to_emails)} recipients")
-            return EmailService.send_template_email(
-                template_name, context, subject, to_emails
-            )
-            
-        except Exception as e:
-            logger.error(f"Failed to queue email: {str(e)}")
+            logger.error(f"Failed to send rental status update ({status_change}): {str(e)}")
             return False

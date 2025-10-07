@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>UPDATE: Your Rental for {{ rental.product.name }} has been Rejected</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+        .header { background-color: #dc3545; color: white; padding: 10px 20px; text-align: center; border-radius: 5px 5px 0 0; }
+        .content { padding: 20px 0; }
+        .reason-box { background-color: #f8d7da; padding: 15px; border-left: 5px solid #dc3545; margin-top: 20px; border-radius: 5px; }
+        .action-button { display: inline-block; margin-top: 15px; padding: 10px 20px; background-color: #28a745; color: white !important; text-decoration: none; border-radius: 5px; font-weight: bold; margin-right: 10px;}
+        .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{{ logo_url }}" alt="MHE Bazar Logo" style="height: 40px; margin-bottom: 5px;">
+            <h1 style="font-size: 24px; margin-top: 5px;">Rental Rejected</h1>
+        </div>
+        
+        <div class="content">
+            <p>Dear <strong>{{ customer_name }}</strong>,</p>
+            
+            <p>We regret to inform you that your rental request for **{{ rental.product.name }}** has been **{{ status_change }}** by the vendor, **{{ vendor_company_name }}**.</p>
+            
+            <div class="reason-box">
+                <h3>Reason:</h3>
+                <p>The equipment may be unavailable for the requested dates ({{ full_details.Start_Date }} to {{ full_details.End_Date }}) or there may be a regional restriction.</p>
+                <p>Rental Status: **{{ full_details.Status }}**</p>
+            </div>
+            
+            <p style="margin-top: 25px;">Please try selecting different dates or contact us for alternative equipment options.</p>
+
+            <a href="{{ product_url }}" class="action-button">View Product</a>
+            <a href="{{ website_url }}" class="action-button" style="background-color: #007bff;">Contact Support</a>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; {{ current_date }} MHE Bazar. Rental ID: {{ rental.id }}</p>
+            <p>This is an automated message regarding Rental ID: {{ rental.id }}.</p>
+        </div>
+    </div>
+</body>
+</html>

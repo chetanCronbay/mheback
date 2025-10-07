@@ -283,7 +283,7 @@ class Quote(models.Model):
         ('rejected', 'Rejected'),
     )
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='quotes')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='quotes', null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     message = models.TextField()
     full_name = models.CharField(max_length=100, blank=False, null=True)
@@ -312,7 +312,7 @@ class Rental(models.Model):
         ('returned', 'Returned'),
     )
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='rentals')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='rentals', null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()

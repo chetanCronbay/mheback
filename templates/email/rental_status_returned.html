@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Confirmation: Your Rental Request for {{ rental.product.name }}</title>
+    <title>Rental Closed: {{ rental.product.name }} Returned</title>
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
@@ -11,7 +11,7 @@
         .details-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
         .details-table th, .details-table td { padding: 10px; border: 1px solid #ddd; text-align: left; }
         .details-table th { background-color: #f2f2f2; font-weight: bold; width: 35%; }
-        .rental-period { background-color: #fff3cd; padding: 15px; border-left: 5px solid #ffc107; margin: 15px 0; border-radius: 5px; }
+        .summary-box { background-color: #d4edda; padding: 15px; border-left: 5px solid #28a745; margin-top: 20px; border-radius: 5px; }
         .action-button { display: inline-block; margin-top: 15px; padding: 10px 20px; background-color: #28a745; color: white !important; text-decoration: none; border-radius: 5px; font-weight: bold; margin-right: 10px;}
         .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; text-align: center; }
     </style>
@@ -20,34 +20,31 @@
     <div class="container">
         <div class="header">
             <img src="{{ logo_url }}" alt="MHE Bazar Logo" style="height: 40px; margin-bottom: 5px;">
-            <h1 style="font-size: 24px; margin-top: 5px;">Rental Request Confirmed</h1>
+            <h1 style="font-size: 24px; margin-top: 5px;">Rental Completed - Thank You!</h1>
         </div>
         
         <div class="content">
             <p>Dear <strong>{{ customer_name }}</strong>,</p>
             
-            <p>Thank you for your rental request for **{{ rental.product.name }}**. We have successfully logged your inquiry.</p>
+            <p>This email confirms that the equipment, **{{ rental.product.name }}**, has been successfully checked back into inventory by the vendor, **{{ vendor_company_name }}**.</p>
             
-            <div class="rental-period">
-                <h3>Rental Details:</h3>
-                <table class="details-table" style="margin: 0;">
-                    <tr><th>Product Name</th><td>{{ full_details.Product }}</td></tr>
-                    <tr><th>Start Date</th><td>{{ full_details.Start_Date }}</td></tr>
-                    <tr><th>End Date</th><td>{{ full_details.End_Date }}</td></tr>
-                    <tr><th>Delivery Address</th><td>{{ full_details.Address }}</td></tr>
-                    <tr><th>Submitted On</th><td>{{ full_details.Submitted_On }}</td></tr>
+            <div class="summary-box">
+                <h3>Rental Summary:</h3>
+                <table class="details-table">
+                    <tr><th>Product</th><td>{{ full_details.Product }}</td></tr>
+                    <tr><th>Rental Dates</th><td>{{ full_details.Start_Date }} to {{ full_details.End_Date }}</td></tr>
+                    <tr><th>Final Status</th><td><strong>{{ full_details.Status }}</strong></td></tr>
                 </table>
             </div>
-
-            <p style="margin-top: 25px;">The Vendor, **{{ vendor_company_name }}**, will verify availability and confirm your booking within 24 hours.</p>
             
-            <a href="{{ product_url }}" class="action-button" style="background-color: #007bff;">View Product Details</a>
-            <a href="{{ website_url }}" class="action-button">Visit Website</a>
+            <p style="margin-top: 25px;">We appreciate your business. We hope you consider us for your future equipment needs.</p>
+            
+            <a href="{{ website_url }}" class="action-button">Explore Products</a>
         </div>
         
         <div class="footer">
             <p>&copy; {{ current_date }} MHE Bazar. Rental ID: {{ rental.id }}</p>
-            <p>This is an automated message. Rental ID: {{ rental.id }}</p>
+            <p>This is an automated message regarding Rental ID: {{ rental.id }}.</p>
         </div>
     </div>
 </body>

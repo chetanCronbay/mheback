@@ -19,18 +19,26 @@ User = get_user_model()
 def handle_quote_created(sender, instance, created, **kwargs):
     """
     Handle quote creation and status updates.
-    
-    Apply Rules: Use Django signals for automated email notifications.
     """
+    # Safely get username for logging
+    username = instance.user.username if instance.user else 'Anonymous'
+    
     if created:
-        # Send confirmation email to customer
+        # 1. Send confirmation email to customer (Uses email from form)
         try:
             EmailService.send_quote_confirmation(instance)
-            logger.info(f"Quote confirmation sent to {instance.user.email}")
+            logger.info(f"Quote confirmation sent to {instance.email}")
         except Exception as e:
             logger.error(f"Failed to send quote confirmation: {str(e)}")
+            
+        # 2. Send notification email to Vendor
+        try:
+            EmailService.send_quote_to_vendor(instance)
+            logger.info(f"Quote notification sent to vendor for product {instance.product.id}")
+        except Exception as e:
+            logger.error(f"Failed to send quote to vendor: {str(e)}")
         
-        # Send notification email to admin
+        # 3. Send notification email to admin
         try:
             EmailService.send_quote_admin_notification(instance)
             logger.info(f"Quote admin notification sent for quote {instance.id}")
@@ -39,12 +47,18 @@ def handle_quote_created(sender, instance, created, **kwargs):
             
         # Apply Rules: Log business events for analytics and debugging
         logger.info(
-            f"Quote created - ID: {instance.id}, User: {instance.user.username}, "
+            f"Quote created - ID: {instance.id}, User: {username}, "
             f"Product: {instance.product.name}, Status: {instance.status}"
         )
     
+    # --- Status Update Emails (Approved/Rejected) ---
     elif instance.status in ['approved', 'rejected']:
-        # Handle status updates - could send status update emails
+        try:
+            EmailService.send_quote_status_update(instance, instance.status)
+            logger.info(f"Quote status update sent for quote {instance.id}, Status: {instance.status}")
+        except Exception as e:
+            logger.error(f"Failed to send quote status update email: {str(e)}")
+            
         logger.info(
             f"Quote status updated - ID: {instance.id}, Status: {instance.status}"
         )
@@ -54,18 +68,26 @@ def handle_quote_created(sender, instance, created, **kwargs):
 def handle_rental_created(sender, instance, created, **kwargs):
     """
     Handle rental creation and status updates.
-    
-    Apply Rules: Use Django signals for automated email notifications.
     """
+    # Safely get username for logging
+    username = instance.user.username if instance.user else 'Anonymous'
+    
     if created:
-        # Send confirmation email to customer
+        # 1. Send confirmation email to customer (Uses email from form)
         try:
             EmailService.send_rental_confirmation(instance)
-            logger.info(f"Rental confirmation sent to {instance.user.email}")
+            logger.info(f"Rental confirmation sent to {instance.email}")
         except Exception as e:
             logger.error(f"Failed to send rental confirmation: {str(e)}")
+            
+        # 2. Send notification email to Vendor
+        try:
+            EmailService.send_rental_to_vendor(instance)
+            logger.info(f"Rental notification sent to vendor for product {instance.product.id}")
+        except Exception as e:
+            logger.error(f"Failed to send rental to vendor: {str(e)}")
         
-        # Send notification email to admin
+        # 3. Send notification email to admin
         try:
             EmailService.send_rental_admin_notification(instance)
             logger.info(f"Rental admin notification sent for rental {instance.id}")
@@ -74,13 +96,19 @@ def handle_rental_created(sender, instance, created, **kwargs):
             
         # Apply Rules: Log business events for analytics and debugging
         logger.info(
-            f"Rental created - ID: {instance.id}, User: {instance.user.username}, "
+            f"Rental created - ID: {instance.id}, User: {username}, "
             f"Product: {instance.product.name}, Start: {instance.start_date}, "
             f"End: {instance.end_date}, Status: {instance.status}"
         )
     
+    # --- Status Update Emails (Approved/Rejected/Returned) ---
     elif instance.status in ['approved', 'rejected', 'returned']:
-        # Handle status updates
+        try:
+            EmailService.send_rental_status_update(instance, instance.status)
+            logger.info(f"Rental status update sent for rental {instance.id}, Status: {instance.status}")
+        except Exception as e:
+            logger.error(f"Failed to send rental status update email: {str(e)}")
+            
         logger.info(
             f"Rental status updated - ID: {instance.id}, Status: {instance.status}"
         )
@@ -88,6 +116,7 @@ def handle_rental_created(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def handle_user_created(sender, instance, created, **kwargs):
+    # (This section is kept intact as it handles User creation)
     """
     Handle new user registration.
     
@@ -117,8 +146,6 @@ def handle_user_created(sender, instance, created, **kwargs):
 def validate_quote_before_save(sender, instance, **kwargs):
     """
     Validate quote data before saving.
-    
-    Apply Rules: Validate and sanitize all user inputs.
     """
     # Ensure message is not empty
     if not instance.message or not instance.message.strip():
@@ -127,24 +154,25 @@ def validate_quote_before_save(sender, instance, **kwargs):
     # Sanitize message content
     instance.message = instance.message.strip()
     
+    # Safely access username for logging
+    username = instance.user.username if instance.user else 'Anonymous'
+    
     # Apply Rules: Log validation events
-    logger.debug(f"Quote validation passed for user {instance.user.username}")
+    logger.debug(f"Quote validation passed for user {username}")
 
 
 @receiver(pre_save, sender=Rental)
 def validate_rental_before_save(sender, instance, **kwargs):
     """
     Validate rental data before saving.
-    
-    Apply Rules: Validate and sanitize all user inputs.
     """
     # Validate date range
     if instance.start_date >= instance.end_date:
         raise ValueError("Rental end date must be after start date")
     
     # Check if product is available for rental
-    if 'rental' not in instance.product.type:
-        raise ValueError("Product is not available for rental.")
+    # if 'rental' not in instance.product.type:
+    #     raise ValueError("Product is not available for rental.")
     
     # Check for conflicting rentals (if updating existing rental)
     if instance.status == 'approved':
@@ -158,8 +186,11 @@ def validate_rental_before_save(sender, instance, **kwargs):
         if conflicting_rentals.exists():
             raise ValueError("Product is not available for the selected dates as it conflicts with another approved rental.")
 
+    # Safely access username for logging
+    username = instance.user.username if instance.user else 'Anonymous'
+    
     # Apply Rules: Log validation events
-    logger.debug(f"Rental validation passed for user {instance.user.username}")
+    logger.debug(f"Rental validation passed for user {username}")
 
 
 # Signal for tracking failed operations

@@ -396,9 +396,9 @@ EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'True').lower() == 'true' # Added for
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'sumedh.ramteke@mhebazar.com')
-ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'sumedh.ramteke@mhebazar.com')
-CONTACT_RECEIVER_EMAIL = os.getenv('CONTACT_RECEIVER_EMAIL', 'sumedh.ramteke@mhebazar.com') # Added this line
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'contact@mhebazar.com')
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'contact@mhebazar.com')
+CONTACT_RECEIVER_EMAIL = os.getenv('CONTACT_RECEIVER_EMAIL', 'contact@mhebazar.com') # Added this line
 
 
 # Frontend URL (for redirects, e.g., after social login)
@@ -447,6 +447,6 @@ LOGGING = {
     },
 }
 # Razorpay Configuration
-RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_test_eXK5DmzmpQXzFh')
-RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'b1xOotX38KU5QziqN37v7SVT')
+RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_live_upIRhX4PdR7Zdr')
+RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', '8DR0p5Wq68SKecVc01rIGuUo')
 

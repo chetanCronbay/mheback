@@ -2,53 +2,56 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Quote Request Confirmed</title>
+    <title>Confirmation: Your Quote Request for {{ quote.product.name }}</title>
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background-color: #f8f9fa; padding: 20px; text-align: center; border-radius: 5px; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+        .header { background-color: #007bff; color: white; padding: 10px 20px; text-align: center; border-radius: 5px 5px 0 0; }
         .content { padding: 20px 0; }
-        .product-details { background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0; }
-        .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
+        .details-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .details-table th, .details-table td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        .details-table th { background-color: #f2f2f2; font-weight: bold; width: 35%; }
+        .action-button { display: inline-block; margin-top: 15px; padding: 10px 20px; background-color: #28a745; color: white !important; text-decoration: none; border-radius: 5px; font-weight: bold; margin-right: 10px;}
+        .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; text-align: center; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Quote Request Confirmed</h1>
+            <img src="{{ logo_url }}" alt="MHE Bazar Logo" style="height: 40px; margin-bottom: 5px;">
+            <h1 style="font-size: 24px; margin-top: 5px;">Quote Request Confirmed</h1>
         </div>
         
         <div class="content">
-            <p>Dear {{ quote.user.first_name|default:quote.user.username }},</p>
+            <p>Dear <strong>{{ customer_name }}</strong>,</p>
             
-            <p>Thank you for your quote request. We have received your inquiry and will get back to you soon.</p>
+            <p>Thank you for submitting your quote request for **{{ quote.product.name }}**. We have successfully received your inquiry and are currently processing it.</p>
             
-            <div class="product-details">
-                <h3>Quote Details:</h3>
-                <p><strong>Product:</strong> {{ quote.product.name }}</p>
-                <p><strong>Manufacturer:</strong> {{ quote.product.manufacturer|default:"N/A" }}</p>
-                <p><strong>Model:</strong> {{ quote.product.model|default:"N/A" }}</p>
-                <p><strong>Price:</strong> ${{ quote.product.price }}</p>
-                <p><strong>Request Date:</strong> {{ quote.created_at|date:"F d, Y" }}</p>
-                <p><strong>Status:</strong> {{ quote.get_status_display }}</p>
-            </div>
-            
-            {% if quote.message %}
-            <div class="product-details">
-                <h3>Your Message:</h3>
-                <p>{{ quote.message }}</p>
+            <h3>Your Request Details:</h3>
+            <table class="details-table">
+                <tr><th>Product Name</th><td>{{ full_details.Product }}</td></tr>
+                <tr><th>Your Name</th><td>{{ full_details.Customer_Name }}</td></tr>
+                <tr><th>Email</th><td>{{ full_details.Email }}</td></tr>
+                <tr><th>Phone</th><td>{{ full_details.Phone }}</td></tr>
+                <tr><th>Company Name</th><td>{{ full_details.Company_Name }}</td></tr>
+                <tr><th>Submitted On</th><td>{{ full_details.Submitted_On }}</td></tr>
+            </table>
+
+            {% if full_details.Message %}
+            <div style="background-color: #fff3cd; padding: 15px; border-left: 5px solid #ffc107; margin-top: 20px; border-radius: 5px;">
+                <h3>Your Message (Delivery Address Included):</h3>
+                <p style="white-space: pre-wrap;">{{ full_details.Message }}</p>
             </div>
             {% endif %}
             
-            <p>We will review your request and contact you within 24-48 hours with a detailed quote.</p>
+            <p style="margin-top: 25px;">The Vendor, **{{ vendor_company_name }}**, will review your requirements and provide a detailed quote within 1-2 business days.</p>
             
-            <p>If you have any questions, please don't hesitate to contact us.</p>
-            
-            <p>Best regards,<br>
-            The MHE Team</p>
+            <a href="{{ product_url }}" class="action-button" style="background-color: #007bff;">View Product Details</a>
+            <a href="{{ website_url }}" class="action-button">Visit Website</a>
         </div>
         
         <div class="footer">
+            <p>&copy; {{ current_date }} MHE Bazar. Quote ID: {{ quote.id }}</p>
             <p>This is an automated message. Please do not reply directly to this email.</p>
         </div>
     </div>

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>ALERT: New Quote Request - {{ quote.product.name }}</title>
+    <title>ACTION REQUIRED: New Quote Request for {{ quote.product.name }}</title>
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #dc3545; border-radius: 8px; }
@@ -20,46 +20,41 @@
     <div class="container">
         <div class="header">
             <img src="{{ logo_url }}" alt="MHE Bazar Logo" style="height: 40px; margin-bottom: 5px;">
-            <h1 style="font-size: 24px; margin-top: 5px;">New Quote Request (Admin Alert)</h1>
+            <h1 style="font-size: 24px; margin-top: 5px;">New Quote Request Received</h1>
         </div>
         
         <div class="content">
-            <p>Hello Admin,</p>
-            <p>A new quote request has been submitted and is pending review. Details are below:</p>
+            <p>Dear **{{ vendor_company_name }}** Team,</p>
+            
+            <p>A new quote request has been submitted for your product **{{ quote.product.name }}** by a potential customer. Please process this inquiry immediately.</p>
             
             <div class="customer-info">
-                <h3>Customer Information:</h3>
+                <h3>Customer Contact Information:</h3>
                 <table class="details-table" style="margin: 0;">
                     <tr><th>Name</th><td>{{ full_details.Customer_Name }}</td></tr>
                     <tr><th>Company</th><td>{{ full_details.Company_Name }}</td></tr>
-                    <tr><th>Email</th><td>{{ full_details.Email }}</td></tr>
-                    <tr><th>Vendor Company</th><td>{{ full_details.Vendor_Company }}</td></tr>
+                    <tr><th>Email</th><td><a href="mailto:{{ full_details.Email }}">{{ full_details.Email }}</a></td></tr>
+                    <tr><th>Phone</th><td>{{ full_details.Phone }}</td></tr>
+                    <tr><th>Request Date</th><td>{{ full_details.Submitted_On }}</td></tr>
                 </table>
             </div>
 
-            <h3 style="margin-top: 20px;">Request Summary:</h3>
-            <table class="details-table">
-                <tr><th>Product</th><td>{{ full_details.Product }}</td></tr>
-                <tr><th>Request Date</th><td>{{ full_details.Submitted_On }}</td></tr>
-                <tr><th>Current Status</th><td><strong>{{ full_details.Status }}</strong></td></tr>
-                <tr><th>Vendor Email</th><td>{{ vendor_email }}</td></tr>
-            </table>
-
             {% if full_details.Message %}
             <div style="background-color: #fff3cd; padding: 15px; border-left: 5px solid #ffc107; margin-top: 20px; border-radius: 5px;">
-                <h3>Customer Message:</h3>
+                <h3>Customer Message (Delivery Address Included):</h3>
                 <p style="white-space: pre-wrap;">{{ full_details.Message }}</p>
             </div>
             {% endif %}
-
-            <p style="margin-top: 25px;">Please verify and manage the request.</p>
-
-            <a href="{{ website_url }}" class="action-button" style="background-color: #007bff;">Go to Admin Portal</a>
+            
+            <p style="margin-top: 25px;">Please contact the customer directly to provide the quotation and finalize the sale.</p>
+            
+            <a href="{{ product_url }}" class="action-button">View Product</a>
+            <a href="{{ website_url }}" class="action-button" style="background-color: #007bff;">Go to Dashboard</a>
         </div>
         
         <div class="footer">
             <p>&copy; {{ current_date }} MHE Bazar. Quote ID: {{ quote.id }}</p>
-            <p>This is an automated notification from your MHE system.</p>
+            <p>This is an automated notification from the MHE Vendor System.</p>
         </div>
     </div>
 </body>
