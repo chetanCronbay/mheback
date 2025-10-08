@@ -447,6 +447,6 @@ LOGGING = {
     },
 }
 # Razorpay Configuration
-RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_live_upIRhX4PdR7Zdr')
-RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', '8DR0p5Wq68SKecVc01rIGuUo')
+RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_live_RQtgKfM1NmkmLD')
+RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'Wp1ooz5P6EG0a8xt46updcVG')
 
