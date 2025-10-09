@@ -10,7 +10,7 @@ from rest_framework.routers import DefaultRouter
 from banners.views import BannerViewSet
 from products.views import (
     CategoryViewSet, ProductSearchViewSet, SubcategoryViewSet, ProductViewSet,
-    CartViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet
+    CartViewSet, UniversalSearchViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet
 )
 from users.views import (
     MyVendorStatsView, NewsletterSubscriptionViewSet, RoleViewSet, TrainingRegistrationViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin, RegisterView, EmailTokenObtainPairView, VendorDashboardView,
@@ -94,6 +94,9 @@ urlpatterns = [
           'delete': 'destroy'
       }), name='blog-detail'),
 
+        
+    # 💥 New Universal Search Endpoint for fast, single-call suggestions
+    path('api/search/universal/', UniversalSearchViewSet.as_view({'get': 'list'}), name='universal-search'),
     
     
     # ✅ Default router URLs (includes all ViewSet routes)

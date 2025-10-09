@@ -137,3 +137,16 @@ class RentalSerializer(serializers.ModelSerializer):
         if value and '<script>' in value.lower():
             raise serializers.ValidationError("Invalid content in notes")
         return value
+    
+    
+
+class UniversalSearchSerializer(serializers.Serializer):
+    """
+    Generic serializer for the combined search endpoint.
+    """
+    id = serializers.IntegerField()
+    name = serializers.CharField()
+    type = serializers.CharField() # 'product', 'category', 'vendor', 'subcategory'
+    category_slug = serializers.CharField(required=False)
+    vendor_slug = serializers.CharField(required=False)
+    product_id = serializers.IntegerField(required=False)

@@ -11,7 +11,8 @@ from django.db.models import Count, F, Value, IntegerField, Sum, Avg
 from .models import *
 from .serializers import *
 from users.permissions import ReadOnlyOrAdmin, IsVendorOwnerOrAdmin, IsAdmin
-from users.models import Role  # Import Role model or constant
+from users.models import Role, Vendor  # Import Role model or constant
+from django.contrib.auth import get_user_model # For the User model
 from django.db import transaction
 from django.core.mail import send_mail
 from rest_framework.pagination import PageNumberPagination
@@ -737,3 +738,212 @@ class RentalViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(rental)
         return Response(serializer.data)
     
+    
+    
+# In products/views.py
+
+# ... (Ensure all necessary imports are present: get_user_model, Role, Vendor, Product, Category, Subcategory, etc.) ...
+
+# This is a good practice if they are not dynamically loaded
+TYPE_CHOICES = [
+    ('new', 'New'),
+    ('used', 'Used'),
+    ('rental', 'Rental'),
+    ('attachments', 'Attachments'),
+]
+
+# Helper function to assign a score based on match relevance (Higher is better)
+def score_result(item, query_lower):
+    name_lower = item['name'].lower()
+    
+    # 1. Exact Match (Highest Score)
+    if name_lower == query_lower:
+        return 1000
+    
+    # 2. Starts With Match
+    if name_lower.startswith(query_lower):
+        # Starts with match is worth more than a contains match
+        return 500 + (100 / (len(name_lower) + 1)) 
+    
+    # 3. Contains Match (Fallback)
+    if query_lower in name_lower:
+        # Score higher if match is near the beginning (find() returns index)
+        return 100 + (100 / (name_lower.find(query_lower) + 1)) 
+        
+    return 1 # Default low score
+
+
+# Define the strict business priority
+# Highest number means highest priority
+BUSINESS_PRIORITY = {
+    'vendor_category': 6, # BYD - Forklift (Vendor + Type match)
+    'category': 5,        # Forklift (Core match)
+    'subcategory': 4,     # Heavy Forklift (Specific type match)
+    'product_type': 3,    # New Products / Rental Products
+    'product': 2,         # Specific product names
+    'vendor': 1,          # Generic Vendor names (BYD)
+}
+
+
+class UniversalSearchViewSet(viewsets.GenericViewSet):
+    """
+    A single, optimized viewset for combined search suggestions (Products,
+    Categories, Subcategories, and Approved Vendors).
+    """
+    queryset = Product.objects.none() 
+    permission_classes = [AllowAny]
+    serializer_class = UniversalSearchSerializer 
+    pagination_class = None
+
+    def list(self, request):
+        query = request.query_params.get('search', '').strip()
+        
+        if not query or len(query) < 2:
+            return Response([])
+
+        lower_query = query.lower()
+        cap_query = query.upper()
+        
+        # --- 1. Product Type Search ---
+        product_type_results = []
+        for slug, name in TYPE_CHOICES:
+            if lower_query in name.lower() or lower_query == slug:
+                 product_type_results.append({
+                    'id': f'pt_{slug}',
+                    'name': f"{name} Products",
+                    'type': 'product_type',
+                    'category_slug': slug, 
+                 })
+
+        # --- 2. Product Search (Approved & Active) ---
+        product_query_filter = (
+            Q(name__icontains=lower_query) | Q(model__icontains=lower_query) | 
+            Q(manufacturer__icontains=lower_query) | Q(name__icontains=cap_query) | 
+            Q(model__icontains=cap_query) | Q(manufacturer__icontains=cap_query) |
+            Q(type__contains=lower_query)
+        )
+        
+        # Get all matching products
+        products = Product.objects.filter(
+            product_query_filter,
+            is_active=True,
+            status='approved'
+        ).select_related('category', 'subcategory').only('id', 'name', 'category__name', 'subcategory__name') 
+
+        product_results = [{
+            'id': str(p.id), 
+            'name': p.name,
+            'type': 'product',
+            'category_slug': p.category.name.lower().replace(' ', '-') if p.category else '',
+            'product_id': p.id
+        } for p in products]
+
+        # --- 3. Category Search (Limited to 5) ---
+        category_search_filter = Q(name__icontains=lower_query)
+        categories = Category.objects.filter(category_search_filter).only('id', 'name')[:5]
+        category_results = [{
+            'id': f'c_{c.id}',
+            'name': c.name,
+            'type': 'category',
+        } for c in categories]
+
+        # --- 4. Subcategory Search (Limited to 5) ---
+        subcategory_search_filter = Q(name__icontains=lower_query)
+        subcategories = Subcategory.objects.filter(subcategory_search_filter).select_related('category').only('id', 'name', 'category__name')[:5]
+        subcategory_results = [{
+            'id': f's_{s.id}',
+            'name': f"{s.name} (Category: {s.category.name if s.category else 'N/A'})",
+            'type': 'subcategory',
+            'category_slug': s.category.name.lower().replace(' ', '-') if s.category else '',
+        } for s in subcategories]
+
+        # --- 5. Vendor Search (Limited to 5) ---
+        User = get_user_model() 
+        vendor_filter = (
+            Q(brand__icontains=lower_query) | Q(company_name__icontains=lower_query) | 
+            Q(user__username__icontains=lower_query) | Q(brand__icontains=cap_query) |
+            Q(company_name__icontains=cap_query)
+        )
+        
+        try:
+            approved_user_ids = User.objects.filter(role__name='Vendor', is_active=True).values_list('id', flat=True)
+        except Exception:
+            approved_user_ids = []
+
+        vendors = Vendor.objects.filter(
+            vendor_filter,
+            user_id__in=approved_user_ids
+        ).select_related('user').only('id', 'brand', 'company_name', 'user__username', 'user_id')[:5]
+
+        vendor_results = []
+        vendor_category_results = []
+        
+        for v in vendors:
+            vendor_name = v.brand or v.company_name or v.user.username
+            vendor_slug = vendor_name.lower().replace(' ', '-')
+            
+            # --- Generic Vendor Result ---
+            vendor_results.append({
+                'id': f'v_{v.id}',
+                'name': vendor_name,
+                'type': 'vendor',
+                'vendor_slug': vendor_slug,
+                'user_id': v.user_id,
+            })
+            
+            # --- 6. Vendor-Category Search ---
+            vendor_categories_data = Product.objects.filter(
+                user_id=v.user_id, is_active=True, status='approved'
+            ).values_list('category__name', 'category_id').distinct()
+
+            for category_name, category_id in vendor_categories_data:
+                if not category_name:
+                    continue
+                    
+                category_slug = category_name.lower().replace(' ', '-')
+                # Check if the query is contained in the combination (e.g., searching 'BYD Fork' matches here)
+                combined_name = f"{v.brand or v.company_name} - {category_name}".lower()
+                if lower_query in combined_name:
+                    vendor_category_results.append({
+                        'id': f'vc_{v.id}_{category_id}', 
+                        'name': f"{v.brand or v.company_name} - {category_name}",
+                        'type': 'vendor_category',
+                        'vendor_slug': vendor_slug,
+                        'category_slug': category_slug,
+                    })
+        
+        # --- 7. Apply Multi-Level Sorting ---
+        
+        all_results = (
+            vendor_results +
+            vendor_category_results +
+            product_type_results +
+            product_results +
+            category_results +
+            subcategory_results
+        )
+
+        # 1. Calculate Score for all results
+        scored_results = [
+            (score_result(item, lower_query), item) for item in all_results
+        ]
+        
+        # 2. Final Sort: 
+        #   A) By BUSINESS PRIORITY (Highest first)
+        #   B) Then by RELEVANCE SCORE (Highest first)
+        #   C) Then by Name (Alphabetical A-Z)
+        final_sorted_results = sorted(
+            scored_results,
+            key=lambda x: (
+                BUSINESS_PRIORITY.get(x[1]['type'], 0), # Primary Sort: Type (6 to 1)
+                x[0],                                    # Secondary Sort: Relevance Score (1000 to 1)
+                x[1]['name']                             # Tertiary Sort: Name
+            ),
+            reverse=True # We want highest priority and highest score first
+        )
+
+        # Extract the items (discard the scores)
+        final_items = [item for score, item in final_sorted_results]
+        
+        # 💥 FINAL RESPONSE: Return ALL results for client-side progressive loading
+        return Response(final_items)
