@@ -740,50 +740,55 @@ class RentalViewSet(viewsets.ModelViewSet):
     
     
     
-# In products/views.py
+# In products/views.py (Place this section near the end of the file)
 
-# ... (Ensure all necessary imports are present: get_user_model, Role, Vendor, Product, Category, Subcategory, etc.) ...
+# Make sure these are defined near the top of your views.py:
+# from django.db.models import Q 
+# from django.contrib.auth import get_user_model 
+# from users.models import Role, Vendor 
+# from .models import Product, Category, Subcategory, etc.
 
-# This is a good practice if they are not dynamically loaded
+
+# Helper function to assign a score based on match relevance (Higher is better)
+def score_result(item, query_lower):
+    name_lower = item['name'].lower()
+    
+    # 1. Perfect Exact Match (Highest Score)
+    if name_lower == query_lower:
+        return 1000
+    
+    # 2. Exact Word Match (e.g., searching 'Forklift' matches 'BYD - Forklift')
+    if f' {query_lower} ' in f' {name_lower} ':
+        return 900
+    
+    # 3. Starts With Match
+    if name_lower.startswith(query_lower):
+        return 500 + (100 / (len(name_lower) + 1)) 
+    
+    # 4. Contains Match (Fallback)
+    if query_lower in name_lower:
+        return 100 + (100 / (name_lower.find(query_lower) + 1)) 
+        
+    return 1 
+
+
+# Highest number means highest priority
+BUSINESS_PRIORITY = {
+    'vendor_category': 6, # Priority 6: BYD - Forklift (Vendor + Type match)
+    'category': 5,        # Priority 5: Forklift (Core Category)
+    'subcategory': 4,     # Priority 4: Heavy Forklift (Specific category type)
+    'product_type': 3,    # Priority 3: New Products / Rental Products
+    'product': 2,         # Priority 2: Specific product names (e.g., FORKLIFT TYRE)
+    'vendor': 1,          # Priority 1: Generic Vendor names (BYD) - Lowest priority type
+}
+
+# Product Type Choices
 TYPE_CHOICES = [
     ('new', 'New'),
     ('used', 'Used'),
     ('rental', 'Rental'),
     ('attachments', 'Attachments'),
 ]
-
-# Helper function to assign a score based on match relevance (Higher is better)
-def score_result(item, query_lower):
-    name_lower = item['name'].lower()
-    
-    # 1. Exact Match (Highest Score)
-    if name_lower == query_lower:
-        return 1000
-    
-    # 2. Starts With Match
-    if name_lower.startswith(query_lower):
-        # Starts with match is worth more than a contains match
-        return 500 + (100 / (len(name_lower) + 1)) 
-    
-    # 3. Contains Match (Fallback)
-    if query_lower in name_lower:
-        # Score higher if match is near the beginning (find() returns index)
-        return 100 + (100 / (name_lower.find(query_lower) + 1)) 
-        
-    return 1 # Default low score
-
-
-# Define the strict business priority
-# Highest number means highest priority
-BUSINESS_PRIORITY = {
-    'vendor_category': 6, # BYD - Forklift (Vendor + Type match)
-    'category': 5,        # Forklift (Core match)
-    'subcategory': 4,     # Heavy Forklift (Specific type match)
-    'product_type': 3,    # New Products / Rental Products
-    'product': 2,         # Specific product names
-    'vendor': 1,          # Generic Vendor names (BYD)
-}
-
 
 class UniversalSearchViewSet(viewsets.GenericViewSet):
     """
@@ -792,19 +797,43 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
     """
     queryset = Product.objects.none() 
     permission_classes = [AllowAny]
-    serializer_class = UniversalSearchSerializer 
+    # serializer_class = UniversalSearchSerializer # Uncomment if defined
     pagination_class = None
+
+# In products/views.py (Replace the entire list method in UniversalSearchViewSet)
 
     def list(self, request):
         query = request.query_params.get('search', '').strip()
         
-        if not query or len(query) < 2:
-            return Response([])
+        if not query: 
+             return Response([])
 
         lower_query = query.lower()
         cap_query = query.upper()
         
-        # --- 1. Product Type Search ---
+        # --- Common Data Setup ---
+        User = get_user_model() 
+        try:
+            approved_user_ids = User.objects.filter(role__name='Vendor', is_active=True).values_list('id', flat=True)
+        except Exception:
+            approved_user_ids = []
+
+        # Check for EXACT Vendor Match (for ultimate boost)
+        exact_vendor_matches = Vendor.objects.filter(
+            Q(brand__iexact=query) | Q(company_name__iexact=query),
+            user_id__in=approved_user_ids
+        ).values_list('user_id', flat=True)
+        
+        is_exact_vendor_search = exact_vendor_matches.exists()
+
+        # Check for Exact Category/Subcategory Match (to suppress generic vendors)
+        is_exact_category_search = (
+            Category.objects.filter(name__iexact=query).exists() or
+            Subcategory.objects.filter(name__iexact=query).exists()
+        )
+        # ----------------------------------------------------
+
+        # --- 1. Product Type Search (P2) ---
         product_type_results = []
         for slug, name in TYPE_CHOICES:
             if lower_query in name.lower() or lower_query == slug:
@@ -815,7 +844,7 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
                     'category_slug': slug, 
                  })
 
-        # --- 2. Product Search (Approved & Active) ---
+        # --- 2. Product Search (P1) ---
         product_query_filter = (
             Q(name__icontains=lower_query) | Q(model__icontains=lower_query) | 
             Q(manufacturer__icontains=lower_query) | Q(name__icontains=cap_query) | 
@@ -823,33 +852,46 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
             Q(type__contains=lower_query)
         )
         
-        # Get all matching products
         products = Product.objects.filter(
             product_query_filter,
             is_active=True,
             status='approved'
-        ).select_related('category', 'subcategory').only('id', 'name', 'category__name', 'subcategory__name') 
+        ).select_related('category', 'subcategory', 'user').prefetch_related('user__vendor').only(
+            'id', 'name', 'model', 'category', 'subcategory', 'user'
+        ) 
 
-        product_results = [{
-            'id': str(p.id), 
-            'name': p.name,
-            'type': 'product',
-            'category_slug': p.category.name.lower().replace(' ', '-') if p.category else '',
-            'product_id': p.id
-        } for p in products]
+        product_results = []
+        for p in products:
+            vendor_list = list(p.user.vendor.all())
+            vendor = vendor_list[0] if vendor_list else None
+            vendor_name = getattr(vendor, 'brand', None) or getattr(vendor, 'company_name', None) or 'N/A'
+            
+            product_results.append({
+                'id': str(p.id), 
+                'name': p.name,
+                'type': 'product',
+                'category_slug': p.category.name.lower().replace(' ', '-') if p.category else '',
+                'product_id': p.id,
+                'model': p.model,
+                'product_tags': {
+                    'vendor': vendor_name,
+                    'category': p.category.name if p.category else '',
+                    'subcategory': p.subcategory.name if p.subcategory else '',
+                },
+                'user_id': p.user_id 
+            })
 
-        # --- 3. Category Search (Limited to 5) ---
+        # --- 3 & 4. Category and Subcategory Search (P4 & P3) ---
         category_search_filter = Q(name__icontains=lower_query)
-        categories = Category.objects.filter(category_search_filter).only('id', 'name')[:5]
+        categories = Category.objects.filter(category_search_filter).only('id', 'name')
         category_results = [{
             'id': f'c_{c.id}',
             'name': c.name,
             'type': 'category',
         } for c in categories]
 
-        # --- 4. Subcategory Search (Limited to 5) ---
         subcategory_search_filter = Q(name__icontains=lower_query)
-        subcategories = Subcategory.objects.filter(subcategory_search_filter).select_related('category').only('id', 'name', 'category__name')[:5]
+        subcategories = Subcategory.objects.filter(subcategory_search_filter).select_related('category').only('id', 'name', 'category__name')
         subcategory_results = [{
             'id': f's_{s.id}',
             'name': f"{s.name} (Category: {s.category.name if s.category else 'N/A'})",
@@ -857,32 +899,28 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
             'category_slug': s.category.name.lower().replace(' ', '-') if s.category else '',
         } for s in subcategories]
 
-        # --- 5. Vendor Search (Limited to 5) ---
-        User = get_user_model() 
-        vendor_filter = (
-            Q(brand__icontains=lower_query) | Q(company_name__icontains=lower_query) | 
-            Q(user__username__icontains=lower_query) | Q(brand__icontains=cap_query) |
-            Q(company_name__icontains=cap_query)
-        )
+        # --- 5, 6, 7. Vendor Aggregation and Specific Vendor Results ---
         
-        try:
-            approved_user_ids = User.objects.filter(role__name='Vendor', is_active=True).values_list('id', flat=True)
-        except Exception:
-            approved_user_ids = []
-
-        vendors = Vendor.objects.filter(
-            vendor_filter,
-            user_id__in=approved_user_ids
-        ).select_related('user').only('id', 'brand', 'company_name', 'user__username', 'user_id')[:5]
+        vendor_name_match_query = (Q(brand__icontains=lower_query) | Q(company_name__icontains=lower_query) | 
+                                   Q(user__username__icontains=lower_query))
+        vendors_by_name = Vendor.objects.filter(vendor_name_match_query, user_id__in=approved_user_ids).select_related('user')
+        
+        category_match_vendor_ids = Product.objects.filter(category__name__icontains=query, is_active=True, status='approved').values_list('user_id', flat=True).distinct()
+        vendors_by_category = Vendor.objects.filter(user_id__in=category_match_vendor_ids).select_related('user')
+        
+        all_relevant_vendors = list(vendors_by_name) + list(vendors_by_category)
+        unique_vendor_map = {v.user_id: v for v in all_relevant_vendors}
+        final_vendor_list = list(unique_vendor_map.values())
 
         vendor_results = []
         vendor_category_results = []
+        vendor_subcategory_results = []
         
-        for v in vendors:
+        for v in final_vendor_list:
             vendor_name = v.brand or v.company_name or v.user.username
             vendor_slug = vendor_name.lower().replace(' ', '-')
             
-            # --- Generic Vendor Result ---
+            # --- Generic Vendor Result (P7) ---
             vendor_results.append({
                 'id': f'v_{v.id}',
                 'name': vendor_name,
@@ -891,59 +929,107 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
                 'user_id': v.user_id,
             })
             
-            # --- 6. Vendor-Category Search ---
-            vendor_categories_data = Product.objects.filter(
-                user_id=v.user_id, is_active=True, status='approved'
-            ).values_list('category__name', 'category_id').distinct()
+            # --- Vendor-Category (P6) and Vendor-Subcategory (P5) Generation ---
+            vendor_products = Product.objects.filter(
+                user_id=v.user_id, 
+                is_active=True, 
+                status='approved',
+            ).values_list(
+                'category__name', 'category_id', 
+                'subcategory__name', 'subcategory__id'
+            ).distinct()
 
-            for category_name, category_id in vendor_categories_data:
+            processed_vendor_categories = set()
+            processed_vendor_subcategories = set()
+            
+            for category_name, category_id, subcategory_name, subcategory_id in vendor_products:
                 if not category_name:
                     continue
                     
-                category_slug = category_name.lower().replace(' ', '-')
-                # Check if the query is contained in the combination (e.g., searching 'BYD Fork' matches here)
-                combined_name = f"{v.brand or v.company_name} - {category_name}".lower()
-                if lower_query in combined_name:
+                is_category_match = lower_query in category_name.lower()
+                is_subcategory_match = subcategory_name and lower_query in subcategory_name.lower()
+                
+                # Logic for generating Vendor-Category/Subcategory:
+                # 1. If it's an exact vendor search, generate ALL of their items.
+                # 2. If it's a generic search, only generate items that match the category/subcategory name.
+                should_generate_category_entry = is_category_match or (is_exact_vendor_search and v.user_id in exact_vendor_matches)
+                should_generate_subcategory_entry = is_subcategory_match or (is_exact_vendor_search and v.user_id in exact_vendor_matches)
+                
+
+                # 1. Vendor Category (P6)
+                if should_generate_category_entry and category_name not in processed_vendor_categories:
+                    vendor_category_name = f"{v.brand or v.company_name} - {category_name}"
+                    category_slug = category_name.lower().replace(' ', '-')
+                    
                     vendor_category_results.append({
                         'id': f'vc_{v.id}_{category_id}', 
-                        'name': f"{v.brand or v.company_name} - {category_name}",
+                        'name': vendor_category_name,
                         'type': 'vendor_category',
                         'vendor_slug': vendor_slug,
                         'category_slug': category_slug,
+                        'user_id': v.user_id 
                     })
+                    processed_vendor_categories.add(category_name)
+                
+                # 2. Vendor Subcategory (P5)
+                if subcategory_name and subcategory_id and subcategory_name not in processed_vendor_subcategories:
+                     if should_generate_subcategory_entry:
+                         subcategory_slug = subcategory_name.lower().replace(' ', '-')
+                         vendor_subcategory_results.append({
+                            'id': f'vsc_{v.id}_{subcategory_id}', 
+                            'name': f"{v.brand or v.company_name} - {subcategory_name} (Subcategory)",
+                            'type': 'vendor_subcategory',
+                            'vendor_slug': vendor_slug,
+                            'category_slug': subcategory_slug,
+                            'user_id': v.user_id 
+                         })
+                         processed_vendor_subcategories.add(subcategory_name)
         
-        # --- 7. Apply Multi-Level Sorting ---
+        # --- PHASE 2: Apply Multi-Level Sorting ---
         
         all_results = (
-            vendor_results +
-            vendor_category_results +
-            product_type_results +
-            product_results +
-            category_results +
-            subcategory_results
+            vendor_results +              # P7
+            vendor_category_results +     # P6
+            vendor_subcategory_results +  # P5
+            category_results +            # P4
+            subcategory_results +         # P3
+            product_type_results +        # P2
+            product_results               # P1
         )
 
-        # 1. Calculate Score for all results
         scored_results = [
             (score_result(item, lower_query), item) for item in all_results
         ]
         
-        # 2. Final Sort: 
-        #   A) By BUSINESS PRIORITY (Highest first)
-        #   B) Then by RELEVANCE SCORE (Highest first)
-        #   C) Then by Name (Alphabetical A-Z)
+        # Determine the effective priority for sorting:
+        def get_effective_priority(item_type, score):
+            base_priority = BUSINESS_PRIORITY.get(item_type, 0)
+            
+            # 1. Ultimate Vendor Boost (for exact BYD search)
+            if is_exact_vendor_search and item_type in ['vendor', 'vendor_category', 'vendor_subcategory', 'product']:
+                return base_priority * 100000 
+            
+            # 2. Category/Subcategory Search Fix (for Forklift search)
+            # If the search is NOT an exact vendor search, we suppress P7 (Vendor) to P0, 
+            # allowing P6 (Vendor-Category) to rise to the top.
+            if item_type == 'vendor' and not is_exact_vendor_search and not is_exact_category_search:
+                # If the query is weak and not an exact category/vendor match, push generic vendors down slightly.
+                if score < 500: # Score < 500 means it doesn't start with the query
+                    return base_priority / 100 # Demote generic vendors
+            
+            return base_priority
+            
+
         final_sorted_results = sorted(
             scored_results,
             key=lambda x: (
-                BUSINESS_PRIORITY.get(x[1]['type'], 0), # Primary Sort: Type (6 to 1)
-                x[0],                                    # Secondary Sort: Relevance Score (1000 to 1)
-                x[1]['name']                             # Tertiary Sort: Name
+                get_effective_priority(x[1]['type'], x[0]),
+                x[0], # Secondary Sort: Relevance Score
+                x[1]['name'] # Tertiary Sort: Name
             ),
-            reverse=True # We want highest priority and highest score first
+            reverse=True
         )
 
-        # Extract the items (discard the scores)
         final_items = [item for score, item in final_sorted_results]
         
-        # 💥 FINAL RESPONSE: Return ALL results for client-side progressive loading
         return Response(final_items)
