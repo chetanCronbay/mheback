@@ -145,7 +145,7 @@ class VendorAccessPermission(permissions.BasePermission):
 
         # Check if the user is the owner of the vendor profile for updating.
         if view.action in ['update', 'partial_update']:
-            return obj.user == request.user
+            return obj.user == request.user # <-- This is the correct check!
 
         # By default, deny other actions like 'destroy' for non-admins.
         return False

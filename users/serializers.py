@@ -336,14 +336,18 @@ class VendorApprovalSerializer(serializers.Serializer):
 class VendorUpdateSerializer(serializers.ModelSerializer):
     """
     Serializer for updating vendor information.
-    Used by vendors to update their profile or by admins.
+    Includes user fields for profile update (username, description).
     """
+    # 💥 ADD User fields (use source='user.field' for nested updates)
+    username = serializers.CharField(source='user.username', required=False, allow_blank=True)
+    description = serializers.CharField(source='user.description', required=False, allow_blank=True)
     
     class Meta:
         model = Vendor
         fields = [
             'company_name', 'company_email', 'company_address', 
-            'company_phone', 'brand', 'pcode', 'gst_no'
+            'company_phone', 'brand', 'pcode', 'gst_no',
+            'username', 'description' # 💥 New fields added
         ]
         
     def validate_company_email(self, value: str) -> str:
@@ -355,13 +359,25 @@ class VendorUpdateSerializer(serializers.ModelSerializer):
         return value
         
     def update(self, instance: Vendor, validated_data: Dict[str, Any]) -> Vendor:
-        """Update vendor information."""
+        """Update vendor and user information."""
+        
+        # Pop user-related data for separate processing
+        user_data = validated_data.pop('user', {})
+        
+        # 1. Update Vendor fields
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
         
+        # 2. Update User fields
+        user = instance.user
+        for attr, value in user_data.items():
+            setattr(user, attr, value)
+        user.save() # Save the nested user object
+        
         logger.info(f"Vendor information updated for {instance.user.username}")
         return instance
+
 
 
 class VendorProfileSerializer(serializers.ModelSerializer):

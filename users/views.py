@@ -445,7 +445,7 @@ class VendorViewSet(viewsets.ModelViewSet):
             permission_classes = [permissions.IsAuthenticated]
         
         elif self.action in ['update', 'partial_update']:
-            permission_classes = [IsOwnerOrAdmin]
+            permission_classes = [VendorAccessPermission]
         
         elif self.action in ['destroy', 'approve']:
             permission_classes = [IsAdmin]
