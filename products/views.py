@@ -747,15 +747,58 @@ class RentalViewSet(viewsets.ModelViewSet):
 # from django.contrib.auth import get_user_model 
 # from users.models import Role, Vendor 
 # from .models import Product, Category, Subcategory, etc.
-# ... (Other ViewSets and definitions remain above)
+# ====================================================================
+# 🚀 MHE Abbreviation Mapping
+# ====================================================================
+MHE_ABBREVIATIONS = {
+    'hpt': 'hand pallet truck',
+    'hpt-ss': 'stainless steel hand pallet truck',
+    'hpt-ws': 'weighing scale hand pallet truck',
+    'hpt-sl': 'scissors hand pallet truck',
+    'hs': 'manul stacker',
+    'mhs': 'semi-electric stacker',
+    'st': 'stacker',
+    'st-cb': 'counter balance stacker',
+    'e-hpt': 'electric pallet truck',
+    'bopt': 'battery operated pallet truck',
+    'pt': 'platform truck / trolly',
+    'tt': 'tow truck',
+    'dfl': 'diesel forklift',
+    'efl (li-ion)': 'electric forklift (lithium-ion battery)',
+    'efl (lead-acid)': 'electric forklift (lead-acid battery)',
+    'flt-art.': 'articulated forklift',
+    'hfl': 'heavy forklift',
+    'flt': 'forklift',
+    'chfl': 'container handler forklift',
+    'sl': 'scissors lift',
+    'sp-sl': 'self-propelled scissors lift',
+    'awp': 'aerial work platform',
+    'gl': 'goods lift',
+    'dl': 'dock leveler',
+    'dr': 'dock ramp / mobile dock ramp',
+    'rt': 'reach truck',
+    'ddrt': 'double deep reach truck',
+    'rk': 'racking system',
+    'vna': 'very narrow aisle truck',
+    'agv': 'automated guided vehicle',
+    'op': 'order picker',
+    'gc': 'golf cart',
+    'th': 'telehandler',
+    'li-ion batt.': 'mhe bazar li-ion battery kit',
+    'bl': 'boom lift',
+    '4dml': '4dml',
+}
+# ====================================================================
+
+
 # Priority constants for final sorting. Higher number means higher priority group.
 PRIORITY = {
-    'vendor_category': 4,  # Vendor + Relevant Category Link
+    'vendor_category': 4, # Vendor + Relevant Category Link
     'vendor': 3,
     'category': 2,
     'subcategory': 1,
-    'product': 0,          # Specific Product Suggestion
-    'product_type': -1,    # Product Type Link (Lowest)
+    'product': 0, # Specific Product Suggestion
+    'product_type': -1, # Product Type Link (Lowest)
 }
 
 # Product Type Choices (Must match model definition)
@@ -771,19 +814,8 @@ def create_slug(name):
     return (name or '').lower().replace(' ', '-')
 
 # Helper function to get the vendor name via a subquery to avoid complex joins in the main product query
-# This requires Django 1.11+ and is safer than complex select_related chains.
 def get_vendor_name_subquery():
-    # Annotate Product with the first matching Vendor's brand/company name
-    # We use Subquery to handle the reverse ForeignKey/related_name relationship safely.
-    # NOTE: This assumes a Product's user has AT MOST one Vendor entry.
-    first_vendor = Vendor.objects.filter(user=OuterRef('user')).order_by('pk')
-    
-    return Product.objects.annotate(
-        vendor_brand_sub=Subquery(first_vendor.values('brand')[:1]),
-        vendor_company_sub=Subquery(first_vendor.values('company_name')[:1]),
-        category_name_sub=Subquery(Category.objects.filter(pk=OuterRef('category_id')).values('name')[:1]),
-        subcategory_name_sub=Subquery(Subcategory.objects.filter(pk=OuterRef('subcategory_id')).values('name')[:1])
-    )
+    pass
 
 
 class UniversalSearchViewSet(viewsets.GenericViewSet):
@@ -795,22 +827,45 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
         # 1. Prepare query and initial data structures (O(1) / O(N) setup)
-        query = request.query_params.get('search', '').strip().lower() 
-        if not query: return response.Response([]) 
-        query_chars = set(query)
         
+        # Capture raw query key for abbreviation check
+        raw_query_key = request.query_params.get('search', '').strip()
+        query = raw_query_key.lower() 
+        if not query: return response.Response([]) 
+
+        # 🚀 Abbreviation Expansion
+        expanded_query_phrase = query
+        expanded_phrase_full = None
+        
+        if raw_query_key in MHE_ABBREVIATIONS:
+            expanded_phrase_full = MHE_ABBREVIATIONS[raw_query_key].lower()
+            # Augment the search string for matching/filtering
+            expanded_query_phrase = f"{query} {expanded_phrase_full}"
+        
+        # Set the character set based on the expanded phrase
+        query_chars = set(expanded_query_phrase)
+
         # Helper to generate the core OR filter for loose character matching
         def create_char_filter(fields):
             char_filter = Q()
             for char in query_chars:
                 for field in fields:
+                    # Uses query_chars (from expanded phrase) for filtering
                     char_filter |= Q(**{f'{field}__icontains': char})
             return char_filter
 
         # Helper for scoring (Set Intersection)
         def calculate_score(name_lower):
+            # Base score remains character intersection from expanded phrase
             score = sum(1 for char in query_chars if char in name_lower) 
+            
+            # Original exact match bonus (checks the user's input before expansion)
             if query in name_lower: score += 1000 
+            
+            # Bonus for matching the expanded full phrase
+            if expanded_phrase_full and expanded_phrase_full in name_lower:
+                score += 1000
+                
             return score
 
         # ----------------------------------------------------
@@ -818,14 +873,89 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
         # ----------------------------------------------------
         all_results_with_score = []
         
+        # Assuming get_user_model is imported/available
         approved_ids = get_user_model().objects.filter(role__name='Vendor', is_active=True).values_list('id', flat=True)
 
-        # --- P4: VENDOR-CATEGORIES ---
+        # -----------------------------------------------------------------
+        # 💥 DETECTION VARIABLES FOR STRICT PRODUCT FILTERING
+        # -----------------------------------------------------------------
+        detected_vendor_user_id = None
+        detected_category_id = None
+        detected_subcategory_id = None
+        
+        # --- P3: VENDORS (Detect Exact Vendor Match) ---
+        vendor_filter = create_char_filter(['brand', 'company_name'])
+        vendors = Vendor.objects.filter(vendor_filter, user_id__in=approved_ids).select_related('user').distinct()
+
+        for v in vendors:
+            name = v.brand or v.company_name or v.user.username
+            name_lower = name.lower()
+            score = calculate_score(name_lower)
+            
+            is_exact_vendor_match = name_lower == query or (v.brand and v.brand.lower() == query) or (v.company_name and v.company_name.lower() == query)
+            
+            # Record the vendor's user ID if it's an exact match OR if the vendor name is present in a multi-word query (loose check).
+            # We use the 'in' operator on the raw search key to prioritize this vendor.
+            # However, for simplicity and strictness based on the last request, we'll stick to 'is_exact_vendor_match'
+            # OR a close loose match on the main word to establish the vendor filter base.
+            if is_exact_vendor_match or query in name_lower:
+                detected_vendor_user_id = v.user_id 
+                # Break to capture the highest scored/most relevant vendor if multiple exist, though exact match is best.
+                # If only 'BYD' is searched, this will set the ID. If 'BYD forklift' is searched, the loose score should still find 'BYD' here.
+
+            effective_priority = PRIORITY['vendor']
+            if is_exact_vendor_match:
+                effective_priority = PRIORITY['vendor_category'] + 10 
+
+            if score > 0:
+                all_results_with_score.append((
+                    effective_priority, score, {'id': f'v_{v.id}', 'name': name, 'type': 'vendor', 'vendor_slug': create_slug(name)}
+                ))
+        
+        # --- P2: CATEGORIES (Detect Category Match for Strict Filtering) ---
+        category_filter = create_char_filter(['name'])
+        categories = Category.objects.filter(category_filter).only('id', 'name')
+        
+        for c in categories:
+            score = calculate_score(c.name.lower())
+            
+            # Strict detection: If the category name is part of the query, capture its ID
+            if query in c.name.lower() or c.name.lower() in query:
+                 detected_category_id = c.id
+                 # If we detect a specific category, we stop checking for others for strictness
+                 # In a real system, you might refine this to the best match.
+            
+            if score > 0:
+                all_results_with_score.append((
+                    PRIORITY['category'], score, {'id': f'c_{c.id}', 'name': c.name, 'type': 'category', 'category_slug': create_slug(c.name)}
+                ))
+        
+        # --- P1: SUBCATEGORIES (Detect Subcategory Match for Strict Filtering) ---
+        subcategory_filter = create_char_filter(['name'])
+        subcategories = Subcategory.objects.filter(subcategory_filter).select_related('category').only('id', 'name', 'category__name')
+        
+        for s in subcategories:
+            full_name = f"{s.name} ({s.category.name if s.category else 'N/A'})"
+            score = calculate_score(s.name.lower())
+            
+            # Strict detection: If the subcategory name is part of the query, capture its ID
+            if query in s.name.lower() or s.name.lower() in query:
+                 detected_subcategory_id = s.id
+
+            if score > 0:
+                all_results_with_score.append((
+                    PRIORITY['subcategory'], score, {
+                        'id': f's_{s.id}', 'name': full_name, 'type': 'subcategory', 
+                        'category_slug': create_slug(s.category.name) if s.category else '',
+                        'subcategory_slug': create_slug(s.name),
+                    }
+                ))
+        
+        # --- P4: VENDOR-CATEGORIES (Run after P3/P2/P1 detection, logic unchanged) ---
         vendor_match_filter = create_char_filter(['user__vendor__brand', 'user__vendor__company_name'])
         category_match_filter = create_char_filter(['category__name', 'subcategory__name'])
         combined_product_filter = category_match_filter | vendor_match_filter
 
-        # FIX: Removed select_related('user__vendor') and used .values() only, relying on the JOINs implied by the filter.
         vendor_category_matches = Product.objects.filter(
             combined_product_filter, user_id__in=approved_ids, is_active=True, status='approved'
         ).values(
@@ -857,60 +987,38 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
                     }
                 ))
         
-        # --- P3: VENDORS ---
-        vendor_filter = create_char_filter(['brand', 'company_name'])
-        vendors = Vendor.objects.filter(vendor_filter, user_id__in=approved_ids).select_related('user').distinct()
-
-        for v in vendors:
-            name = v.brand or v.company_name or v.user.username
-            name_lower = name.lower()
-            score = calculate_score(name_lower)
-            
-            is_exact_vendor_match = name_lower == query or (v.brand and v.brand.lower() == query) or (v.company_name and v.company_name.lower() == query)
-            
-            effective_priority = PRIORITY['vendor']
-            if is_exact_vendor_match:
-                effective_priority = PRIORITY['vendor_category'] + 10 
-
-            if score > 0:
-                all_results_with_score.append((
-                    effective_priority, score, {'id': f'v_{v.id}', 'name': name, 'type': 'vendor', 'vendor_slug': create_slug(name)}
-                ))
-
-        # --- P2: CATEGORIES ---
-        category_filter = create_char_filter(['name'])
-        categories = Category.objects.filter(category_filter).only('id', 'name')
-        
-        for c in categories:
-            score = calculate_score(c.name.lower())
-            if score > 0:
-                all_results_with_score.append((
-                    PRIORITY['category'], score, {'id': f'c_{c.id}', 'name': c.name, 'type': 'category', 'category_slug': create_slug(c.name)}
-                ))
-        
-        # --- P1: SUBCATEGORIES ---
-        subcategory_filter = create_char_filter(['name'])
-        subcategories = Subcategory.objects.filter(subcategory_filter).select_related('category').only('id', 'name', 'category__name')
-        
-        for s in subcategories:
-            full_name = f"{s.name} ({s.category.name if s.category else 'N/A'})"
-            score = calculate_score(s.name.lower())
-            if score > 0:
-                all_results_with_score.append((
-                    PRIORITY['subcategory'], score, {
-                        'id': f's_{s.id}', 'name': full_name, 'type': 'subcategory', 
-                        'category_slug': create_slug(s.category.name) if s.category else '',
-                        'subcategory_slug': create_slug(s.name),
-                    }
-                ))
-        
-        # --- P0: PRODUCTS (NEW BLOCK) ---
+        # --- P0: PRODUCTS (STRICT FILTER IMPLEMENTATION) ---
         product_fields = ['name', 'model', 'manufacturer']
         product_filter = create_char_filter(product_fields)
 
+        # 💥 CRITICAL FIX: Build the strict filter based on detection results
+        strict_id_filter = Q()
+        is_strict_search = False
+
+        if detected_vendor_user_id:
+            strict_id_filter &= Q(user_id=detected_vendor_user_id)
+            is_strict_search = True
+
+        if detected_subcategory_id:
+            strict_id_filter &= Q(subcategory_id=detected_subcategory_id)
+            is_strict_search = True
+        elif detected_category_id:
+            strict_id_filter &= Q(category_id=detected_category_id)
+            is_strict_search = True
+        
+        # Apply strict filter only if a combination of vendor/category/subcategory was explicitly detected.
+        if is_strict_search:
+             final_product_filter = product_filter & strict_id_filter
+        else:
+             final_product_filter = product_filter # Keep loose search if no strict combo was found
+        
+        
         # Apply filtering and subqueries for vendor/category names
         products_qs = Product.objects.filter(
-            product_filter, user_id__in=approved_ids, is_active=True, status='approved'
+            final_product_filter, # Use the conditionally filtered Q object
+            user_id__in=approved_ids, 
+            is_active=True, 
+            status='approved'
         )
 
         # Use the annotation structure to safely pull related data without crashing on reverse FK
