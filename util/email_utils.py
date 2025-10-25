@@ -49,7 +49,7 @@ class EmailService:
             html_content = render_to_string(f'email/{template_name}.html', context)
             
             # Create plain text version by stripping HTML tags
-            text_content = strip_tags(html_content)
+            text_content = strip_tags(html_content) 
             
             # Create email message
             msg = EmailMultiAlternatives(
@@ -76,7 +76,7 @@ class EmailService:
     
     @staticmethod
     def _build_enquiry_context(instance, enquiry_type: str) -> Dict[str, Any]:
-        """Builds context with safe access and professional details."""
+        """Builds context with safe access and professional details, including special handling for Quote Address."""
         
         # 1. Get Vendor Info safely from product owner
         vendor_info = {
@@ -85,7 +85,7 @@ class EmailService:
             'phone': 'N/A'
         }
         try:
-            vendor_object = instance.product.user.vendor.first()
+            vendor_object = instance.product.user.vendor.first() 
             if vendor_object:
                 vendor_info['company_name'] = vendor_object.company_name
                 vendor_info['email'] = vendor_object.company_email
@@ -93,17 +93,17 @@ class EmailService:
         except AttributeError:
             pass 
 
-        # 2. Build common context
+        # 2. Initialize default context with placeholders
         context = {
             f'{enquiry_type}': instance,
             'product_url': get_product_url(instance.product),
-            'website_url': MHE_WEBSITE_URL, # New: Global website URL
-            'logo_url': MHE_LOGO_URL, # New: Logo URL
-            'current_date': timezone.now().strftime("%d %b, %Y"), # Fallback date
+            'website_url': MHE_WEBSITE_URL,
+            'logo_url': MHE_LOGO_URL,
+            'current_date': timezone.now().strftime("%Y"),
             
             # --- SAFE VARIABLES for templates ---
             'customer_name': instance.full_name, 
-            'customer_email': instance.email,
+            'product_name': instance.product.name,
             
             # Vendor Details
             'vendor_company_name': vendor_info['company_name'],
@@ -118,20 +118,53 @@ class EmailService:
                 'Vendor_Company': vendor_info['company_name'],
                 'Submitted_On': instance.created_at.strftime("%d %b, %Y %I:%M %p"),
                 'Status': instance.status.capitalize(),
+                'Company_Name': 'N/A',
+                'Company_Address': 'N/A',
+                'Message': 'N/A',
+                'Notes': 'N/A',
             }
         }
         
         # 3. Add type-specific details
         if enquiry_type == 'quote':
-            # FIXED: Using underscore key for consistency
             context['full_details']['Company_Name'] = instance.company_name or 'N/A'
-            context['full_details']['Message'] = instance.message
+            raw_message = instance.message or ''
+            
+            # --- ADDRESS EXTRACTION LOGIC ---
+            company_address = 'N/A'
+            cleaned_message = raw_message
+            
+            address_key = "Company Address:"
+            if address_key in raw_message:
+                try:
+                    # Find the start of "Company Address:"
+                    start_index = raw_message.find(address_key)
+                    
+                    # Extract everything after the key, strip leading/trailing whitespace
+                    address_part = raw_message[start_index + len(address_key):].strip()
+                    company_address = address_part.split('\n')[0].strip() # Take the first line as address
+                    
+                    # Remove the Company Address line from the remaining message
+                    cleaned_message = raw_message[:start_index].rstrip() + raw_message[start_index + len(address_key) + len(address_part):].lstrip()
+                    cleaned_message = cleaned_message.strip()
+                    
+                except Exception as e:
+                    logger.warning(f"Failed to parse company address from quote ID {instance.id}: {e}")
+                    # If parsing fails, use the raw message but address is N/A
+                    company_address = 'N/A (See Message)'
+
+            context['full_details']['Company_Address'] = company_address or 'N/A'
+            context['full_details']['Message'] = cleaned_message or 'N/A'
+
+            
         elif enquiry_type == 'rental':
             context['full_details']['Address'] = instance.address or 'N/A'
             context['full_details']['Start_Date'] = instance.start_date.strftime("%d %b, %Y")
             context['full_details']['End_Date'] = instance.end_date.strftime("%d %b, %Y")
             context['full_details']['Notes'] = instance.notes or 'N/A'
-
+            # For consistent display, rename Address to Company_Address for table use
+            context['full_details']['Company_Address'] = instance.address or 'N/A'
+            
         return context
 
     # --- QUOTE EMAILS (Methods remain the same) ---
@@ -187,11 +220,13 @@ class EmailService:
             context = EmailService._build_enquiry_context(quote, 'quote')
             subject = f"ALERT: New Quote Request - {quote.product.name}"
             
+            admin_emails = [settings.ADMIN_EMAIL] if isinstance(settings.ADMIN_EMAIL, str) else settings.ADMIN_EMAIL
+            
             return EmailService.send_template_email(
                 template_name='quote_admin_notification',
                 context=context,
                 subject=subject,
-                to_emails=[settings.ADMIN_EMAIL]
+                to_emails=admin_emails
             )
         except Exception as e:
             logger.error(f"Failed to send quote admin notification: {str(e)}")
@@ -270,11 +305,13 @@ class EmailService:
             context = EmailService._build_enquiry_context(rental, 'rental')
             subject = f"ALERT: New Rental Request - {rental.product.name}"
             
+            admin_emails = [settings.ADMIN_EMAIL] if isinstance(settings.ADMIN_EMAIL, str) else settings.ADMIN_EMAIL
+            
             return EmailService.send_template_email(
                 template_name='rental_admin_notification',
                 context=context,
                 subject=subject,
-                to_emails=[settings.ADMIN_EMAIL]
+                to_emails=admin_emails
             )
         except Exception as e:
             logger.error(f"Failed to send rental admin notification: {str(e)}")

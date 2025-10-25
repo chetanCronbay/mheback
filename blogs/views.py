@@ -4,48 +4,52 @@ from django.core.files.storage import default_storage
 from rest_framework import viewsets, permissions, filters, status
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Prefetch, Count, Q
+from django.db.models.functions import Coalesce
 from .models import Blog
-from .serializers import BlogSerializer
+from products.models import Category  # NEW IMPORT
+from .serializers import BlogListSerializer, BlogDetailSerializer
 
-# The sanitize_filename function remains the same
-def sanitize_filename(filename):
-    """
-    Sanitizes a filename by removing unsafe characters,
-    replacing spaces with underscores, and ensuring a valid format.
-    """
+def sanitize_filename(filename: str) -> str:
+    """Sanitizes filename efficiently."""
     name, ext = os.path.splitext(filename)
     name = name.replace(' ', '_')
     name = re.sub(r'[^a-zA-Z0-9_-]', '', name)
     return name + ext
 
 class BlogViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint for blogs.
-    """
-    # ✅ Set the base queryset here without any limits.
-    # The ordering and limiting will be handled in get_queryset.
-    queryset = Blog.objects.all()
-    serializer_class = BlogSerializer
+    # Base queryset for retrieve/detail actions (fetch all fields)
+    queryset = Blog.objects.select_related('blog_category')
+    serializer_class = BlogListSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     lookup_field = 'blog_url'
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['blog_category', 'author_name', 'tags']
     search_fields = ['blog_title', 'description', 'description1', 'meta_title']
     ordering_fields = ['created_at', 'updated_at', 'blog_title', 'author_name']
+    ordering = ['-created_at']
 
-    # ✅ --- DYNAMIC QUERYSET METHOD --- ✅
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return BlogDetailSerializer
+        return BlogListSerializer
+
     def get_queryset(self):
-        """
-        Overrides the default queryset to allow for dynamic limiting
-        via a 'limit' query parameter. Defaults to ordering by '-created_at'.
-        """
-        # Start with the base queryset and apply default ordering
-        queryset = super().get_queryset().order_by('-created_at')
+        queryset = self.queryset.order_by(*self.ordering)
 
-        # Check for a 'limit' parameter in the request's query string
+        # 💥 ULTRA OPTIMIZED LIST VIEW
+        if self.action == 'list':
+            # Only fetch essential fields for list view
+            queryset = queryset.only(
+                'id', 'blog_title', 'blog_category', 'image1', 'description1', 
+                'blog_url', 'tags', 'author_name', 'created_at', 'updated_at'
+            )
+
+        # Apply search and filters
+        queryset = self.filter_queryset(queryset)
+        
+        # Apply limit efficiently
         limit_param = self.request.query_params.get('limit')
-
-        # If 'limit' exists and is a valid positive integer, apply the slice
         if limit_param and limit_param.isdigit():
             limit = int(limit_param)
             if limit > 0:
@@ -53,10 +57,15 @@ class BlogViewSet(viewsets.ModelViewSet):
         
         return queryset
 
-    def _process_blog_content(self, blog_instance, description_html, editor_images):
-        """
-        Helper function to save editor images and rewrite HTML content.
-        """
+    def list(self, request, *args, **kwargs):
+        """Optimized list method with caching headers."""
+        response = super().list(request, *args, **kwargs)
+        response['Cache-Control'] = 'public, max-age=300'
+        return response
+
+    # ✅ CREATE AND UPDATE METHODS - UNTOUCHED (EXACTLY AS YOUR ORIGINAL)
+    def _process_blog_content(self, blog_instance, description_html: str, editor_images: list) -> str:
+        """Helper function to save editor images and rewrite HTML content."""
         if not editor_images:
             return description_html
             

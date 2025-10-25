@@ -2,53 +2,90 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Confirmation: Your Rental Request for {{ rental.product.name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation: Your Rental Request for {{ product_name }}</title>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
-        .header { background-color: #007bff; color: white; padding: 10px 20px; text-align: center; border-radius: 5px 5px 0 0; }
-        .content { padding: 20px 0; }
-        .details-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        .details-table th, .details-table td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-        .details-table th { background-color: #f2f2f2; font-weight: bold; width: 35%; }
-        .rental-period { background-color: #fff3cd; padding: 15px; border-left: 5px solid #ffc107; margin: 15px 0; border-radius: 5px; }
-        .action-button { display: inline-block; margin-top: 15px; padding: 10px 20px; background-color: #28a745; color: white !important; text-decoration: none; border-radius: 5px; font-weight: bold; margin-right: 10px;}
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { -ms-interpolation-mode: bicubic; }
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 0 auto; padding: 0 10px; }
+        .header { background-color: #28a745; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
+        .logo { background-color: white; padding: 5px; border-radius: 5px; }
+        .content { padding: 20px; background-color: #ffffff; border-radius: 0 0 8px 8px; border: 1px solid #ddd; border-top: none; }
+        .details-table { width: 100%; border-collapse: collapse; margin: 25px 0 20px 0; border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; }
+        .details-table th, .details-table td { padding: 12px 15px; text-align: left; font-size: 14px; border: 1px solid #f0f0f0; }
+        .details-table th { background-color: #f8f8f8; width: 35%; font-weight: bold; color: #333; }
+        .rental-period { background-color: #e7f3ff; padding: 15px; border-left: 5px solid #007bff; margin: 15px 0; border-radius: 5px; }
+        .action-button { display: inline-block; margin-top: 20px; padding: 12px 25px; background-color: #007bff; color: white !important; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; margin-right: 15px; mso-hide: all;}
         .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; text-align: center; }
+        .emphasis-text { color: #28a745; font-weight: bold; } /* Green Bold for emphasis */
+
+        @media only screen and (max-width: 600px) {
+            .container { padding: 0; }
+            .details-table th, .details-table td { width: auto; display: table-cell; }
+            .details-table { border-left: none; border-right: none; }
+            .action-button { display: block; width: 80%; margin: 15px auto; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <img src="{{ logo_url }}" alt="MHE Bazar Logo" style="height: 40px; margin-bottom: 5px; background-color: white;">
-            <h1 style="font-size: 24px; margin-top: 5px;">Rental Request Confirmed</h1>
-        </div>
-        
-        <div class="content">
-            <p>Dear <strong>{{ customer_name }}</strong>,</p>
-            
-            <p>Thank you for your rental request for **{{ rental.product.name }}**. We have successfully logged your inquiry.</p>
-            
-            <div class="rental-period">
-                <h3>Rental Details:</h3>
-                <table class="details-table" style="margin: 0;">
-                    <tr><th>Product Name</th><td>{{ full_details.Product }}</td></tr>
-                    <tr><th>Start Date</th><td>{{ full_details.Start_Date }}</td></tr>
-                    <tr><th>End Date</th><td>{{ full_details.End_Date }}</td></tr>
-                    <tr><th>Company Address</th><td>{{ full_details.Address }}</td></tr>
-                    <tr><th>Submitted On</th><td>{{ full_details.Submitted_On }}</td></tr>
-                </table>
-            </div>
+    <center>
+        <div class="container">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td align="center" style="padding: 10px 0;">
+                        <div class="header">
+                            <img src="{{ logo_url }}" alt="MHE Bazar Logo" class="logo" style="height: 40px; margin-bottom: 10px; display: block; border: 0;">
+                            <h1 style="font-size: 26px; margin: 0;">Rental Request Confirmed</h1>
+                            <p style="margin: 5px 0 0; font-size: 14px;">Thank you for choosing MHE Bazar.</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="content">
+                        <p style="font-size: 16px;">Dear <strong>{{ customer_name }}</strong>,</p>
+                        
+                        <p style="font-size: 16px;">We successfully received your request to rent the <span class="emphasis-text">{{ product_name }}</span>. Our team has forwarded your details to the vendor, and they are currently verifying availability for your specified dates.</p>
+                        
+                        <div class="rental-period">
+                            <h3 style="margin-top: 0; color: #007bff;">Your Rental & Delivery Details:</h3>
+                            <table class="details-table" role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0;">
+                                <tr><th>Product Name</th><td><strong>{{ full_details.Product }}</strong></td></tr>
+                                <tr><th>Vendor</th><td>{{ full_details.Vendor_Company }}</td></tr>
+                                <tr><th>Start Date</th><td><strong>{{ full_details.Start_Date }}</strong></td></tr>
+                                <tr><th>End Date</th><td><strong>{{ full_details.End_Date }}</strong></td></tr>
+                                <tr><th>Company Address</th><td>{{ full_details.Company_Address }}</td></tr>
+                                <tr><th>Mobile No.</th><td>{{ full_details.Phone }}</td></tr>
+                                <tr><th>Submitted On</th><td>{{ full_details.Submitted_On }}</td></tr>
+                            </table>
+                        </div>
 
-            <p style="margin-top: 25px;">The Vendor, **{{ vendor_company_name }}**, will verify availability and confirm your booking within 24 hours.</p>
-            
-            <a href="{{ product_url }}" class="action-button" style="background-color: #007bff;">View Product Details</a>
-            <a href="{{ website_url }}" class="action-button">Visit Website</a>
+                        {% if full_details.Notes != 'N/A' %}
+                        <div style="background-color: #fff3cd; padding: 15px; border-left: 5px solid #ffc107; margin-top: 20px; border-radius: 5px;">
+                            <h4 style="margin-top: 0; color: #ffc107;">Your Notes:</h4>
+                            <p style="white-space: pre-wrap; margin-bottom: 0;">{{ full_details.Notes }}</p>
+                        </div>
+                        {% endif %}
+                        
+                        <p style="margin-top: 25px; font-size: 16px;">The Vendor, <strong>{{ vendor_company_name }}</strong>, will confirm your booking and availability within <span class="emphasis-text">24 hours</span>. You will receive an update as soon as the status changes.</p>
+                        
+                        <p style="text-align: center;">
+                            <a href="{{ product_url }}" class="action-button">View Product Details</a>
+                            <a href="{{ website_url }}" class="action-button" style="background-color: #dc3545;">Visit Website</a>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="footer">
+                            <p>&copy; {{ current_date }} MHE Bazar. Rental ID: {{ rental.id }}</p>
+                            <p>This is an automated message. Please contact us directly for support.</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
-        
-        <div class="footer">
-            <p>&copy; {{ current_date }} MHE Bazar. Rental ID: {{ rental.id }}</p>
-            <p>This is an automated message. Rental ID: {{ rental.id }}</p>
-        </div>
-    </div>
+    </center>
 </body>
 </html>

@@ -80,19 +80,18 @@ urlpatterns = [
     path('api/forgot-password/', ForgotPasswordRequestView.as_view(), name='forgot-password'),
     path('api/reset-password/', ResetPasswordView.as_view(), name='reset-password'),
     
-    #blog URLs
+    # Add this to your existing urls.py
     path('api/blogs/', BlogViewSet.as_view({
-          'get': 'list',
-          'post': 'create'
-      }), name='blog-list-create'),
-      
-      # Change this line from <int:pk> to <str:blog_url>
-      path('api/blogs/<str:blog_url>/', BlogViewSet.as_view({
-          'get': 'retrieve',
-          'put': 'update',
-          'patch': 'partial_update',
-          'delete': 'destroy'
-      }), name='blog-detail'),
+        'get': 'list',
+        'post': 'create'
+    }), name='blog-list-create'),
+
+    path('api/blogs/<str:blog_url>/', BlogViewSet.as_view({
+        'get': 'retrieve',
+        'put': 'update',
+        'patch': 'partial_update',
+        'delete': 'destroy'
+    }), name='blog-detail'),
 
         
     # 💥 New Universal Search Endpoint for fast, single-call suggestions
