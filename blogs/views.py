@@ -1,3 +1,5 @@
+# blogs/views.py (FIXED)
+
 import os
 import re
 from django.core.files.storage import default_storage
@@ -7,7 +9,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Prefetch, Count, Q
 from django.db.models.functions import Coalesce
 from .models import Blog
-from products.models import Category  # NEW IMPORT
+from products.models import Category
 from .serializers import BlogListSerializer, BlogDetailSerializer
 
 def sanitize_filename(filename: str) -> str:
@@ -18,7 +20,7 @@ def sanitize_filename(filename: str) -> str:
     return name + ext
 
 class BlogViewSet(viewsets.ModelViewSet):
-    # Base queryset for retrieve/detail actions (fetch all fields)
+    # Set the base queryset
     queryset = Blog.objects.select_related('blog_category')
     serializer_class = BlogListSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -27,7 +29,7 @@ class BlogViewSet(viewsets.ModelViewSet):
     filterset_fields = ['blog_category', 'author_name', 'tags']
     search_fields = ['blog_title', 'description', 'description1', 'meta_title']
     ordering_fields = ['created_at', 'updated_at', 'blog_title', 'author_name']
-    ordering = ['-created_at']
+    ordering = ['-created_at'] # Default ordering (Latest first)
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -35,31 +37,52 @@ class BlogViewSet(viewsets.ModelViewSet):
         return BlogListSerializer
 
     def get_queryset(self):
+        # Return the base queryset with default ordering applied.
+        # Do NOT call filters or slice here. DRF will call filter_queryset
+        # (which may apply ordering) and pagination later. Keeping this method
+        # free of slicing ensures we never try to reorder after a slice.
         queryset = self.queryset.order_by(*self.ordering)
-
-        # 💥 ULTRA OPTIMIZED LIST VIEW
-        if self.action == 'list':
-            # Only fetch essential fields for list view
-            queryset = queryset.only(
-                'id', 'blog_title', 'blog_category', 'image1', 'description1', 
-                'blog_url', 'tags', 'author_name', 'created_at', 'updated_at'
-            )
-
-        # Apply search and filters
-        queryset = self.filter_queryset(queryset)
-        
-        # Apply limit efficiently
-        limit_param = self.request.query_params.get('limit')
-        if limit_param and limit_param.isdigit():
-            limit = int(limit_param)
-            if limit > 0:
-                queryset = queryset[:limit]
-        
         return queryset
 
     def list(self, request, *args, **kwargs):
-        """Optimized list method with caching headers."""
-        response = super().list(request, *args, **kwargs)
+        """Optimized list method that applies DRF filters/ordering first,
+        then supports an explicit `?limit=` query parameter without breaking
+        ordering. If `limit` is provided we bypass DRF pagination and return
+        the sliced result; otherwise we use normal pagination.
+        """
+        # Apply filters (search, ordering, etc.) before any slicing.
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # Optimize fields for list view
+        queryset = queryset.only(
+            'id', 'blog_title', 'blog_category', 'image1', 'description1',
+            'blog_url', 'tags', 'author_name', 'created_at', 'updated_at', 'description'
+        )
+
+        # If client provided an explicit ?limit=, apply slicing here (after filtering/ordering)
+        limit_param = request.query_params.get('limit')
+        if limit_param and limit_param.isdigit():
+            limit = int(limit_param)
+            if limit > 0:
+                sliced_qs = queryset[:limit]
+            else:
+                sliced_qs = queryset.none()
+
+            serializer = self.get_serializer(sliced_qs, many=True)
+            response = Response(serializer.data)
+            response['Cache-Control'] = 'public, max-age=300'
+            return response
+
+        # Otherwise fall back to DRF's pagination/response machinery
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            response = self.get_paginated_response(serializer.data)
+            response['Cache-Control'] = 'public, max-age=300'
+            return response
+
+        serializer = self.get_serializer(queryset, many=True)
+        response = Response(serializer.data)
         response['Cache-Control'] = 'public, max-age=300'
         return response
 
