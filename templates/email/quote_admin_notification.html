@@ -13,7 +13,7 @@
         .header { background-color: #dc3545; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
         .logo { background-color: white; padding: 5px; border-radius: 5px; }
         .content { padding: 20px; background-color: #ffffff; border-radius: 0 0 8px 8px; border: 1px solid #ddd; border-top: none; }
-        .details-table { width: 100%; border-collapse: collapse; margin: 25px 0 20px 0; border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; }
+        .details-table { width: 100%; border-collapse: collapse; margin: 10px 0 20px 0; border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; }
         .details-table th, .details-table td { padding: 12px 15px; text-align: left; font-size: 14px; border: 1px solid #f0f0f0; }
         .details-table th { background-color: #f8f8f8; width: 35%; font-weight: bold; color: #333; }
         .message-box { background-color: #fff3cd; padding: 15px; border-left: 5px solid #ffc107; margin-top: 25px; border-radius: 5px; }
@@ -47,15 +47,20 @@
                         <p style="font-size: 16px;">A new quote request has been submitted and requires administrative oversight to ensure timely vendor response.</p>
                         
                         <h3 style="margin-top: 30px; color: #dc3545; border-bottom: 2px solid #dc3545; padding-bottom: 5px;">Quote Summary:</h3>
+
                         <table class="details-table" role="presentation" cellspacing="0" cellpadding="0" border="0">
-                            <tr><th>Product Name</th><td><strong>{{ full_details.Product }}</strong></td></tr>
-                            <tr><th>Vendor Company</th><td>{{ full_details.Vendor_Company }}</td></tr>
-                            <tr><th>Vendor Email</th><td>{{ vendor_email }}</td></tr>
                             <tr><th>Customer Name</th><td>{{ full_details.Customer_Name }}</td></tr>
-                            <tr><th>Customer Company</th><td>{{ full_details.Company_Name }}</td></tr>
-                            <tr><th>Company Address</th><td>{{ full_details.Company_Address }}</td></tr>
+                            <tr><th>Email</th><td>{{ full_details.Email }}</td></tr>
+                            <tr><th>Mobile No.</th><td>
+                                <a href="tel:{{ full_details.Phone }}" style="color: #333; text-decoration: none;"><strong>{{ full_details.Phone }}</strong></a>
+                            </td></tr>
+                            <tr><th>Company Name</th><td>{{ full_details.Company_Name }}</td></tr>
+                            <tr><th>Product Name</th><td><strong>{{ full_details.Product }}</strong></td></tr>
+                            <tr><th>Product Link</th><td><a href="{{ product_url }}" style="color: #007bff;">{{ product_url }}</a></td></tr>
+                            <tr><th>Vendor Company</th><td>{{ full_details.Vendor_Company }}</td></tr>
+                            <tr><th>Location (Address)</th><td>{{ full_details.Company_Address }}</td></tr>
                             <tr><th>Request Date</th><td>{{ full_details.Submitted_On }}</td></tr>
-                        </table>
+                            </table>
 
                         {% if full_details.Message != 'N/A' %}
                         <div class="message-box">
