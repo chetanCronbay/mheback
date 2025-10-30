@@ -30,7 +30,7 @@ if not SECRET_KEY:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
-DEBUG = False
+DEBUG = ENVIRONMENT == 'development'
 
 # Allowed hosts for your Django application
 # In production, only include your actual domain(s) and Render.com's hostname.
@@ -135,9 +135,6 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",   # Required for django-allauth
     # Make sure this custom middleware exists at the specified path (e.g., in a 'Middleware' folder at project root)
     "Middleware.security.SecurityHeadersMiddleware",  # For additional security headers
-    
-    'Middleware.block_public_api.BlockPublicAPIMiddleware',
-
 ]
 
 # Custom Authentication Backends
