@@ -749,7 +749,7 @@ class RentalViewSet(viewsets.ModelViewSet):
 # from .models import Product, Category, Subcategory, etc.
 # ... (Other ViewSets and definitions remain above)
 # ====================================================================
-# 🚀 NEW: MHE Abbreviation Mapping
+# NEW: MHE Abbreviation Mapping
 # ====================================================================
 MHE_ABBREVIATIONS = {
     'hpt': 'hand pallet truck',
@@ -794,13 +794,22 @@ MHE_ABBREVIATIONS = {
 
 # Priority constants for final sorting. Higher number means higher priority group.
 PRIORITY = {
-    'vendor_category': 4,# Vendor + Relevant Category Link
+    'vendor_category': 4, # Vendor + Relevant Category Link
     'vendor': 3,
     'category': 2,
     'subcategory': 1,
-    'product': 0,# Specific Product Suggestion
-    'product_type': -1,# Product Type Link (Lowest)
-    'top_product': 5, # 🚀 NEW: Highest priority for exact Vendor/Category match products
+    'product': 0, # Specific Product Suggestion
+    'product_type': -1, # Product Type Link (Lowest)
+    'top_product': 5, # Highest priority for exact Vendor/Category match products
+}
+
+# NEW: Product internal priority constants for Product Priority Score (PPS)
+PRODUCT_MATCH_PRIORITY = {
+    'name': 0,
+    'model_manufacturer': 1,
+    'subcategory': 2,
+    'category': 3,
+    'vendor': 4, # Highest internal product priority
 }
 
 # Product Type Choices (Must match model definition)
@@ -816,26 +825,13 @@ def create_slug(name):
     return (name or '').lower().replace(' ', '-')
 
 # Helper function to get the vendor name via a subquery to avoid complex joins in the main product query
-# This requires Django 1.11+ and is safer than complex select_related chains.
-# NOTE: This function's body is typically not needed, but kept for context fidelity.
 def get_vendor_name_subquery():
-    # Annotate Product with the first matching Vendor's brand/company name
-    # We use Subquery to handle the reverse ForeignKey/related_name relationship safely.
-    # NOTE: This assumes a Product's user has AT MOST one Vendor entry.
     # Placeholder: Vendor and Product models assumed to be imported
-    # first_vendor = Vendor.objects.filter(user=OuterRef('user')).order_by('pk')
-    
-    # return Product.objects.annotate(
-    #     vendor_brand_sub=Subquery(first_vendor.values('brand')[:1]),
-    #     vendor_company_sub=Subquery(first_vendor.values('company_name')[:1]),
-    #     category_name_sub=Subquery(Category.objects.filter(pk=OuterRef('category_id')).values('name')[:1]),
-    #     subcategory_name_sub=Subquery(Subcategory.objects.filter(pk=OuterRef('subcategory_id')).values('name')[:1])
-    # )
     pass
 
 
 # ====================================================================
-# 🚀 MODIFIED LOGIC: Separate Function for Combination Check returns matched names
+# MODIFIED LOGIC: Separate Function for Combination Check returns matched names
 # ====================================================================
 def _check_vendor_category_in_query(query, expanded_phrase_full, vendor_name_to_id_map, category_name_to_id_map):
     """
@@ -885,6 +881,8 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
     """
     Optimized multi-model search with ultra-loose character matching and scoring.
     Priority order: Score (High) > Group (Vendor-Category > Vendor > Category > Subcategory > Product > Product Type).
+    
+    MODIFIED: Product priority within the group is now Vendor > Category > Subcategory > Model.
     """
     permission_classes = [AllowAny]
 
@@ -896,7 +894,7 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
         query = raw_query_key.lower() 
         if not query: return response.Response([]) 
 
-        # 🚀 NEW LOGIC: Abbreviation Expansion
+        # NEW LOGIC: Abbreviation Expansion
         expanded_query_phrase = query
         expanded_phrase_full = None
         
@@ -925,7 +923,7 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
             # Original exact match bonus (checks the user's input before expansion)
             if query in name_lower: score += 1000 
             
-            # 🚀 NEW LOGIC: Bonus for matching the expanded full phrase
+            # NEW LOGIC: Bonus for matching the expanded full phrase
             if expanded_phrase_full and expanded_phrase_full in name_lower:
                 score += 1000
                 
@@ -936,18 +934,20 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
         # ----------------------------------------------------
         all_results_with_score = []
         
-        # NOTE: Model calls below are standard, relying on the updated filtering/scoring helpers.
-
         # Assuming get_user_model is imported/available
         approved_ids = get_user_model().objects.filter(role__name='Vendor', is_active=True).values_list('id', flat=True)
 
-        # 🚀 MODIFIED: Use dictionaries to map lowercased name to ID for combination check
+        # MODIFIED: Use dictionaries to map lowercased name to ID for combination check
         approved_vendor_name_to_id = {}
         all_category_name_to_id = {}
         # Also map vendor user_id to brand/company name for the top result display
         vendor_user_id_to_name = {}
         # Also map category_id to name for the top result display
         category_id_to_name = {}
+        
+        # NEW: Variables to track if we have an exact vendor match (Vendor-Only scenario)
+        exact_vendor_match_item = None
+        vendor_category_links_to_promote = []
 
 
         # --- P4: VENDOR-CATEGORIES ---
@@ -955,7 +955,7 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
         category_match_filter = create_char_filter(['category__name', 'subcategory__name'])
         combined_product_filter = category_match_filter | vendor_match_filter
 
-        # FIX: Removed select_related('user__vendor') and used .values() only, relying on the JOINs implied by the filter.
+        # Get relevant vendor-category links
         vendor_category_matches = Product.objects.filter(
             combined_product_filter, user_id__in=approved_ids, is_active=True, status='approved'
         ).values(
@@ -975,7 +975,7 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
             vendor_name = match.get('user__vendor__brand') or match.get('user__vendor__company_name') or ''
             category_name = match['category__name']
             
-            # 🚀 MODIFIED: Populate dictionaries with ID mapping and reverse mapping
+            # Populate dictionaries with ID mapping and reverse mapping
             vendor_name_lower = vendor_name.lower()
             category_name_lower = category_name.lower()
             if vendor_name_lower:
@@ -990,13 +990,20 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
             score = calculate_score(combined_name_lower)
             
             if score > 0:
-                all_results_with_score.append((
-                    PRIORITY['vendor_category'], score, {
-                        'id': f'vc_{vendor_user_id}_{category_id}', 'name': result_name, 'type': 'vendor_category', 
-                        'vendor_slug': create_slug(vendor_name), 'category_slug': create_slug(category_name),
-                    }
-                ))
-        
+                item = {
+                    'id': f'vc_{vendor_user_id}_{category_id}', 'name': result_name, 'type': 'vendor_category', 
+                    'vendor_slug': create_slug(vendor_name), 'category_slug': create_slug(category_name),
+                    'user_id': vendor_user_id, # Keep user_id here for P3 logic integration
+                }
+                # Store P4 results, but only add to all_results_with_score later
+                all_results_with_score.append((PRIORITY['vendor_category'], score, item))
+                
+                # NEW: If this category belongs to an exact vendor match (from P3 below), store it for promotion
+                # NOTE: This check relies on P3 running *before* the final sort, which it does.
+                if vendor_name_lower == query:
+                    vendor_category_links_to_promote.append(item)
+
+
         # --- P3: VENDORS ---
         vendor_filter = create_char_filter(['brand', 'company_name'])
         vendors = Vendor.objects.filter(vendor_filter, user_id__in=approved_ids).select_related('user').distinct()
@@ -1005,7 +1012,7 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
             name = v.brand or v.company_name or v.user.username
             name_lower = name.lower()
             
-            # 🚀 MODIFIED: Populate dictionaries with ID mapping
+            # Populate dictionaries with ID mapping
             if v.brand: approved_vendor_name_to_id[v.brand.lower()] = v.user_id
             if v.company_name: approved_vendor_name_to_id[v.company_name.lower()] = v.user_id
             vendor_user_id_to_name[v.user_id] = name # Update reverse mapping
@@ -1016,7 +1023,15 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
             
             effective_priority = PRIORITY['vendor']
             if is_exact_vendor_match:
+                # This ensures the exact vendor link is placed higher than vendor_category (4+10)
                 effective_priority = PRIORITY['vendor_category'] + 10 
+                
+                # NEW: Capture the exact vendor match result for promotion in the Vendor-Only scenario
+                if name_lower == query:
+                    exact_vendor_match_item = {
+                        'id': f'v_{v.id}', 'name': name, 'type': 'vendor', 'vendor_slug': create_slug(name),
+                        'user_id': v.user_id # Temporary key to track the exact match
+                    }
 
             if score > 0:
                 all_results_with_score.append((
@@ -1029,7 +1044,7 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
         
         for c in categories:
             name_lower = c.name.lower()
-            # 🚀 MODIFIED: Populate dictionaries with ID mapping
+            # Populate dictionaries with ID mapping
             all_category_name_to_id[name_lower] = c.id
             category_id_to_name[c.id] = c.name # Update reverse mapping
             
@@ -1047,7 +1062,7 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
             full_name = f"{s.name} ({s.category.name if s.category else 'N/A'})"
             score = calculate_score(s.name.lower())
             
-            # 🚀 MODIFIED: Populate dictionaries with parent category ID mapping
+            # Populate dictionaries with parent category ID mapping
             if s.category:
                 all_category_name_to_id[s.category.name.lower()] = s.category.id # Ensure parent category is included
                 category_id_to_name[s.category.id] = s.category.name # Update reverse mapping
@@ -1089,6 +1104,40 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
             combined_name_lower = f"{p['name'].lower()} {p['model'].lower() if p['model'] else ''} {p['manufacturer'].lower() if p['manufacturer'] else ''}"
             score = calculate_score(combined_name_lower)
             
+            # NEW LOGIC: Calculate Product Priority Score (PPS)
+            product_priority_score = PRODUCT_MATCH_PRIORITY['name'] # Base priority
+            
+            # Check for exact matches in priority order (Vendor > Category > Subcategory > Model/Manufacturer)
+            query_tokens = set(query.split())
+
+            # 1. Vendor Match (Highest Priority)
+            vendor_lower = vendor_name.lower()
+            if query == vendor_lower or any(token == vendor_lower for token in query_tokens):
+                product_priority_score = max(product_priority_score, PRODUCT_MATCH_PRIORITY['vendor'])
+            
+            # 2. Category Match
+            category_lower = p['category_name'].lower() if p['category_name'] else ''
+            if category_lower and (query == category_lower or any(token == category_lower for token in query_tokens)):
+                product_priority_score = max(product_priority_score, PRODUCT_MATCH_PRIORITY['category'])
+
+            # 3. Subcategory Match
+            subcategory_lower = p['subcategory_name'].lower() if p['subcategory_name'] else ''
+            if subcategory_lower and (query == subcategory_lower or any(token == subcategory_lower for token in query_tokens)):
+                product_priority_score = max(product_priority_score, PRODUCT_MATCH_PRIORITY['subcategory'])
+
+            # 4. Model/Manufacturer Match
+            model_lower = p['model'].lower() if p['model'] else ''
+            manufacturer_lower = p['manufacturer'].lower() if p['manufacturer'] else ''
+            
+            # Check Model/Manufacturer against full query or tokens
+            model_match = model_lower and (query == model_lower or any(token == model_lower for token in query_tokens))
+            manu_match = manufacturer_lower and (query == manufacturer_lower or any(token == manufacturer_lower for token in query_tokens))
+            
+            if model_match or manu_match:
+                product_priority_score = max(product_priority_score, PRODUCT_MATCH_PRIORITY['model_manufacturer'])
+            
+            # END NEW LOGIC
+
             if score > 0:
                 display_name = f"{p['name']} ({p['model'] or p['manufacturer'] or 'Product'})"
                 
@@ -1105,6 +1154,7 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
                         },
                         'user_id': p['user_id'], # Keep these for exact match filtering
                         'category_id': p['category_id'],
+                        'product_priority_score': product_priority_score, # NEW
                     }
                 )
                 all_results_with_score.append(result_item)
@@ -1132,10 +1182,7 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
         # 3. Final Sort and Return (DSA: Timsort)
         # ----------------------------------------------------
         
-        # **Note:** The original final_sorted_results calculation will be performed here,
-        # but the logic below will selectively prepend and filter items.
-
-        # 🚀 MODIFIED: Identify remaining search terms for secondary scoring
+        # MODIFIED: Identify remaining search terms for secondary scoring
         
         query_words = set(query.split())
         vendor_names = set(approved_vendor_name_to_id.keys())
@@ -1157,25 +1204,93 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
         secondary_relevance_terms = {word for word in remaining_query_words if word not in filter_out_words and len(word) > 2}
 
         
+        # NEW: Universal Sort Key Function
+        def get_sort_key(item_tuple):
+            priority, score, item = item_tuple
+            
+            # Use Product Priority Score (PPS) for product type items, otherwise use the general group priority.
+            product_score = item.get('product_priority_score', -1)
+            
+            if item.get('type') == 'product':
+                # Product: (Score DESC, PPS DESC, Name ASC)
+                # Boosting the effective priority using PRIORITY['top_product'] (5) ensures PPS 
+                # takes precedence over standard priority groups (1-4).
+                effective_priority = product_score + PRIORITY['top_product']
+            else:
+                # Non-Product: (Score DESC, Group_Priority DESC, Name ASC)
+                effective_priority = priority
+
+            # The final key must be a tuple for Python's stable sort: (Score DESC, Effective_Priority DESC, Name ASC)
+            return (score, effective_priority, item['name'])
+
+
         final_response_list = []
         
+        # This check is designed for "Vendor + Category" combinations (e.g., 'byd forklift')
         matched_vendor_name, matched_category_name = _check_vendor_category_in_query(
             query, 
-            expanded_query_phrase, # Use expanded phrase for query check here (was expanded_phrase_full before, query is correct)
+            expanded_query_phrase, 
             approved_vendor_name_to_id, 
             all_category_name_to_id
         )
+        
+        # NEW LOGIC: Check for Vendor-Only Exact Match (e.g., 'byd')
+        is_vendor_only_exact_match = False
+        if exact_vendor_match_item:
+            # Check if the query contains ONLY the vendor name (and maybe a space)
+            # This is implicitly true if exact_vendor_match_item is set AND there is no category match.
+            if not matched_category_name and query == exact_vendor_match_item['name'].lower():
+                is_vendor_only_exact_match = True
 
-        if matched_vendor_name and matched_category_name:
+
+        if is_vendor_only_exact_match:
+            # VENDOR-ONLY EXACT MATCH SCENARIO: Promote links explicitly.
+            
+            # 1. Add the Exact Vendor Link (Highest Priority)
+            final_response_list.append({k: v for k, v in exact_vendor_match_item.items() if k != 'user_id'})
+            
+            # 2. Add the Vendor Category Links (Promoted below the vendor link)
+            # Sort categories alphabetically by name for clean presentation
+            vendor_category_links_to_promote.sort(key=lambda x: x['name'])
+            final_response_list.extend([item for item in vendor_category_links_to_promote])
+            
+            # 3. Process remaining results
+            
+            # We filter out the items we just manually added (the exact vendor link and the category links)
+            promoted_item_ids = {item['id'] for item in final_response_list}
+            
+            # Re-calculate final_sorted_results using the new sort key
+            final_sorted_results = sorted(
+                all_results_with_score, 
+                key=get_sort_key, 
+                reverse=True
+            )
+            
+            # Append remaining sorted items
+            for priority, score, item in final_sorted_results:
+                item_id = item.get('id')
+                
+                # Filter out the items already promoted
+                if item_id in promoted_item_ids:
+                    continue
+                
+                # Clean up product keys before appending
+                if item['type'] == 'product':
+                    item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
+                
+                final_response_list.append(item)
+
+        elif matched_vendor_name and matched_category_name:
+            # VENDOR + CATEGORY SEARCH SCENARIO (Existing logic: promote single category link + specific products)
+            
             # 1. Get IDs and Names
             vendor_user_id = approved_vendor_name_to_id.get(matched_vendor_name)
             category_id = all_category_name_to_id.get(matched_category_name)
             vendor_display_name = vendor_user_id_to_name.get(vendor_user_id)
             category_display_name = category_id_to_name.get(category_id)
             
-            # Only proceed if we have valid IDs for the search
             if vendor_user_id is not None and category_id is not None:
-                # 2. Add the Vendor-Category Link (P4 style) to the top
+                # 2. Add the VENDOR-CATEGORY LINK (Highest Priority Promotion)
                 vendor_category_link = {
                     'id': f'vc_{vendor_user_id}_{category_id}', 
                     'name': f"{vendor_display_name or matched_vendor_name.upper()} - {category_display_name or matched_category_name.upper()}", 
@@ -1191,72 +1306,72 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
                 remaining_results_ids = set() # Track IDs to remove them from the main sorted list
 
                 for priority, score, item in product_results:
-                    # Check for exact user_id and category_id match
                     if item.get('user_id') == vendor_user_id and item.get('category_id') == category_id:
                         
-                        # 🚀 NEW SECONDARY SCORING LOGIC
                         secondary_score = 0
-                        
-                        # Concatenate relevant product fields for comparison
                         product_text = f"{item['name']} {item['product_tags']['subcategory']} {item['product_tags']['model']}".lower()
 
                         for term in secondary_relevance_terms:
                             if term in product_text:
                                 secondary_score += 1 
                         
-                        # Create the final result object without the temporary user_id/category_id keys
-                        top_product_item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id']}
+                        top_product_item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
                         
-                        # Store with the secondary score
                         top_products_with_score.append((secondary_score, top_product_item))
                         remaining_results_ids.add(item['id'])
                 
-                # Sort the top products by the new secondary score (highest first)
                 top_products_with_score.sort(key=lambda x: x[0], reverse=True)
-                
-                # Add the exact-match products next
                 final_response_list.extend([item for score, item in top_products_with_score])
                 
-                # 4. Append the remaining results (which must be computed here or reused from the previous step)
-                
-                # Re-calculate final_sorted_results since it was missing in the previous step's context
+                # 4. Append the remaining sorted results
                 final_sorted_results = sorted(
                     all_results_with_score, 
-                    key=lambda x: (x[1], x[0], x[2]['name']), # (Score DESC, Priority DESC, Name ASC)
+                    key=get_sort_key, 
                     reverse=True
                 )
                 
-                # Iterate through the newly calculated main sorted list and append non-promoted items
                 for priority, score, item in final_sorted_results:
-                    # Safely check if the item is a promoted product using its ID
-                    # Use .get('id') to avoid error on non-product items
                     item_id = item.get('id')
                     
-                    if item['type'] == 'product' and item_id in remaining_results_ids:
-                        continue # Skip products that were promoted to the top
-                        
-                    # Remove temporary product-related keys before final response
                     if item['type'] == 'product':
-                        item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id']}
+                        item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
+                        
+                        if item_id in remaining_results_ids:
+                            continue # Skip products that were promoted to the top
+                    
+                    # Also skip the promoted vendor category link (must be filtered out of all_results_with_score here)
+                    if item['id'] == vendor_category_link['id']:
+                        continue
                         
                     final_response_list.append(item)
-                
             else:
-                # If lookup failed, fallback to the original sorted list structure
-                # We need to compute it first if we reach this fallback path
+                 # Fallback for search query with terms that matched non-associated category/vendor names
                 final_sorted_results = sorted(
                     all_results_with_score, 
-                    key=lambda x: (x[1], x[0], x[2]['name']),
+                    key=get_sort_key,
                     reverse=True
                 )
-                final_response_list = [item for priority, score, item in final_sorted_results]
+                final_response_list = []
+                for priority, score, item in final_sorted_results:
+                    if item.get('type') == 'product':
+                        item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
+                    final_response_list.append(item)
+
         else:
-            # No combination found, use the original sorted list structure
+            # GENERAL SEARCH SCENARIO (No exact combination found)
+            
+            # The general sort key handles P3 (Vendor Link) > P4 (Vendor Category Links) > P2/P1 > P0 (Products with internal PPS)
             final_sorted_results = sorted(
                 all_results_with_score, 
-                key=lambda x: (x[1], x[0], x[2]['name']),
+                key=get_sort_key,
                 reverse=True
             )
-            final_response_list = [item for priority, score, item in final_sorted_results]
+            final_response_list = []
+            for priority, score, item in final_sorted_results:
+                if item.get('type') == 'product':
+                    # Remove temporary keys
+                    item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
+                final_response_list.append(item)
+
             
         return response.Response(final_response_list)
