@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.views import APIView
 from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Count, F, Value, IntegerField, Sum, Avg, OuterRef, Subquery
@@ -740,7 +741,43 @@ class RentalViewSet(viewsets.ModelViewSet):
     
     
     
-# In products/views.py (Place this section near the end of the file)
+class ProductVendorPhoneView(APIView):
+    """
+    Retrieves the company_phone number of the vendor who owns a specific product.
+    Endpoint: /api/product/<int:product_id>/vendor-phone/
+    """
+    permission_classes = [AllowAny] # Usually public for product details pages
+
+    def get(self, request, product_id):
+        try:
+            # 1. Fetch the Product object
+            product = Product.objects.get(id=product_id)
+            
+            # 2. Use the product's user_id (product.user_id) to find the Vendor
+            # Using select_related/prefetch_related is not efficient here as we only need one Vendor object
+            vendor = Vendor.objects.get(user_id=product.user_id)
+            
+            # 3. Serialize and return the phone number
+            serializer = VendorPhoneSerializer(vendor)
+            
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Product.DoesNotExist:
+            return Response({
+                "detail": f"Product with ID {product_id} not found."
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        except Vendor.DoesNotExist:
+            return Response({
+                "detail": f"Vendor not found for product ID {product_id}."
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            # Log unexpected errors
+            logger.error(f"Error fetching vendor phone for product {product_id}: {e}")
+            return Response({
+                "detail": "An unexpected error occurred."
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # Make sure these are defined near the top of your views.py:
 # from django.db.models import Q 

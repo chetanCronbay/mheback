@@ -9,7 +9,7 @@ from rest_framework.routers import DefaultRouter
 
 from banners.views import BannerViewSet
 from products.views import (
-    CategoryViewSet, ProductSearchViewSet, SubcategoryViewSet, ProductViewSet,
+    CategoryViewSet, ProductSearchViewSet, ProductVendorPhoneView, SubcategoryViewSet, ProductViewSet,
     CartViewSet, UniversalSearchViewSet, WishlistViewSet, QuoteViewSet, RentalViewSet
 )
 from users.views import (
@@ -96,6 +96,9 @@ urlpatterns = [
         
     # 💥 New Universal Search Endpoint for fast, single-call suggestions
     path('api/search/universal/', UniversalSearchViewSet.as_view({'get': 'list'}), name='universal-search'),
+    
+    # 💥 NEW URL: Get Vendor Phone by Product ID
+    path('api/product/<int:product_id>/vendor-phone/', ProductVendorPhoneView.as_view(), name='product-vendor-phone'),
     
     
     # ✅ Default router URLs (includes all ViewSet routes)

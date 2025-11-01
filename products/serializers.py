@@ -150,3 +150,10 @@ class UniversalSearchSerializer(serializers.Serializer):
     category_slug = serializers.CharField(required=False)
     vendor_slug = serializers.CharField(required=False)
     product_id = serializers.IntegerField(required=False)
+    
+
+class VendorPhoneSerializer(serializers.Serializer):
+    """
+    Serializer to return the vendor's company phone number.
+    """
+    company_phone = serializers.CharField()
