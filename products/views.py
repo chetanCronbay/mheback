@@ -786,213 +786,137 @@ class ProductVendorPhoneView(APIView):
 # from .models import Product, Category, Subcategory, etc.
 # ... (Other ViewSets and definitions remain above)
 # ====================================================================
-# NEW: MHE Abbreviation Mapping
+# NECESSARY IMPORTS (Ensure these are available in your Django file)
 # ====================================================================
+# from django.db.models import Q, F, Subquery, OuterRef
+# from rest_framework import viewsets, response
+# from rest_framework.permissions import AllowAny
+# NOTE: Assume Models and Django functions are correctly imported.
+# ====================================================================
+# ====================================================================
+# NECESSARY IMPORTS (Ensure these are available in your Django file)
+# ====================================================================
+# from django.db.models import Q, F, Subquery, OuterRef
+# from rest_framework import viewsets, response
+# from rest_framework.permissions import AllowAny
+# NOTE: Assume Models and Django functions are correctly imported.
+# ====================================================================
+
+# ====================================================================
+# CUSTOM CONSTANTS AND HELPERS (Defined for context)
+# ====================================================================
+
 MHE_ABBREVIATIONS = {
-    'hpt': 'hand pallet truck',
-    'hpt-ss': 'stainless steel hand pallet truck',
-    'hpt-ws': 'weighing scale hand pallet truck',
-    'hpt-sl': 'scissors hand pallet truck',
-    'hs': 'manul stacker',
-    'mhs': 'semi-electric stacker',
-    'st': 'stacker',
-    'st-cb': 'counter balance stacker',
-    'e-hpt': 'electric pallet truck',
-    'bopt': 'battery operated pallet truck',
-    'pt': 'platform truck / trolly',
-    'tt': 'tow truck',
-    'dfl': 'diesel forklift',
-    'efl (li-ion)': 'electric forklift (lithium-ion battery)',
-    'efl (lead-acid)': 'electric forklift (lead-acid battery)',
-    'flt-art.': 'articulated forklift',
-    'hfl': 'heavy forklift',
-    'flt': 'forklift',
-    'chfl': 'container handler forklift',
-    'sl': 'scissors lift',
-    'sp-sl': 'self-propelled scissors lift',
-    'awp': 'aerial work platform',
-    'gl': 'goods lift',
-    'dl': 'dock leveler',
-    'dr': 'dock ramp / mobile dock ramp',
-    'rt': 'reach truck',
-    'ddrt': 'double deep reach truck',
-    'rk': 'racking system',
-    'vna': 'very narrow aisle truck',
-    'agv': 'automated guided vehicle',
-    'op': 'order picker',
-    'gc': 'golf cart',
-    'th': 'telehandler',
-    'li-ion batt.': 'mhe bazar li-ion battery kit',
-    'bl': 'boom lift',
-    '4dml': '4dml',
+    'hpt': 'hand pallet truck', 'hpt-ss': 'stainless steel hand pallet truck', 'hpt-ws': 'weighing scale hand pallet truck',
+    'hpt-sl': 'scissors hand pallet truck', 'hs': 'manul stacker', 'mhs': 'semi-electric stacker', 'st': 'stacker',
+    'st-cb': 'counter balance stacker', 'e-hpt': 'electric pallet truck', 'bopt': 'battery operated pallet truck',
+    'pt': 'platform truck / trolly', 'tt': 'tow truck', 'dfl': 'diesel forklift', 'efl (li-ion)': 'electric forklift (lithium-ion battery)',
+    'efl (lead-acid)': 'electric forklift (lead-acid battery)', 'flt-art.': 'articulated forklift', 'hfl': 'heavy forklift',
+    'flt': 'forklift', 'chfl': 'container handler forklift', 'sl': 'scissors lift', 'sp-sl': 'self-propelled scissors lift',
+    'awp': 'aerial work platform', 'gl': 'goods lift', 'dl': 'dock leveler', 'dr': 'dock ramp / mobile dock ramp',
+    'rt': 'reach truck', 'ddrt': 'double deep reach truck', 'rk': 'racking system', 'vna': 'very narrow aisle truck',
+    'agv': 'automated guided vehicle', 'op': 'order picker', 'gc': 'golf cart', 'th': 'telehandler',
+    'li-ion batt.': 'mhe bazar li-ion battery kit', 'bl': 'boom lift', '4dml': '4dml',
 }
-# ====================================================================
 
-
-# Priority constants for final sorting. Higher number means higher priority group.
 PRIORITY = {
-    'vendor_category': 4, # Vendor + Relevant Category Link
-    'vendor': 3,
-    'category': 2,
-    'subcategory': 1,
-    'product': 0, # Specific Product Suggestion
-    'product_type': -1, # Product Type Link (Lowest)
-    'top_product': 5, # Highest priority for exact Vendor/Category match products
+    'vendor_category': 4, 'vendor': 3, 'category': 2, 'subcategory': 1, 'product': 0, 
+    'product_type': -1, 'top_product': 5,
 }
 
-# NEW: Product internal priority constants for Product Priority Score (PPS)
 PRODUCT_MATCH_PRIORITY = {
-    'name': 0,
-    'model_manufacturer': 1,
-    'subcategory': 2,
-    'category': 3,
-    'vendor': 4, # Highest internal product priority
+    'name': 0, 'model_manufacturer': 1, 'subcategory': 2, 'category': 3, 'vendor': 4,
+    'product_exact': 10 
 }
 
-# Product Type Choices (Must match model definition)
 TYPE_CHOICES = [
-    ('new', 'New'),
-    ('used', 'Used'),
-    ('rental', 'Rental'),
-    ('attachments', 'Attachments'),
+    ('new', 'New'), ('used', 'Used'), ('rental', 'Rental'), ('attachments', 'Attachments'),
 ]
 
-# Simple slug function 
 def create_slug(name):
     return (name or '').lower().replace(' ', '-')
 
-# Helper function to get the vendor name via a subquery to avoid complex joins in the main product query
-def get_vendor_name_subquery():
-    # Placeholder: Vendor and Product models assumed to be imported
-    pass
-
-
-# ====================================================================
-# MODIFIED LOGIC: Separate Function for Combination Check returns matched names
-# ====================================================================
 def _check_vendor_category_in_query(query, expanded_phrase_full, vendor_name_to_id_map, category_name_to_id_map):
-    """
-    Checks if the search query (or its expansion) contains both a known vendor name 
-    and a known category name, returning the best matched lowercased names.
-    """
-    
     vendor_match = None
     category_match = None
 
-    # 1. Check for Vendor match (find the first vendor name present in the query)
     for name_lower in vendor_name_to_id_map.keys():
         if name_lower and name_lower in query:
             vendor_match = name_lower
             break
             
-    # 2. Check for Category match (find the first category name present in the query or expansion)
     all_category_names = category_name_to_id_map.keys()
-    
-    # Check raw query
     for name_lower in all_category_names:
         if name_lower and name_lower in query:
             category_match = name_lower
             break
             
-    # Check expanded phrase for category if no match yet
     if not category_match and expanded_phrase_full:
         for name_lower in all_category_names:
-            # Check if category name is a substring of the expanded phrase
             if name_lower and name_lower in expanded_phrase_full:
                 category_match = name_lower
                 break
     
-    if vendor_match and category_match:
-        # Return the lowercased names to be used as keys for ID lookup
-        return (vendor_match, category_match)
-    
-    return (None, None)
+    return (vendor_match, category_match)
 # ====================================================================
 
-# NOTE: The imports (viewsets, AllowAny, response, Q, Subquery, OuterRef, F, get_user_model, Vendor, Product, Category, Subcategory)
-# are assumed to be available from the original context, but not re-defined here.
-# Assuming the necessary Django model classes (Vendor, Product, Category, Subcategory) 
-# and Django/DRF imports (viewsets, AllowAny, response, Q, Subquery, OuterRef, F, get_user_model) are in scope.
 
 class UniversalSearchViewSet(viewsets.GenericViewSet):
-    """
-    Optimized multi-model search with ultra-loose character matching and scoring.
-    Priority order: Score (High) > Group (Vendor-Category > Vendor > Category > Subcategory > Product > Product Type).
-    
-    MODIFIED: Product priority within the group is now Vendor > Category > Subcategory > Model.
-    """
     permission_classes = [AllowAny]
 
     def list(self, request):
-        # 1. Prepare query and initial data structures (O(1) / O(N) setup)
-        
-        # Capture raw query key for abbreviation check
+        # 1. PREPARE QUERY & HELPERS 
         raw_query_key = request.query_params.get('search', '').strip()
         query = raw_query_key.lower() 
         if not query: return response.Response([]) 
 
-        # NEW LOGIC: Abbreviation Expansion
         expanded_query_phrase = query
         expanded_phrase_full = None
-        
         if raw_query_key in MHE_ABBREVIATIONS:
             expanded_phrase_full = MHE_ABBREVIATIONS[raw_query_key].lower()
-            # Augment the search string for matching/filtering
             expanded_query_phrase = f"{query} {expanded_phrase_full}"
-        
-        # Set the character set based on the expanded phrase
         query_chars = set(expanded_query_phrase)
 
-        # Helper to generate the core OR filter for loose character matching
         def create_char_filter(fields):
             char_filter = Q()
             for char in query_chars:
                 for field in fields:
-                    # Uses query_chars (from expanded phrase) for filtering
                     char_filter |= Q(**{f'{field}__icontains': char})
             return char_filter
 
-        # Helper for scoring (Set Intersection)
         def calculate_score(name_lower):
-            # Base score remains character intersection from expanded phrase
             score = sum(1 for char in query_chars if char in name_lower) 
-            
-            # Original exact match bonus (checks the user's input before expansion)
             if query in name_lower: score += 1000 
-            
-            # NEW LOGIC: Bonus for matching the expanded full phrase
-            if expanded_phrase_full and expanded_phrase_full in name_lower:
-                score += 1000
-                
+            if expanded_phrase_full and expanded_phrase_full in name_lower: score += 1000
             return score
 
-        # ----------------------------------------------------
-        # 2. Search Logic (Database optimization: single query per model)
-        # ----------------------------------------------------
+        # Data structures
         all_results_with_score = []
-        
-        # Assuming get_user_model is imported/available
         approved_ids = get_user_model().objects.filter(role__name='Vendor', is_active=True).values_list('id', flat=True)
 
-        # MODIFIED: Use dictionaries to map lowercased name to ID for combination check
         approved_vendor_name_to_id = {}
         all_category_name_to_id = {}
-        # Also map vendor user_id to brand/company name for the top result display
         vendor_user_id_to_name = {}
-        # Also map category_id to name for the top result display
         category_id_to_name = {}
         
-        # NEW: Variables to track if we have an exact vendor match (Vendor-Only scenario)
+        # Exact Match Tracking
         exact_vendor_match_item = None
+        exact_category_match_item = None
+        exact_subcategory_match_item = None
+        exact_product_match_item = None
+        exact_product_type_match_item = None
+        
         vendor_category_links_to_promote = []
+        product_results = [] # Stores (priority, score, item_dict) tuples
 
 
-        # --- P4: VENDOR-CATEGORIES ---
+        # 2. DATA GATHERING (P4 - P-1)
+        
+        # --- P4: VENDOR-CATEGORIES --- 
         vendor_match_filter = create_char_filter(['user__vendor__brand', 'user__vendor__company_name'])
         category_match_filter = create_char_filter(['category__name', 'subcategory__name'])
         combined_product_filter = category_match_filter | vendor_match_filter
 
-        # Get relevant vendor-category links
         vendor_category_matches = Product.objects.filter(
             combined_product_filter, user_id__in=approved_ids, is_active=True, status='approved'
         ).values(
@@ -1000,27 +924,23 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
         ).distinct()
         
         processed_vendor_categories = set()
-
         for match in vendor_category_matches:
             vendor_user_id = match['user__vendor__user_id']
             category_id = match['category__id']
-            
             key = (vendor_user_id, category_id)
             if key in processed_vendor_categories: continue
             processed_vendor_categories.add(key)
-            
             vendor_name = match.get('user__vendor__brand') or match.get('user__vendor__company_name') or ''
             category_name = match['category__name']
-            
-            # Populate dictionaries with ID mapping and reverse mapping
             vendor_name_lower = vendor_name.lower()
             category_name_lower = category_name.lower()
+            
             if vendor_name_lower:
-                approved_vendor_name_to_id[vendor_name_lower] = vendor_user_id # Name to user_id
-                vendor_user_id_to_name[vendor_user_id] = vendor_name # user_id to name
+                approved_vendor_name_to_id[vendor_name_lower] = vendor_user_id
+                vendor_user_id_to_name[vendor_user_id] = vendor_name
             if category_name_lower:
-                all_category_name_to_id[category_name_lower] = category_id # Name to category_id
-                category_id_to_name[category_id] = category_name # category_id to name
+                all_category_name_to_id[category_name_lower] = category_id
+                category_id_to_name[category_id] = category_name
 
             result_name = f"{vendor_name} - {category_name}"
             combined_name_lower = f"{vendor_name.lower()} {category_name.lower()}"
@@ -1030,385 +950,346 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
                 item = {
                     'id': f'vc_{vendor_user_id}_{category_id}', 'name': result_name, 'type': 'vendor_category', 
                     'vendor_slug': create_slug(vendor_name), 'category_slug': create_slug(category_name),
-                    'user_id': vendor_user_id, # Keep user_id here for P3 logic integration
+                    'user_id': vendor_user_id, 'category_id': category_id 
                 }
-                # Store P4 results, but only add to all_results_with_score later
                 all_results_with_score.append((PRIORITY['vendor_category'], score, item))
                 
-                # NEW: If this category belongs to an exact vendor match (from P3 below), store it for promotion
-                # NOTE: This check relies on P3 running *before* the final sort, which it does.
                 if vendor_name_lower == query:
                     vendor_category_links_to_promote.append(item)
 
 
-        # --- P3: VENDORS ---
+        # --- P3: VENDORS (Capture exact match) ---
         vendor_filter = create_char_filter(['brand', 'company_name'])
         vendors = Vendor.objects.filter(vendor_filter, user_id__in=approved_ids).select_related('user').distinct()
 
         for v in vendors:
             name = v.brand or v.company_name or v.user.username
             name_lower = name.lower()
-            
-            # Populate dictionaries with ID mapping
-            if v.brand: approved_vendor_name_to_id[v.brand.lower()] = v.user_id
-            if v.company_name: approved_vendor_name_to_id[v.company_name.lower()] = v.user_id
-            vendor_user_id_to_name[v.user_id] = name # Update reverse mapping
-
             score = calculate_score(name_lower)
             
-            is_exact_vendor_match = name_lower == query or (v.brand and v.brand.lower() == query) or (v.company_name and v.company_name.lower() == query)
-            
+            is_strict_exact_match = name_lower == query
             effective_priority = PRIORITY['vendor']
-            if is_exact_vendor_match:
-                # This ensures the exact vendor link is placed higher than vendor_category (4+10)
+            
+            if is_strict_exact_match:
                 effective_priority = PRIORITY['vendor_category'] + 10 
-                
-                # NEW: Capture the exact vendor match result for promotion in the Vendor-Only scenario
-                if name_lower == query:
-                    exact_vendor_match_item = {
-                        'id': f'v_{v.id}', 'name': name, 'type': 'vendor', 'vendor_slug': create_slug(name),
-                        'user_id': v.user_id # Temporary key to track the exact match
-                    }
+                exact_vendor_match_item = {
+                    'id': f'v_{v.id}', 'name': name, 'type': 'vendor', 'vendor_slug': create_slug(name),
+                    'user_id': v.user_id 
+                }
 
             if score > 0:
                 all_results_with_score.append((
                     effective_priority, score, {'id': f'v_{v.id}', 'name': name, 'type': 'vendor', 'vendor_slug': create_slug(name)}
                 ))
 
-        # --- P2: CATEGORIES ---
+
+        # --- P2: CATEGORIES (Capture exact match) ---
         category_filter = create_char_filter(['name'])
         categories = Category.objects.filter(category_filter).only('id', 'name')
         
         for c in categories:
             name_lower = c.name.lower()
-            # Populate dictionaries with ID mapping
             all_category_name_to_id[name_lower] = c.id
-            category_id_to_name[c.id] = c.name # Update reverse mapping
-            
+            category_id_to_name[c.id] = c.name
             score = calculate_score(name_lower)
+            
+            item = {'id': f'c_{c.id}', 'name': c.name, 'type': 'category', 'category_slug': create_slug(c.name), 'category_id': c.id}
+            
             if score > 0:
-                all_results_with_score.append((
-                    PRIORITY['category'], score, {'id': f'c_{c.id}', 'name': c.name, 'type': 'category', 'category_slug': create_slug(c.name)}
-                ))
-        
-        # --- P1: SUBCATEGORIES ---
+                all_results_with_score.append((PRIORITY['category'], score, item))
+                if name_lower == query:
+                    exact_category_match_item = item
+
+        # --- P1: SUBCATEGORIES (Capture exact match) ---
         subcategory_filter = create_char_filter(['name'])
         subcategories = Subcategory.objects.filter(subcategory_filter).select_related('category').only('id', 'name', 'category__name', 'category__id')
         
         for s in subcategories:
             full_name = f"{s.name} ({s.category.name if s.category else 'N/A'})"
-            score = calculate_score(s.name.lower())
+            name_lower = s.name.lower()
+            score = calculate_score(name_lower)
             
-            # Populate dictionaries with parent category ID mapping
             if s.category:
-                all_category_name_to_id[s.category.name.lower()] = s.category.id # Ensure parent category is included
-                category_id_to_name[s.category.id] = s.category.name # Update reverse mapping
+                all_category_name_to_id[s.category.name.lower()] = s.category.id
+                category_id_to_name[s.category.id] = s.category.name
+
+            item = {
+                'id': f's_{s.id}', 'name': full_name, 'type': 'subcategory', 
+                'category_slug': create_slug(s.category.name) if s.category else '',
+                'subcategory_slug': create_slug(s.name),
+                'category_id': s.category.id if s.category else None
+            }
 
             if score > 0:
-                all_results_with_score.append((
-                    PRIORITY['subcategory'], score, {
-                        'id': f's_{s.id}', 'name': full_name, 'type': 'subcategory', 
-                        'category_slug': create_slug(s.category.name) if s.category else '',
-                        'subcategory_slug': create_slug(s.name),
-                    }
-                ))
+                all_results_with_score.append((PRIORITY['subcategory'], score, item))
+                if name_lower == query:
+                    exact_subcategory_match_item = item
+
         
-        # --- P0: PRODUCTS (Standard Search) ---
+        # --- P0: PRODUCTS (Capture exact match and calculate PPS) ---
         product_fields = ['name', 'model', 'manufacturer']
         product_filter = create_char_filter(product_fields)
 
-        # Apply filtering and subqueries for vendor/category names
-        products_qs = Product.objects.filter(
+        products = Product.objects.filter(
             product_filter, user_id__in=approved_ids, is_active=True, status='approved'
-        )
-
-        # Use the annotation structure to safely pull related data without crashing on reverse FK
-        products = products_qs.annotate(
+        ).annotate(
             vendor_brand=Subquery(Vendor.objects.filter(user=OuterRef('user')).values('brand')[:1]),
             vendor_company_name=Subquery(Vendor.objects.filter(user=OuterRef('user')).values('company_name')[:1]),
             category_name=F('category__name'),
             subcategory_name=F('subcategory__name'),
-            # Select the necessary fields explicitly
         ).values('id', 'name', 'model', 'manufacturer', 'vendor_brand', 'vendor_company_name', 'category_name', 'subcategory_name', 'user_id', 'category_id').distinct()
 
-        # Store products that would be eligible for the TOP PRODUCTS list
-        product_results = []
-        
         for p in products:
             vendor_name = p['vendor_brand'] or p['vendor_company_name'] or ''
             product_url_slug = create_slug(f"{p['name']} {p['model'] or ''} {p['manufacturer'] or ''}")
-
             combined_name_lower = f"{p['name'].lower()} {p['model'].lower() if p['model'] else ''} {p['manufacturer'].lower() if p['manufacturer'] else ''}"
             score = calculate_score(combined_name_lower)
             
-            # NEW LOGIC: Calculate Product Priority Score (PPS)
-            product_priority_score = PRODUCT_MATCH_PRIORITY['name'] # Base priority
+            product_priority_score = PRODUCT_MATCH_PRIORITY['name']
             
-            # Check for exact matches in priority order (Vendor > Category > Subcategory > Model/Manufacturer)
+            # 1. Strict Exact Product Name Match (Highest PPS)
+            if p['name'].lower() == query:
+                 product_priority_score = max(product_priority_score, PRODUCT_MATCH_PRIORITY['product_exact'])
+            
+            # 2. Other PPS checks (Vendor > Category > Subcategory > Model)
             query_tokens = set(query.split())
-
-            # 1. Vendor Match (Highest Priority)
             vendor_lower = vendor_name.lower()
             if query == vendor_lower or any(token == vendor_lower for token in query_tokens):
                 product_priority_score = max(product_priority_score, PRODUCT_MATCH_PRIORITY['vendor'])
-            
-            # 2. Category Match
             category_lower = p['category_name'].lower() if p['category_name'] else ''
             if category_lower and (query == category_lower or any(token == category_lower for token in query_tokens)):
                 product_priority_score = max(product_priority_score, PRODUCT_MATCH_PRIORITY['category'])
-
-            # 3. Subcategory Match
             subcategory_lower = p['subcategory_name'].lower() if p['subcategory_name'] else ''
             if subcategory_lower and (query == subcategory_lower or any(token == subcategory_lower for token in query_tokens)):
                 product_priority_score = max(product_priority_score, PRODUCT_MATCH_PRIORITY['subcategory'])
-
-            # 4. Model/Manufacturer Match
             model_lower = p['model'].lower() if p['model'] else ''
             manufacturer_lower = p['manufacturer'].lower() if p['manufacturer'] else ''
-            
-            # Check Model/Manufacturer against full query or tokens
             model_match = model_lower and (query == model_lower or any(token == model_lower for token in query_tokens))
             manu_match = manufacturer_lower and (query == manufacturer_lower or any(token == manufacturer_lower for token in query_tokens))
-            
             if model_match or manu_match:
                 product_priority_score = max(product_priority_score, PRODUCT_MATCH_PRIORITY['model_manufacturer'])
-            
-            # END NEW LOGIC
+
 
             if score > 0:
                 display_name = f"{p['name']} ({p['model'] or p['manufacturer'] or 'Product'})"
                 
-                result_item = (
-                    PRIORITY['product'], score, {
-                        'id': f"p_{p['id']}", 'name': display_name, 'type': 'product',
-                        'product_id': p['id'],
-                        'url': f'/product/{product_url_slug}-{p["id"]}', 
-                        'product_tags': {
-                            'vendor': vendor_name,
-                            'category': p['category_name'] or '',
-                            'subcategory': p['subcategory_name'] or '',
-                            'model': p['model'] or '',
-                        },
-                        'user_id': p['user_id'], # Keep these for exact match filtering
-                        'category_id': p['category_id'],
-                        'product_priority_score': product_priority_score, # NEW
-                    }
-                )
-                all_results_with_score.append(result_item)
-                # Store the raw product result for potential top-product selection
-                product_results.append(result_item)
+                item = {
+                    'id': f"p_{p['id']}", 'name': display_name, 'type': 'product',
+                    'product_id': p['id'], 'url': f'/product/{product_url_slug}-{p["id"]}', 
+                    'product_tags': { 'vendor': vendor_name, 'category': p['category_name'] or '', 'subcategory': p['subcategory_name'] or '', 'model': p['model'] or ''},
+                    'user_id': p['user_id'], 'category_id': p['category_id'],
+                    'product_priority_score': product_priority_score, 
+                }
+                result_item_tuple = (PRIORITY['product'], score, item)
+                all_results_with_score.append(result_item_tuple)
+                product_results.append(result_item_tuple)
+
+                if product_priority_score == PRODUCT_MATCH_PRIORITY['product_exact']:
+                    exact_product_match_item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
+
         
-        # --- P-1: PRODUCT TYPES (NEW BLOCK) ---
+        # --- P-1: PRODUCT TYPES (Capture exact match) ---
         for slug, name in TYPE_CHOICES:
             name_lower = name.lower()
-            score = 0
-            if query in name_lower:
-                score = calculate_score(name_lower)
+            score = calculate_score(name_lower)
+            
+            item = {
+                'id': f'pt_{slug}', 'name': f"{name} Products", 'type': 'product_type',
+                'category_slug': slug, 'url': f'/search?type={slug}'
+            }
             
             if score > 0:
-                all_results_with_score.append((
-                    PRIORITY['product_type'], score, {
-                        'id': f'pt_{slug}', 'name': f"{name} Products", 'type': 'product_type',
-                        'category_slug': slug, 
-                        'url': f'/search?type={slug}'
-                    }
-                ))
+                all_results_with_score.append((PRIORITY['product_type'], score, item))
+                
+                if name_lower.split()[0] == query.split()[0]:
+                    exact_product_type_match_item = item
 
 
-        # ----------------------------------------------------
-        # 3. Final Sort and Return (DSA: Timsort)
-        # ----------------------------------------------------
+        # 3. FINAL SORT AND PROMOTION 
         
-        # MODIFIED: Identify remaining search terms for secondary scoring
-        
+        # Secondary relevance terms calculation (Unchanged)
         query_words = set(query.split())
         vendor_names = set(approved_vendor_name_to_id.keys())
         category_names = set(all_category_name_to_id.keys())
-        
-        # Remove identified vendor and category words
         remaining_query_words = query_words.difference(vendor_names).difference(category_names)
-        
-        # Add non-category words from the abbreviation expansion
         if expanded_phrase_full:
             expanded_words = set(expanded_phrase_full.split())
             for word in expanded_words:
                 if word not in category_names:
                     remaining_query_words.add(word)
-
-        # Filter out numbers, small words, and common separators
         filter_out_words = {'of', 'a', 'can', 'i', 'get', 'the', 'for', 'with', 'which', 'what', 'is', 'are', 'we', 'to', 'truck', 'model', 'series', 'tonne', 'ton', 'capacity'}
-        # Final set of terms to use for secondary scoring
         secondary_relevance_terms = {word for word in remaining_query_words if word not in filter_out_words and len(word) > 2}
 
-        
-        # NEW: Universal Sort Key Function
+        # Universal Sort Key Function (Handles tuple unpacking: (priority, score, item_dict))
         def get_sort_key(item_tuple):
             priority, score, item = item_tuple
-            
-            # Use Product Priority Score (PPS) for product type items, otherwise use the general group priority.
             product_score = item.get('product_priority_score', -1)
             
             if item.get('type') == 'product':
-                # Product: (Score DESC, PPS DESC, Name ASC)
-                # Boosting the effective priority using PRIORITY['top_product'] (5) ensures PPS 
-                # takes precedence over standard priority groups (1-4).
                 effective_priority = product_score + PRIORITY['top_product']
             else:
-                # Non-Product: (Score DESC, Group_Priority DESC, Name ASC)
                 effective_priority = priority
 
-            # The final key must be a tuple for Python's stable sort: (Score DESC, Effective_Priority DESC, Name ASC)
             return (score, effective_priority, item['name'])
 
 
         final_response_list = []
+        promoted_ids = set() 
         
-        # This check is designed for "Vendor + Category" combinations (e.g., 'byd forklift')
+        # Determine combination scenarios
         matched_vendor_name, matched_category_name = _check_vendor_category_in_query(
-            query, 
-            expanded_query_phrase, 
-            approved_vendor_name_to_id, 
-            all_category_name_to_id
+            query, expanded_query_phrase, approved_vendor_name_to_id, all_category_name_to_id
         )
+        is_vendor_only_exact_match = exact_vendor_match_item and not matched_category_name and query == exact_vendor_match_item['name'].lower()
         
-        # NEW LOGIC: Check for Vendor-Only Exact Match (e.g., 'byd')
-        is_vendor_only_exact_match = False
-        if exact_vendor_match_item:
-            # Check if the query contains ONLY the vendor name (and maybe a space)
-            # This is implicitly true if exact_vendor_match_item is set AND there is no category match.
-            if not matched_category_name and query == exact_vendor_match_item['name'].lower():
-                is_vendor_only_exact_match = True
-
-
-        if is_vendor_only_exact_match:
-            # VENDOR-ONLY EXACT MATCH SCENARIO: Promote links explicitly.
+        # Count the number of active single-type exact matches (using simplified check now that priority is correct)
+        exact_match_count = sum(1 for item in [exact_vendor_match_item, exact_category_match_item, exact_subcategory_match_item, exact_product_match_item, exact_product_type_match_item] if item is not None and item.get('name', '').lower().split()[0] == query.split()[0])
+        
+        
+        # --- A. SINGLE-TYPE EXACT MATCH PROMOTION (SUPER PRIORITY) ---
+        
+        # 1. Category Exact Match
+        if exact_category_match_item and exact_match_count == 1:
+            # 1.1. Promote Category Link
+            final_response_list.append({k: v for k, v in exact_category_match_item.items() if k != 'category_id'})
+            promoted_ids.add(exact_category_match_item['id'])
             
-            # 1. Add the Exact Vendor Link (Highest Priority)
-            final_response_list.append({k: v for k, v in exact_vendor_match_item.items() if k != 'user_id'})
-            
-            # 2. Add the Vendor Category Links (Promoted below the vendor link)
-            # Sort categories alphabetically by name for clean presentation
-            vendor_category_links_to_promote.sort(key=lambda x: x['name'])
-            final_response_list.extend([item for item in vendor_category_links_to_promote])
-            
-            # 3. Process remaining results
-            
-            # We filter out the items we just manually added (the exact vendor link and the category links)
-            promoted_item_ids = {item['id'] for item in final_response_list}
-            
-            # Re-calculate final_sorted_results using the new sort key
-            final_sorted_results = sorted(
-                all_results_with_score, 
-                key=get_sort_key, 
-                reverse=True
+            # 1.2. Promote Vendor-Category Links associated with this category
+            category_id = exact_category_match_item.get('category_id')
+            vendor_category_links = sorted(
+                [item[2] for item in all_results_with_score if item[2].get('type') == 'vendor_category' and item[2].get('category_id') == category_id],
+                key=lambda x: x['name']
             )
+            final_response_list.extend(vendor_category_links)
+            promoted_ids.update({item['id'] for item in vendor_category_links})
             
-            # Append remaining sorted items
-            for priority, score, item in final_sorted_results:
-                item_id = item.get('id')
-                
-                # Filter out the items already promoted
-                if item_id in promoted_item_ids:
-                    continue
-                
-                # Clean up product keys before appending
-                if item['type'] == 'product':
-                    item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
-                
-                final_response_list.append(item)
+            # 1.3. Promote Subcategories of this Category
+            subcategory_links = sorted(
+                [item[2] for item in all_results_with_score if item[2].get('type') == 'subcategory' and item[2].get('category_id') == category_id],
+                key=lambda x: x['name']
+            )
+            final_response_list.extend(subcategory_links)
+            promoted_ids.update({item['id'] for item in subcategory_links})
+            
+            # 1.4. Promote Top Products in this Category
+            top_products_in_category_tuples = [item_tuple for item_tuple in product_results if item_tuple[2].get('category_id') == category_id]
 
-        elif matched_vendor_name and matched_category_name:
-            # VENDOR + CATEGORY SEARCH SCENARIO (Existing logic: promote single category link + specific products)
+            top_products_in_category = sorted(
+                top_products_in_category_tuples,
+                key=lambda x: get_sort_key(x), reverse=True
+            )[:10] 
             
-            # 1. Get IDs and Names
+            final_response_list.extend([
+                {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
+                for priority, score, item in top_products_in_category
+            ])
+            promoted_ids.update({item.get('id') for priority, score, item in top_products_in_category})
+
+        # 2. Subcategory Exact Match (FIXED: Ordering of Subcategory/Category Links)
+        elif exact_subcategory_match_item and exact_match_count == 1:
+            # 2.1. Promote Subcategory Link (Highest)
+            final_response_list.append({k: v for k, v in exact_subcategory_match_item.items() if k != 'category_id'})
+            promoted_ids.add(exact_subcategory_match_item['id'])
+            
+            # 2.2. Promote Parent Category Link (Second Highest)
+            parent_category_id = exact_subcategory_match_item.get('category_id')
+            if parent_category_id:
+                # Find the CATEGORY item (tuple[2]) in the main list
+                parent_category_item = next((item_tuple[2] for item_tuple in all_results_with_score if item_tuple[2].get('type') == 'category' and item_tuple[2].get('category_id') == parent_category_id), None)
+                if parent_category_item:
+                    final_response_list.append({k: v for k, v in parent_category_item.items() if k != 'category_id'})
+                    promoted_ids.add(parent_category_item['id'])
+
+            # 2.3. Promote Top Products in this Subcategory 
+            top_products_in_subcategory_tuples = [item_tuple for item_tuple in product_results if item_tuple[2].get('product_tags', {}).get('subcategory', '').lower() == query]
+
+            top_products_in_subcategory = sorted(
+                top_products_in_subcategory_tuples,
+                key=lambda x: get_sort_key(x), reverse=True
+            )[:10] 
+            
+            final_response_list.extend([
+                {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
+                for priority, score, item in top_products_in_subcategory
+            ])
+            promoted_ids.update({item.get('id') for priority, score, item in top_products_in_subcategory})
+
+        # 3. Product Exact Match
+        elif exact_product_match_item and exact_match_count == 1:
+            final_response_list.append(exact_product_match_item)
+            promoted_ids.add(exact_product_match_item['id'])
+            
+        # 4. Product Type Exact Match
+        elif exact_product_type_match_item and exact_match_count == 1:
+            final_response_list.append(exact_product_type_match_item)
+            promoted_ids.add(exact_product_type_match_item['id'])
+
+        # 5. Vendor Only Exact Match (Existing Logic)
+        elif is_vendor_only_exact_match:
+            final_response_list.append({k: v for k, v in exact_vendor_match_item.items() if k != 'user_id'})
+            promoted_ids.add(exact_vendor_match_item['id'])
+            
+            vendor_category_links_to_promote.sort(key=lambda x: x['name'])
+            final_response_list.extend(vendor_category_links_to_promote)
+            promoted_ids.update({item['id'] for item in vendor_category_links_to_promote})
+        
+        
+        # --- B. VENDOR + CATEGORY COMBINATION (Next Priority) ---
+        elif matched_vendor_name and matched_category_name:
             vendor_user_id = approved_vendor_name_to_id.get(matched_vendor_name)
             category_id = all_category_name_to_id.get(matched_category_name)
             vendor_display_name = vendor_user_id_to_name.get(vendor_user_id)
             category_display_name = category_id_to_name.get(category_id)
             
             if vendor_user_id is not None and category_id is not None:
-                # 2. Add the VENDOR-CATEGORY LINK (Highest Priority Promotion)
+                # 1. Add the VENDOR-CATEGORY LINK
                 vendor_category_link = {
-                    'id': f'vc_{vendor_user_id}_{category_id}', 
-                    'name': f"{vendor_display_name or matched_vendor_name.upper()} - {category_display_name or matched_category_name.upper()}", 
-                    'type': 'vendor_category', 
-                    'vendor_slug': create_slug(vendor_display_name), 
-                    'category_slug': create_slug(category_display_name),
-                    'priority_override': PRIORITY['top_product'] + 1 
+                     'id': f'vc_{vendor_user_id}_{category_id}', 'type': 'vendor_category', 
+                     'name': f"{vendor_display_name or matched_vendor_name.upper()} - {category_display_name or matched_category_name.upper()}", 
+                     'vendor_slug': create_slug(vendor_display_name), 'category_slug': create_slug(category_display_name),
                 }
                 final_response_list.append(vendor_category_link)
+                promoted_ids.add(vendor_category_link['id'])
 
-                # 3. Filter and Score products matching this exact combination
+                # 2. Filter and Score products matching this exact combination
                 top_products_with_score = []
-                remaining_results_ids = set() # Track IDs to remove them from the main sorted list
-
                 for priority, score, item in product_results:
-                    if item.get('user_id') == vendor_user_id and item.get('category_id') == category_id:
-                        
-                        secondary_score = 0
-                        product_text = f"{item['name']} {item['product_tags']['subcategory']} {item['product_tags']['model']}".lower()
+                     if item.get('user_id') == vendor_user_id and item.get('category_id') == category_id:
+                         secondary_score = 0
+                         product_text = f"{item['name']} {item['product_tags']['subcategory']} {item['product_tags']['model']}".lower()
 
-                        for term in secondary_relevance_terms:
-                            if term in product_text:
-                                secondary_score += 1 
-                        
-                        top_product_item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
-                        
-                        top_products_with_score.append((secondary_score, top_product_item))
-                        remaining_results_ids.add(item['id'])
+                         for term in secondary_relevance_terms:
+                             if term in product_text:
+                                 secondary_score += 1 
+                         
+                         top_product_item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
+                         top_products_with_score.append((secondary_score, top_product_item))
+                         promoted_ids.add(item['id'])
                 
                 top_products_with_score.sort(key=lambda x: x[0], reverse=True)
                 final_response_list.extend([item for score, item in top_products_with_score])
-                
-                # 4. Append the remaining sorted results
-                final_sorted_results = sorted(
-                    all_results_with_score, 
-                    key=get_sort_key, 
-                    reverse=True
-                )
-                
-                for priority, score, item in final_sorted_results:
-                    item_id = item.get('id')
-                    
-                    if item['type'] == 'product':
-                        item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
-                        
-                        if item_id in remaining_results_ids:
-                            continue # Skip products that were promoted to the top
-                    
-                    # Also skip the promoted vendor category link (must be filtered out of all_results_with_score here)
-                    if item['id'] == vendor_category_link['id']:
-                        continue
-                        
-                    final_response_list.append(item)
-            else:
-                 # Fallback for search query with terms that matched non-associated category/vendor names
-                final_sorted_results = sorted(
-                    all_results_with_score, 
-                    key=get_sort_key,
-                    reverse=True
-                )
-                final_response_list = []
-                for priority, score, item in final_sorted_results:
-                    if item.get('type') == 'product':
-                        item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
-                    final_response_list.append(item)
-
-        else:
-            # GENERAL SEARCH SCENARIO (No exact combination found)
+        
+        
+        # --- C. GENERAL / REMAINING RESULTS ---
+        
+        # Sort all results using the universal key
+        final_sorted_results = sorted(
+            all_results_with_score, 
+            key=get_sort_key,
+            reverse=True
+        )
+        
+        # Append remaining sorted items, filtering out items already promoted
+        for priority, score, item in final_sorted_results:
+            item_id = item.get('id')
             
-            # The general sort key handles P3 (Vendor Link) > P4 (Vendor Category Links) > P2/P1 > P0 (Products with internal PPS)
-            final_sorted_results = sorted(
-                all_results_with_score, 
-                key=get_sort_key,
-                reverse=True
-            )
-            final_response_list = []
-            for priority, score, item in final_sorted_results:
-                if item.get('type') == 'product':
-                    # Remove temporary keys
-                    item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
-                final_response_list.append(item)
+            if item_id in promoted_ids:
+                continue
 
+            # Clean up temporary keys before final output
+            if item.get('type') == 'product':
+                item = {k: v for k, v in item.items() if k not in ['user_id', 'category_id', 'product_priority_score']}
             
-        return response.Response(final_response_list)
+            final_response_list.append(item)
+
+        return response.Response(final_response_list[:25])
