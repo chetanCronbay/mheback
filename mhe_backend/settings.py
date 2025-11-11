@@ -135,7 +135,6 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",   # Required for django-allauth
     # Make sure this custom middleware exists at the specified path (e.g., in a 'Middleware' folder at project root)
     "Middleware.security.SecurityHeadersMiddleware",  # For additional security headers
-    'Middleware.block_public_api.BlockApiAccessMiddleware', # To block unauthorized API access
 ]
 
 # Custom Authentication Backends
