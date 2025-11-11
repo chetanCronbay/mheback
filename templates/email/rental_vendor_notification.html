@@ -21,6 +21,8 @@
         .action-button { display: inline-block; margin-top: 20px; padding: 12px 25px; background-color: #007bff; color: white !important; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; margin-right: 15px; mso-hide: all;}
         .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; text-align: center; }
         .emphasis-text { color: #28a745; font-weight: bold; } /* Green Bold for emphasis */
+        /* NEW: WhatsApp Badge Style */
+        .whatsapp-badge { display: inline-block; padding: 4px 8px; background-color: #25D366; color: white; border-radius: 4px; font-size: 12px; font-weight: bold; margin-bottom: 5px; }
 
         @media only screen and (max-width: 600px) {
             .container { padding: 0; }
@@ -45,6 +47,8 @@
                 </tr>
                 <tr>
                     <td class="content">
+                        {# Python already cleaned notes and extracted Company_Name and is_whatsapp_contact #}
+
                         <p style="font-size: 16px;">Dear <strong>{{ vendor_company_name }}</strong> Team,</p>
                         
                         <p style="font-size: 16px;">A new rental request has been submitted for your product <span class="emphasis-text">{{ product_name }}</span>. Please verify your product availability for the required dates and take <span class="emphasis-text">immediate action</span> to secure the booking.</p>
@@ -66,12 +70,19 @@
                                 <tr><th>Start Date</th><td><strong>{{ full_details.Start_Date }}</strong></td></tr>
                                 <tr><th>End Date</th><td><strong>{{ full_details.End_Date }}</strong></td></tr>
                                 <tr><th>Request Date</th><td>{{ full_details.Submitted_On }}</td></tr>
-                                </table>
+                            </table>
                         </div>
 
-                        {% if full_details.Notes != 'N/A' %}
+                        {# Check if there are any notes or a WhatsApp contact flag #}
+                        {% if full_details.Notes != 'No additional notes provided.' or full_details.is_whatsapp_contact %}
                         <div class="message-box">
-                            <h4 style="margin-top: 0; color: #ffc107;">Customer Notes:</h4>
+                            <h4 style="margin-top: 0; color: #ffc107; display: flex; align-items: center; justify-content: space-between;">
+                                Customer Notes:
+                                {% if full_details.is_whatsapp_contact %}
+                                <span class="whatsapp-badge">VIA WHATSAPP</span>
+                                {% endif %}
+                            </h4>
+                            {# Displaying the clean notes - REMOVED |trim #}
                             <p style="white-space: pre-wrap; margin-bottom: 0;">{{ full_details.Notes }}</p>
                         </div>
                         {% endif %}

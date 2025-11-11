@@ -158,10 +158,54 @@ class EmailService:
 
             
         elif enquiry_type == 'rental':
+            
+            raw_notes = instance.notes or ''
+            
+            # --- NOTES CLEANING AND EXTRACTION LOGIC (NEW) ---
+            company_name_from_notes = 'N/A'
+            is_whatsapp_contact = False
+            cleaned_notes = raw_notes
+            
+            # 1. Check for WhatsApp status
+            if 'whatsapp:' in raw_notes.lower():
+                is_whatsapp_contact = True
+                cleaned_notes = cleaned_notes.replace('WhatsApp:', '').replace('whatsapp:', '').strip()
+                
+            # 2. Extract Company Name and clean the notes further
+            company_key = "Company Name:"
+            if company_key in raw_notes:
+                try:
+                    # Find the start of the Company Name value
+                    start_index = raw_notes.lower().find(company_key.lower())
+                    
+                    # Extract everything after the key
+                    name_part = raw_notes[start_index + len(company_key):].strip()
+                    
+                    # Company Name is typically the first line after the key
+                    company_name_from_notes = name_part.split('\n')[0].strip()
+                    
+                    # Remove the Company Name line from the notes
+                    # This regex replacement handles both start-of-string and mid-string placement.
+                    import re
+                    cleaned_notes = re.sub(r'Company Name:\s*.+?(?:\n|$)', '', cleaned_notes, flags=re.IGNORECASE).strip()
+                    
+                except Exception as e:
+                    logger.warning(f"Failed to parse company name from rental ID {instance.id}: {e}")
+                    
+            # Final cleanup of extra newlines/spaces
+            cleaned_notes = cleaned_notes.strip()
+            # --- END NOTES CLEANING AND EXTRACTION LOGIC ---
+            
+            
             context['full_details']['Address'] = instance.address or 'N/A'
             context['full_details']['Start_Date'] = instance.start_date.strftime("%d %b, %Y")
             context['full_details']['End_Date'] = instance.end_date.strftime("%d %b, %Y")
-            context['full_details']['Notes'] = instance.notes or 'N/A'
+            
+            # Use extracted/cleaned fields in context
+            context['full_details']['Notes'] = cleaned_notes or 'No additional notes provided.'
+            context['full_details']['Company_Name'] = company_name_from_notes
+            context['full_details']['is_whatsapp_contact'] = is_whatsapp_contact # NEW FLAG
+            
             # For consistent display, rename Address to Company_Address for table use
             context['full_details']['Company_Address'] = instance.address or 'N/A'
             
