@@ -13,7 +13,7 @@ from products.serializers import ProductSerializer
 from .models import *
 from .serializers import *
 from util.security import IPRateLimiter, SecurityLogger
-from .permissions import IsAdmin, IsVendor, IsUser, IsOwnerOrAdmin, CanCreateReview, VendorAccessPermission
+from .permissions import IsAdmin, IsVendor, IsUser, IsOwnerOrAdmin, CanCreateReview, VendorAccessPermission, IsInternalOrTrustedOrigin
 import os
 from rest_framework.views import APIView
 from google.oauth2 import id_token
@@ -66,7 +66,22 @@ class RoleViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [IsOwnerOrAdmin]  # Only admins can manage users
+    # permission_classes = [IsOwnerOrAdmin]  # Only admins can manage users
+    
+    def get_permissions(self):
+        """
+        Custom permissions for UserViewSet.
+        - 'list' action requires trusted origin check to prevent scraping.
+        - Other actions use IsOwnerOrAdmin.
+        """
+        if self.action == 'list':
+            # 💥 Apply the new Origin/Referer check only for the listing endpoint
+            return [IsInternalOrTrustedOrigin()]
+        
+        # All other actions (retrieve, create, update, delete, me) use the original permission
+        return [IsOwnerOrAdmin()]
+    
+    
     authentication_classes = [JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication]
     parser_classes = [MultiPartParser, FormParser]
 
@@ -438,7 +453,11 @@ class VendorViewSet(viewsets.ModelViewSet):
         - Owner or Admin access: Only the profile owner or an admin can `update` or `partial_update` their vendor information.
         """
         
-        if self.action in ['list', 'retrieve', 'by_slug', 'profile']:
+        if self.action == 'list':
+             # 💥 APPLY THE NEW ORIGIN/REFERER CHECK
+            permission_classes = [IsInternalOrTrustedOrigin]
+            
+        elif self.action in ['retrieve', 'by_slug', 'by_brand', 'profile']:
             permission_classes = [permissions.AllowAny]
         
         elif self.action == 'create':

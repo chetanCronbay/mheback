@@ -149,3 +149,46 @@ class VendorAccessPermission(permissions.BasePermission):
 
         # By default, deny other actions like 'destroy' for non-admins.
         return False
+
+
+# 💥 NEW PERMISSION CLASS FOR ORIGIN/REFERER CHECK
+class IsInternalOrTrustedOrigin(permissions.BasePermission):
+    """
+    Allows access only if the request is authenticated,
+    OR if the request originates from a trusted frontend domain.
+    This prevents direct browser/Postman access to public listing endpoints.
+    """
+    TRUSTED_ORIGINS = [
+        'https://mhebazar.vercel.app',
+        'http://mhebazar.vercel.app',
+        'https://www.mhebazar.vercel.app',
+        'http://www.mhebazar.vercel.app',
+        'https://mhebazar.in',
+        'http://mhebazar.in',
+        'https://www.mhebazar.in',
+        'http://www.mhebazar.in',
+        # Add any other required variations
+    ]
+
+    def has_permission(self, request, view):
+        # 1. Allow internal requests (Django's test client, internal functions)
+        # These requests often do not have an Origin or Referer header.
+        # This also allows calls from your authenticated users (who have a token)
+        if request.user.is_authenticated:
+            return True
+
+        # 2. Check the Origin header for CORS-enabled requests
+        origin = request.META.get('HTTP_ORIGIN')
+        if origin and origin.strip().lower() in self.TRUSTED_ORIGINS:
+            return True
+
+        # 3. Check the Referer header for non-CORS requests (like direct browser navigation)
+        referer = request.META.get('HTTP_REFERER')
+        if referer:
+            # Check if the referer URL starts with any of the trusted origins
+            for trusted_origin in self.TRUSTED_ORIGINS:
+                if referer.startswith(trusted_origin):
+                    return True
+
+        # 4. For all other cases (direct Postman/Chrome access without proper headers), deny.
+        return False
