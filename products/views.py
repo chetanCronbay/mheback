@@ -189,7 +189,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     # --- NEW: Define allowed ordering fields ---
     ordering_fields = ['price', 'created_at', 'updated_at', 'name']
     # Default ordering if none is specified by the client
-    ordering = ['updated_at']
+    ordering = ['-updated_at']
 
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
