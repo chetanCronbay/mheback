@@ -310,7 +310,7 @@ class VendorListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendor
         fields = [
-            'id','user_id', 'username', 'email', 'full_name', 'company_name',
+            'id','user_id', 'username', 'email', 'full_name', 'company_name','company_phone',
             'company_email', 'brand', 'is_approved', 'application_date'
         ]
         
@@ -391,7 +391,7 @@ class VendorProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendor
         fields = [
-            'id','user_info', 'company_name', 'brand', 'company_address', 
+            'id','user_info', 'company_name','company_phone', 'brand', 'company_address', 
             'pcode', 'product_count',
         ]
 
