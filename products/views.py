@@ -1,3 +1,4 @@
+import json
 from rest_framework import viewsets, permissions, filters, status, response
 from rest_framework.decorators import action
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
@@ -152,6 +153,7 @@ class ProductFilter(django_filters.FilterSet):
         ).filter(avg_rating__gte=value)
 
 
+
 class ProductViewSet(viewsets.ModelViewSet):
     """
     Images:
@@ -192,6 +194,77 @@ class ProductViewSet(viewsets.ModelViewSet):
     ordering = ['-updated_at']
 
     parser_classes = [MultiPartParser, FormParser, JSONParser]
+    
+    # --- NEW HELPER: Process YouTube Links (Workaround to store URL in ImageField) ---
+    def _process_youtube_links(self, product, youtube_links_json):
+        """Helper to create ProductImage records for new YouTube links."""
+        # 🚨 FIX: Ensure the input string is not empty or malformed before loading.
+        if not youtube_links_json or youtube_links_json in ('[', ']') or youtube_links_json.strip() == '':
+            youtube_links_json = '[]'
+            
+        try:
+            youtube_links = json.loads(youtube_links_json)
+            if not isinstance(youtube_links, list):
+                 youtube_links = [youtube_links] if youtube_links else []
+        except (json.JSONDecodeError, TypeError) as e:
+            logger.error(f"Failed to decode youtube_links for product {product.id}. Received: {youtube_links_json}. Error: {e}")
+            return
+        
+        # Only add links that do not already exist
+        existing_images_or_videos = ProductImage.objects.filter(product=product).values_list('image', flat=True)
+        
+        for link in youtube_links:
+            # Check if link exists and is a string
+            if link and isinstance(link, str) and link not in existing_images_or_videos:
+                # 🚨 THE JUGAAD: Directly set the string URL into the ImageField. 
+                # This insertion should now consistently work as it's a direct string assignment.
+                try:
+                    ProductImage.objects.create(
+                        product=product,
+                        image=link, # Storing the URL string
+                    )
+                    logger.info(f"SUCCESS: Added new YouTube link (forced string) for product {product.id}: {link}")
+                except Exception as e:
+                     logger.error(f"CRITICAL INSERTION ERROR for product {product.id}: {e}")
+
+
+    # --- MODIFIED: perform_create (FIXED IMMUTABLE & JSON DECODE ERRORS) ---
+    def perform_create(self, serializer):
+        # 🚨 FIX: Create a mutable copy of request.data
+        mutable_data = self.request.data.copy()
+        
+        # 1. Extract YouTube links safely (handles QueryDict and Dict)
+        youtube_links_list = mutable_data.get('youtube_links', ['[]'])
+        youtube_links_json = youtube_links_list[0] if isinstance(youtube_links_list, list) and youtube_links_list else '[]'
+
+        # Remove the field from mutable data if it was present
+        if 'youtube_links' in mutable_data:
+            mutable_data.pop('youtube_links') 
+        
+        # 2. Save the main product
+        product = serializer.save(user=self.request.user)
+
+        # 3. Process and save the new YouTube links
+        self._process_youtube_links(product, youtube_links_json)
+        
+    # --- MODIFIED: perform_update (FIXED IMMUTABLE & JSON DECODE ERRORS) ---
+    def perform_update(self, serializer):
+        # 🚨 FIX: Create a mutable copy of request.data
+        mutable_data = self.request.data.copy()
+
+        # 1. Extract YouTube links safely (handles QueryDict and Dict)
+        youtube_links_list = mutable_data.get('youtube_links', ['[]'])
+        youtube_links_json = youtube_links_list[0] if isinstance(youtube_links_list, list) and youtube_links_list else '[]'
+        
+        # Remove the field from mutable data if it was present
+        if 'youtube_links' in mutable_data:
+            mutable_data.pop('youtube_links')
+
+        # 2. Save the main product
+        product = serializer.save()
+
+        # 3. Process and save the new YouTube links
+        self._process_youtube_links(product, youtube_links_json)
 
     def get_queryset(self):
         """
@@ -203,10 +276,10 @@ class ProductViewSet(viewsets.ModelViewSet):
 
         # --- FIX: Define the base criteria for a PUBLIC product FIRST ---
         public_products_criteria = Q(
-            user__role__id=Role.VENDOR,  # Must be listed by a Vendor role user
-            user__is_active=True,        # The vendor user must be active
-            is_active=True,              # The product itself must be marked active
-            status='approved'            # The product must be approved by an Admin
+            user__role__id=Role.VENDOR, 
+            user__is_active=True,       
+            is_active=True,             
+            status='approved'           
         )
         # -----------------------------------------------------------------
 
@@ -220,7 +293,6 @@ class ProductViewSet(viewsets.ModelViewSet):
         
         # 2. VENDOR FIX: Vendor sees their OWN products OR all public products.
         if hasattr(user, 'role') and user.role.name == 'Vendor':
-             # Now public_products_criteria is correctly defined and used here
              return queryset.filter(Q(user=user) | public_products_criteria).order_by('-updated_at')
 
         # 3. Default for other authenticated non-admin, non-vendor users
@@ -230,7 +302,6 @@ class ProductViewSet(viewsets.ModelViewSet):
     def map_user(self, request):
         """
         Provides a simple list mapping each product ID to its owner's user ID.
-        This is a lightweight endpoint optimized for frontend filtering.
         """
         # 1. Get the optimized queryset
         queryset = Product.objects.only('id', 'user')
@@ -272,14 +343,26 @@ class ProductViewSet(viewsets.ModelViewSet):
         Product.objects.filter(id__in=ids).update(is_active=is_active)
         return Response({"detail": "Updated successfully."})
 
+    # --- MODIFIED: upload_images (This handles all file uploads, including the main image) ---
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_images(self, request, pk=None):
         product = self.get_object()
         images = request.FILES.getlist('images')
+        
+        if not images:
+             return Response(self.get_serializer(product).data)
+
+        created_images = []
         for image in images:
-            ProductImage.objects.create(product=product, image=image)
-        serializer = self.get_serializer(product)
-        return Response(serializer.data)
+            # Create the ProductImage object.
+            img_instance = ProductImage.objects.create(product=product, image=image)
+            created_images.append(img_instance)
+            
+        logger.info(f"Uploaded {len(created_images)} images for product {product.id}")
+        
+        serializer = ProductImageSerializer(created_images, many=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_brochure(self, request, pk=None):
@@ -340,7 +423,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         products = (
             Product.objects.filter(is_active=True, status='approved')
             .annotate(avg_rating=Avg('reviews__stars'))
-            .filter(avg_rating__isnull=False) # Ensure only products with ratings are included
+            .filter(avg_rating__isnull=False) 
             .order_by('-avg_rating', '-created_at')[:10]
         )
         serializer = self.get_serializer(products, many=True)
@@ -357,7 +440,6 @@ class ProductViewSet(viewsets.ModelViewSet):
         products = (
             Product.objects.filter(is_active=True, status='approved')
             .annotate(
-                # CORRECTED: Use the correct reverse relationship names
                 quote_count=Count('quote', distinct=True),
                 wishlist_count=Count('wishlist', distinct=True),
                 cart_count=Count('cart', distinct=True),
@@ -368,22 +450,37 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(products, many=True)
         return Response(serializer.data)
 
+    # --- MODIFIED: delete_images (To skip file deletion for URL strings) ---
     @action(detail=True, methods=['delete'], url_path='delete-images')
     def delete_images(self, request, pk=None):
-        """Delete specified product images"""
+        """Delete specified product images or video links"""
         product = self.get_object()
         image_ids = request.data.get('image_ids', [])
         
         if not image_ids:
             return Response({"detail": "No image IDs provided."}, status=400)
             
-        deleted = ProductImage.objects.filter(
+        images_to_delete = ProductImage.objects.filter(
             product=product,
             id__in=image_ids
-        ).delete()
+        )
         
+        deleted_count = 0
+        
+        # Safely delete files for actual images, skip for URL strings
+        for img in images_to_delete:
+            # Check if the 'image' value is a string (meaning it's the raw URL string we inserted)
+            is_video_link = isinstance(img.image, str) and (img.image.lower().startswith('http') or img.image.lower().startswith('www.'))
+            
+            if not is_video_link:
+                 img.image.delete(save=False)
+            
+            # Delete the database record
+            img.delete()
+            deleted_count += 1
+            
         return Response({
-            "detail": f"Deleted {deleted[0]} images.",
+            "detail": f"Deleted {deleted_count} images/videos.",
             "status": "success"
         })
 

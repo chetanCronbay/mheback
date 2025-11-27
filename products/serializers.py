@@ -43,9 +43,25 @@ class SubcategorySerializer(serializers.ModelSerializer):
         return obj.products.count() 
 
 class ProductImageSerializer(serializers.ModelSerializer):
+    # NEW: SerializerMethodField to check if the image field contains a URL (video)
+    is_video = serializers.SerializerMethodField() 
+
     class Meta:
         model = ProductImage
-        fields = ['id', 'image', 'product']
+        fields = ['id', 'image', 'product', 'is_video'] # ADD 'is_video'
+
+    def get_is_video(self, obj):
+        # 🚨 FINAL FIX: Force the image value to be a string before checking the prefix.
+        try:
+            # Attempt to get the raw path/string value (using .name or str() conversion)
+            image_value = obj.image.name if hasattr(obj.image, 'name') and obj.image.name else str(obj.image)
+        except Exception:
+            image_value = str(obj.image)
+
+        # 2. Check for URL prefix
+        if image_value and (image_value.lower().startswith('http') or image_value.lower().startswith('www.')):
+            return True
+        return False
 
 class ProductSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name', read_only=True)
