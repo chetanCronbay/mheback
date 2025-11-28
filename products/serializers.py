@@ -1,4 +1,8 @@
+import django_filters
 from rest_framework import serializers
+
+from products.filters import CustomDateRangeFilter, CustomPeriodFilter
+from users.models import Vendor
 from .models import (
     Category, Subcategory, Product, ProductImage,
     Cart, Wishlist, Quote, Rental
@@ -112,17 +116,52 @@ class WishlistSerializer(serializers.ModelSerializer):
         model = Wishlist
         fields = ['id', 'user', 'product', 'product_details', 'created_at', 'updated_at']
         read_only_fields = ['user']
+        
+        
+
+class VendorDetailsSerializer(serializers.ModelSerializer):
+    # Field 1: The ID of the Vendor Model instance
+    vendor_id = serializers.IntegerField(source='id', read_only=True) 
+    # Field 2: The User ID associated with the Vendor
+    vendor_user_id = serializers.IntegerField(source='user.id', read_only=True)
+    # Field 3: Vendor Brand
+    brand = serializers.CharField(read_only=True)
+    # Field 4: Company Name
+    vendor_company_name = serializers.CharField(source='company_name', read_only=True)
+    # Field 5: Company Email
+    vendor_company_email = serializers.EmailField(source='company_email', read_only=True)
+    # Field 6: Company Phone
+    vendor_company_phone = serializers.CharField(source='company_phone', read_only=True)
+
+    class Meta:
+        model = Vendor
+        fields = [
+            'vendor_id', 'vendor_user_id', 'brand', 
+            'vendor_company_name', 'vendor_company_email', 'vendor_company_phone'
+        ]
 
 class QuoteSerializer(serializers.ModelSerializer):
     product_details = ProductSerializer(source='product', read_only=True)
     user_name = serializers.CharField(source='user.username', read_only=True)
+    # ADDED: This field will now contain all the detailed vendor information
+    vendor_details = serializers.SerializerMethodField() 
 
     class Meta:
         model = Quote
         fields = '__all__'
-        # --- UPDATED: Only 'user' and 'status' are read_only, allowing other fields to be set by anyone.
         read_only_fields = ['user', 'status']
-        # ------------------------------------------------------------------------------------------------
+
+    def get_vendor_details(self, obj):
+        vendor_user = obj.product.user
+        
+        if vendor_user and hasattr(vendor_user, 'vendor'):
+            # This correctly retrieves the single Vendor object
+            vendor_instance = vendor_user.vendor.first() 
+            
+            if vendor_instance:
+                return VendorDetailsSerializer(vendor_instance).data
+            
+        return {}
     
     def validate_message(self, value):
         if len(value) > 2000:
@@ -134,13 +173,25 @@ class QuoteSerializer(serializers.ModelSerializer):
 class RentalSerializer(serializers.ModelSerializer):
     product_details = ProductSerializer(source='product', read_only=True)
     user_name = serializers.CharField(source='user.username', read_only=True)
+    # ADDED: This field will now contain all the detailed vendor information
+    vendor_details = serializers.SerializerMethodField() 
 
     class Meta:
         model = Rental
         fields = '__all__'
-        # --- UPDATED: Only 'user' and 'status' are read_only, allowing other fields to be set by anyone.
         read_only_fields = ['user', 'status']
-        # ------------------------------------------------------------------------------------------------
+        
+    def get_vendor_details(self, obj):
+        vendor_user = obj.product.user
+        
+        if vendor_user and hasattr(vendor_user, 'vendor'):
+            # This correctly retrieves the single Vendor object
+            vendor_instance = vendor_user.vendor.first() 
+            
+            if vendor_instance:
+                return VendorDetailsSerializer(vendor_instance).data
+            
+        return {}
 
     def validate(self, attrs):
         if attrs['start_date'] >= attrs['end_date']:

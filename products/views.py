@@ -10,6 +10,9 @@ from rest_framework.views import APIView
 from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Count, F, Value, IntegerField, Sum, Avg, OuterRef, Subquery
+from django.db.models.functions import TruncMonth, TruncWeek, TruncYear
+
+from products.filters import QuoteFilterSet, RentalFilterSet
 from .models import *
 from .serializers import *
 from users.permissions import ReadOnlyOrAdmin, IsVendorOwnerOrAdmin, IsAdmin
@@ -683,40 +686,41 @@ class WishlistViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)  # 👈 Yeh line jaroori hai
 
-
 class QuoteViewSet(viewsets.ModelViewSet):
     """
-    A ViewSet for viewing and managing quotes.
-    - Admins can see all quotes.
-    - Vendors can see quotes related to their products.
-    - Users can see their own quotes.
-    - Supports filtering by status, searching, and ordering.
+    A ViewSet for viewing and managing quotes, supporting advanced filtering 
+    by vendor attributes and date range, along with vendor statistics.
     """
     serializer_class = QuoteSerializer
-    # --- UPDATED: Allow submissions from non-logged-in users ---
     permission_classes = [AllowAny]
-    # throttle_classes = [QuoteThrottle] # Uncomment if you have this
-
-    # 1. Add Filter Backends
+    
+    # 1. ADDED: Custom FilterSet for advanced filtering
+    filterset_class = QuoteFilterSet
+    
+    # 2. Add Filter Backends
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     
-    # 2. Define fields for each backend
-    filterset_fields = ['status']  # Enables: /quotes/?status=pending
-    search_fields = ['product__name', 'user__username', 'product__user__username'] # Enables: /quotes/?search=some_term
-    ordering_fields = ['created_at', 'product__name'] # Enables: /quotes/?ordering=-created_at
+    # 3. Define fields for each backend
+    filterset_fields = ['status']  # Simple status filter remains here
+    search_fields = ['product__name', 'user__username', 'product__user__username'] 
+    ordering_fields = ['created_at', 'product__name'] 
 
     def get_queryset(self):
         """
-        Dynamically filter the queryset based on the user's role.
+        Dynamically filter the queryset based on the user's role and optimize lookups.
         """
         user = self.request.user
         
-        # Non-authenticated users cannot view quotes (GET requests)
         if not user.is_authenticated:
             return Quote.objects.none()
 
-        # Use select_related to optimize DB queries by pre-fetching related objects
-        base_queryset = Quote.objects.select_related('product', 'user', 'product__user')
+        # --- OPTIMIZED: Prefetch Vendor details ---
+        base_queryset = Quote.objects.select_related(
+            'product', 'user', 'product__user' 
+        ).prefetch_related(
+            'product__user__vendor' # Prefetches Vendor details for the serializer
+        )
+        # ----------------------------------------------------------------------
 
         if user.role.id == Role.ADMIN:
             return base_queryset.all().order_by('-created_at')
@@ -729,24 +733,18 @@ class QuoteViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         user = self.request.user
         
-        # --- UPDATED: Handle throttling for logged-in users and allow anonymous submission ---
         if user and user.is_authenticated:
-            # Check for throttling on authenticated users
             recent_requests = Quote.objects.filter(
                 user=user,
                 last_request_time__gte=timezone.now() - timedelta(hours=1)
             ).count()
             
             if recent_requests >= 5:
-                # If using a proper DRF throttle, this would be handled automatically, 
-                # but with manual check, we raise a validation error.
                 raise serializers.ValidationError("Too many quote requests recently. Please wait before submitting another.")
             
             serializer.save(user=user)
         else:
-            # For anonymous users, we save without a user object (requires model.user to be null=True)
             serializer.save(user=None)
-        # ------------------------------------------------------------------------------------------
 
     @action(detail=True, methods=['post'])
     def approve(self, request, pk=None):
@@ -768,26 +766,72 @@ class QuoteViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(quote)
         return Response(serializer.data)
 
+    @action(detail=False, methods=['get'], url_path='vendor-stats')
+    def vendor_stats(self, request):
+        """
+        Calculates quote counts grouped by Vendor and various time periods.
+        """
+        # Start with the base queryset
+        queryset = Quote.objects.select_related('product__user').prefetch_related('product__user__vendor')
+        
+        # Apply filters using the QuoteFilterSet
+        filtered_queryset = QuoteFilterSet(request.query_params, queryset=queryset).qs
+        
+        # Filter to only include requests linked to a product owner (Vendor)
+        vendor_queryset = filtered_queryset.filter(product__user__role__id=Role.VENDOR)
+
+        total_count = vendor_queryset.count()
+
+        # COUNT BY VENDOR (Grouped by vendor)
+        vendor_counts = vendor_queryset.values(
+            'product__user__id', 
+            'product__user__username'
+        ).annotate(
+            count=Count('id'),
+            # F() expressions to pull vendor details via the nested relationship
+            vendor_company_name=F('product__user__vendor__company_name'),
+            vendor_company_email=F('product__user__vendor__company_email')
+        ).order_by('-count')
+
+        # COUNT BY PERIOD (Monthly/Weekly/Yearly trend)
+        monthly_counts = vendor_queryset.annotate(month=TruncMonth('created_at')).values('month').annotate(count=Count('id')).order_by('month')
+        weekly_counts = vendor_queryset.annotate(week=TruncWeek('created_at')).values('week').annotate(count=Count('id')).order_by('week')
+        yearly_counts = vendor_queryset.annotate(year=TruncYear('created_at')).values('year').annotate(count=Count('id')).order_by('year')
+
+        return Response({
+            'total_count': total_count,
+            'vendor_metrics': list(vendor_counts),
+            'monthly_trend': list(monthly_counts),
+            'weekly_trend': list(weekly_counts),
+            'yearly_trend': list(yearly_counts),
+        })
+
+
 class RentalViewSet(viewsets.ModelViewSet):
     serializer_class = RentalSerializer
-    # --- UPDATED: Allow submissions from non-logged-in users ---
     permission_classes = [AllowAny]
-    # throttle_classes = [RentalThrottle]
+    
+    # 1. ADDED: Custom FilterSet for advanced filtering
+    filterset_class = RentalFilterSet
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['status']  # For filtering by status (e.g., /rentals/?status=pending)
-    search_fields = ['product__name', 'user__username', 'product__user__username'] # For search
-    ordering_fields = ['created_at', 'product__name'] # For sorting
+    filterset_fields = ['status']
+    search_fields = ['product__name', 'user__username', 'product__user__username']
+    ordering_fields = ['created_at', 'product__name']
 
     def get_queryset(self):
         user = self.request.user
         
-        # Non-authenticated users cannot view rentals (GET requests)
         if not user.is_authenticated:
             return Rental.objects.none()
             
-        # Use select_related for query optimization
-        base_queryset = Rental.objects.select_related('product', 'user', 'product__user')
+        # --- OPTIMIZED: Prefetch Vendor details ---
+        base_queryset = Rental.objects.select_related(
+            'product', 'user', 'product__user'
+        ).prefetch_related(
+            'product__user__vendor' # Prefetches Vendor details for the serializer
+        )
+        # ----------------------------------------------------------------------
 
         if user.role.id == Role.ADMIN:
             return base_queryset.all().order_by('-created_at')
@@ -798,13 +842,10 @@ class RentalViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         user = self.request.user
         
-        # --- UPDATED: Allow anonymous submission ---
         if user and user.is_authenticated:
             serializer.save(user=user)
         else:
-            # For anonymous users, we save without a user object (requires model.user to be null=True)
             serializer.save(user=None)
-        # -------------------------------------------
 
     @action(detail=True, methods=['post'])
     def approve(self, request, pk=None):
@@ -835,7 +876,46 @@ class RentalViewSet(viewsets.ModelViewSet):
         rental.save()
         serializer = self.get_serializer(rental)
         return Response(serializer.data)
-    
+        
+    @action(detail=False, methods=['get'], url_path='vendor-stats')
+    def vendor_stats(self, request):
+        """
+        Calculates rental counts grouped by Vendor and various time periods.
+        """
+        # Start with the base queryset
+        queryset = Rental.objects.select_related('product__user').prefetch_related('product__user__vendor')
+        
+        # Apply filters using the RentalFilterSet
+        filtered_queryset = RentalFilterSet(request.query_params, queryset=queryset).qs
+        
+        # Filter to only include requests linked to a product owner (Vendor)
+        vendor_queryset = filtered_queryset.filter(product__user__role__id=Role.VENDOR)
+
+        total_count = vendor_queryset.count()
+
+        # COUNT BY VENDOR (Grouped by vendor)
+        vendor_counts = vendor_queryset.values(
+            'product__user__id', 
+            'product__user__username'
+        ).annotate(
+            count=Count('id'),
+            # F() expressions to pull vendor details via the nested relationship
+            vendor_company_name=F('product__user__vendor__company_name'),
+            vendor_company_email=F('product__user__vendor__company_email')
+        ).order_by('-count')
+
+        # COUNT BY PERIOD (Monthly/Weekly/Yearly trend)
+        monthly_counts = vendor_queryset.annotate(month=TruncMonth('created_at')).values('month').annotate(count=Count('id')).order_by('month')
+        weekly_counts = vendor_queryset.annotate(week=TruncWeek('created_at')).values('week').annotate(count=Count('id')).order_by('week')
+        yearly_counts = vendor_queryset.annotate(year=TruncYear('created_at')).values('year').annotate(count=Count('id')).order_by('year')
+
+        return Response({
+            'total_count': total_count,
+            'vendor_metrics': list(vendor_counts),
+            'monthly_trend': list(monthly_counts),
+            'weekly_trend': list(weekly_counts),
+            'yearly_trend': list(yearly_counts),
+        })
     
     
 class ProductVendorPhoneView(APIView):

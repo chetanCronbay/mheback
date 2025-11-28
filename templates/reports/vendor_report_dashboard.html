@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHE Bazar - Vendor Reporting Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .dashboard-header {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .stat-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+            height: 100%;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .vendor-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 50%;
+            border: 1px solid #eee;
+        }
+        .accordion-button:not(.collapsed) {
+            background-color: #e7f1ff;
+            color: #0c63e4;
+        }
+        .action-btn {
+            min-width: 160px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-header container-fluid">
+        <div class="d-flex align-items-center">
+            <img src="{{ MHE_LOGO_URL }}" alt="MHE Bazar" height="50" class="me-3">
+            <h3 class="mb-0 text-dark">Vendor Reporting Dashboard</h3>
+        </div>
+        <div>
+            <span class="text-muted me-3"><i class="far fa-calendar-alt me-1"></i> {{ date_ranges.today|date:"d M, Y" }}</span>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Admin Actions -->
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-body d-flex flex-wrap gap-3 align-items-center justify-content-between">
+                <h5 class="mb-0 text-secondary">Admin Actions</h5>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'preview-admin-report' 'weekly' %}" class="btn btn-outline-primary action-btn">
+                        <i class="fas fa-eye me-2"></i>Preview Weekly
+                    </a>
+                    <a href="{% url 'preview-admin-report' 'monthly' %}" class="btn btn-outline-primary action-btn">
+                        <i class="fas fa-eye me-2"></i>Preview Monthly
+                    </a>
+                    <a href="{% url 'preview-all-vendor-reports' %}" class="btn btn-danger action-btn">
+                        <i class="fas fa-mail-bulk me-2"></i>Preview All Vendors
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overall Stats -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="stat-card border-start border-4 border-primary">
+                    <div class="stat-value">{{ overall_stats.total_quotes }}</div>
+                    <div class="stat-label">Total Quotes</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card border-start border-4 border-success">
+                    <div class="stat-value">{{ overall_stats.total_rentals }}</div>
+                    <div class="stat-label">Total Rentals</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card border-start border-4 border-info">
+                    <div class="stat-value">{{ overall_stats.total_approved }}</div>
+                    <div class="stat-label">Total Products</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card border-start border-4 border-warning">
+                    <div class="stat-value">{{ overall_stats.last_month_approved_count }}</div>
+                    <div class="stat-label">New Products (Mo)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vendor List -->
+        <h4 class="mb-3 text-secondary">Approved Vendors</h4>
+        <div class="accordion shadow-sm" id="vendorAccordion">
+            {% for vendor in vendors %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ vendor.id }}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ vendor.id }}" aria-expanded="false" aria-controls="collapse{{ vendor.id }}">
+                        <div class="d-flex align-items-center w-100 justify-content-between me-3">
+                            <div class="d-flex align-items-center">
+                                <img src="{{ vendor.logo_url }}" alt="Logo" class="vendor-logo me-3">
+                                <div>
+                                    <div class="fw-bold">{{ vendor.company_name }}</div>
+                                    <div class="small text-muted">{{ vendor.name }}</div>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-4 text-end d-none d-md-flex">
+                                <div>
+                                    <div class="fw-bold">{{ vendor.stats.quotes_last_month }}</div>
+                                    <small class="text-muted">Quotes (Mo)</small>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">{{ vendor.stats.rentals_last_month }}</div>
+                                    <small class="text-muted">Rentals (Mo)</small>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </h2>
+                <div id="collapse{{ vendor.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ vendor.id }}" data-bs-parent="#vendorAccordion">
+                    <div class="accordion-body bg-white">
+                        <div class="row">
+                            <div class="col-md-4 border-end">
+                                <h6 class="text-uppercase text-muted mb-3">Vendor Details</h6>
+                                <p class="mb-1"><i class="fas fa-envelope me-2 text-primary"></i> {{ vendor.email }}</p>
+                                <p class="mb-1"><i class="fas fa-phone me-2 text-primary"></i> {{ vendor.phone }}</p>
+                                <p class="mb-1"><i class="fas fa-building me-2 text-primary"></i> {{ vendor.company_name }}</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-warning text-dark">Plan-Gold (OEM)</span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <h6 class="text-uppercase text-muted mb-3">Performance Statistics</h6>
+                                <div class="row g-3">
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-3 bg-light rounded text-center">
+                                            <div class="h4 mb-0 text-primary">{{ vendor.stats.quotes_last_month }}</div>
+                                            <small class="text-muted">Quotes (Last Month)</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-3 bg-light rounded text-center">
+                                            <div class="h4 mb-0 text-success">{{ vendor.stats.rentals_last_month }}</div>
+                                            <small class="text-muted">Rentals (Last Month)</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-3 bg-light rounded text-center">
+                                            <div class="h4 mb-0 text-primary">{{ vendor.stats.quotes_last_week }}</div>
+                                            <small class="text-muted">Quotes (Last Week)</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-3 bg-light rounded text-center">
+                                            <div class="h4 mb-0 text-success">{{ vendor.stats.rentals_last_week }}</div>
+                                            <small class="text-muted">Rentals (Last Week)</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-3 bg-light rounded text-center">
+                                            <div class="h4 mb-0">{{ vendor.stats.total_quotes }}</div>
+                                            <small class="text-muted">Total Quotes</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-3 bg-light rounded text-center">
+                                            <div class="h4 mb-0">{{ vendor.stats.total_rentals }}</div>
+                                            <small class="text-muted">Total Rentals</small>
+                                        </div>
+                                    </div>
+                                     <div class="col-6 col-md-3">
+                                        <div class="p-3 bg-light rounded text-center">
+                                            <div class="h4 mb-0">{{ vendor.stats.total_approved }}</div>
+                                            <small class="text-muted">Total Products</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-end">
+                                    <a href="{% url 'preview-vendor-report' vendor.id %}" class="btn btn-primary">
+                                        <i class="fas fa-eye me-2"></i>Preview Monthly Report
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

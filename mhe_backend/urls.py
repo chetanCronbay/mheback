@@ -23,6 +23,10 @@ from order_management.views import (
 )
 
 from blogs.views import BlogViewSet
+from util.reports import (
+    vendor_report_dashboard, send_admin_report, send_vendor_report, send_all_vendor_reports,
+    preview_admin_report, preview_vendor_report, preview_all_vendor_reports
+)
 
 
 router = DefaultRouter()
@@ -100,6 +104,18 @@ urlpatterns = [
     # 💥 NEW URL: Get Vendor Phone by Product ID
     path('api/product/<int:product_id>/vendor-phone/', ProductVendorPhoneView.as_view(), name='product-vendor-phone'),
     
+    path('reports/', vendor_report_dashboard, name='vendor-report-dashboard'),
+    
+    # Preview Routes
+    path('reports/preview/admin/<str:report_type>/', preview_admin_report, name='preview-admin-report'),
+    path('reports/preview/vendor/<int:vendor_id>/', preview_vendor_report, name='preview-vendor-report'),
+    path('reports/preview/all-vendors/', preview_all_vendor_reports, name='preview-all-vendor-reports'),
+    
+    # Sending Routes
+    path('reports/send-admin/<str:report_type>/', send_admin_report, name='send-admin-report'),
+    path('reports/send-vendor/<int:vendor_id>/', send_vendor_report, name='send-vendor-report'),
+    path('reports/send-all-vendors/', send_all_vendor_reports, name='send-all-vendor-reports'),
+    
     
     # ✅ Default router URLs (includes all ViewSet routes)
     path('api/', include(router.urls)),
@@ -111,55 +127,5 @@ if settings.DEBUG:
 
 """
 Complete Vendor API Endpoints:
-
-Authentication Required:
-- POST /api/vendor/apply/ - Apply for vendor status
-- GET /api/vendor/my-application/ - Get my vendor application status
-- PUT/PATCH /api/vendor/my-application/ - Update my vendor application
-
-Admin Only:
-- GET /api/vendors/ - List all vendor applications
-- DELETE /api/vendors/{id}/ - Delete vendor application
-- POST /api/vendors/{id}/approve/ - Approve/reject vendor application
-- GET /api/vendor/stats/ - Get vendor statistics
-
-Admin or Owner:
-- GET /api/vendors/{id}/ - Get vendor details
-- PUT/PATCH /api/vendors/{id}/ - Update vendor information
-
-Public Access:
-- GET /api/vendor/approved/ - List all approved vendors
-- GET /api/vendors/{id}/profile/ - Get public vendor profile
-
-Usage Examples:
-
-1. User applies for vendor status:
-   POST /api/vendor/apply/
-   {
-     "company_name": "ABC Corp",
-     "company_email": "contact@abc.com",
-     "company_address": "123 Main St",
-     "company_phone": "+1234567890",
-     "brand": "ABC Brand",
-     "gst_no": "12ABCDE1234F1Z5"
-   }
-
-2. Admin approves vendor:
-   POST /api/vendors/{id}/approve/
-   {
-     "action": "approve"
-   }
-
-3. Admin rejects vendor:
-   POST /api/vendors/{id}/approve/
-   {
-     "action": "reject",
-     "reason": "Incomplete documentation"
-   }
-
-4. Get approved vendors (public):
-   GET /api/vendor/approved/
-
-5. Check application status:
-   GET /api/vendor/my-application/
+... (rest of the file)
 """

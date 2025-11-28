@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f6f9; padding: 20px; }
+        .preview-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .email-item {
+            border: 1px solid #ddd;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .email-header {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        .email-body {
+            padding: 15px;
+            background: #fff;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .recipient-list {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="preview-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="mb-0">{{ title }}</h3>
+                <a href="{% url 'vendor-report-dashboard' %}" class="btn btn-outline-secondary">Back to Dashboard</a>
+            </div>
+
+            <div class="alert alert-warning">
+                <strong><i class="fas fa-exclamation-triangle"></i> Bulk Action Warning</strong><br>
+                You are about to send emails to <strong>{{ previews|length }} vendors</strong>. Please review the recipient list and sample previews below.
+            </div>
+
+            <div class="mb-4">
+                <label class="fw-bold">All Recipients:</label>
+                <div class="recipient-list">
+                    {% for email in recipient_list %}
+                        <div>{{ email }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <h5 class="mb-3">Email Previews (Scroll to see all):</h5>
+            
+            {% for item in previews %}
+            <div class="email-item">
+                <div class="email-header">
+                    Vendor: {{ item.vendor_name }}
+                </div>
+                <div class="email-body">
+                    {{ item.html|safe }}
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="text-end mt-4 sticky-bottom bg-white p-3 border-top">
+                <form action="{{ action_url }}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-lg" onclick="return confirm('Are you absolutely sure you want to send emails to ALL {{ previews|length }} vendors?');">
+                        <i class="fas fa-mail-bulk me-2"></i>Confirm & Send All Emails
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
