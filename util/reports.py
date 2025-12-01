@@ -12,7 +12,7 @@ from products.models import Product, Quote, Rental
 from users.models import User, Vendor, Role
 
 # --- STATIC ASSETS ---
-MHE_WEBSITE_URL = "https://www.mhebazar.in"
+MHE_WEBSITE_URL = "https://api.mhebazar.in"
 MHE_LOGO_URL = "https://www.mhebazar.in/mhe-logo.png"
 
 def is_admin(user):
