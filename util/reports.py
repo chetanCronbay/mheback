@@ -224,7 +224,7 @@ def preview_admin_report(request, report_type):
         'email_html': email_html,
         'action_url': f"/reports/send-admin/{report_type}/",
         'title': f"Preview Admin {report_type.title()} Report",
-        'recipient_list': ['ulhas.makeshwar@greentechmh.com', 'manik.thapar@greentechmh.com', 'sumedh.ramteke@mhebazar.com', 'rakesh.a@greentechmh.com', 'marketing.1@mhebazar.com']
+        'recipient_list': ['ulhas.makeshwar@greentechmh.com', 'manik.thapar@greentechmh.com', 'sumedh.ramteke@mhebazar.com', 'rakesh.a@greentechmh.com', 'marketing.1@mhebazar.com','developer@cronbaytechnologies.com']
     })
 
 @user_passes_test(is_admin)
@@ -260,7 +260,7 @@ def preview_vendor_report(request, vendor_id):
         'email_html': email_html,
         'action_url': f"/reports/send-vendor/{vendor.id}/",
         'title': f"Preview Report for {vendor.company_name}",
-        'recipient_list': [vendor.company_email, 'sumedh.ramteke@mhebazar.com', 'rakesh.a@greentechmh.com', 'marketing.1@mhebazar.com']
+        'recipient_list': [vendor.company_email, 'sumedh.ramteke@mhebazar.com', 'rakesh.a@greentechmh.com', 'marketing.1@mhebazar.com','developer@cronbaytechnologies.com']
     })
 
 @user_passes_test(is_admin)
@@ -308,7 +308,7 @@ def preview_all_vendor_reports(request):
         all_recipients.append(vendor.company_email)
 
     # Add CCs to the recipient list display (just once to show they are included)
-    all_recipients.extend(['(CC) sumedh.ramteke@mhebazar.com', '(CC) rakesh.a@greentechmh.com', '(CC) marketing.1@mhebazar.com'])
+    all_recipients.extend(['(CC) sumedh.ramteke@mhebazar.com', '(CC) rakesh.a@greentechmh.com', '(CC) marketing.1@mhebazar.com','(cc) developer@cronbaytechnologies.com'])
 
     return render(request, 'reports/report_preview_bulk.html', {
         'previews': previews,
@@ -362,7 +362,8 @@ def send_admin_report(request, report_type):
         'manik.thapar@greentechmh.com',
         'sumedh.ramteke@mhebazar.com',
         'rakesh.a@greentechmh.com',
-        'marketing.1@mhebazar.com'
+        'marketing.1@mhebazar.com',
+        'developer@cronbaytechnologies.com'
     ]
     
     try:
@@ -445,7 +446,8 @@ def _send_single_vendor_report(vendor):
     cc_emails = [
         'sumedh.ramteke@mhebazar.com',
         'rakesh.a@greentechmh.com',
-        'marketing.1@mhebazar.com'
+        'marketing.1@mhebazar.com',
+        'developer@cronbaytechnologies.com'
     ]
     
     _send_email(subject, 'reports/vendor_monthly_report_email.html', email_context, to_emails, cc_emails)
