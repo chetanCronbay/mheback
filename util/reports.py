@@ -10,9 +10,11 @@ from django.db.models import Count, Q
 
 from products.models import Product, Quote, Rental
 from users.models import User, Vendor, Role
+import json
+import os
 
 # --- STATIC ASSETS ---
-MHE_WEBSITE_URL = "https://www.mhebazar.in"
+MHE_WEBSITE_URL = "https://api.mhebazar.in"
 MHE_LOGO_URL = "https://www.mhebazar.in/mhe-logo.png"
 
 def is_admin(user):
@@ -67,6 +69,60 @@ def _get_product_stats(products_queryset, date_ranges):
         'last_month_by_type': count_by_type(last_month_approved),
     }
 
+
+def _load_getdata_counts():
+    """Load `getdata.json` (if present) and return a mapping product_id -> occurrence count.
+
+    This is defensive: if the file doesn't exist or parsing fails, return an empty dict.
+    """
+    try:
+        base_dir = getattr(settings, 'BASE_DIR', None)
+        if base_dir:
+            path = os.path.join(base_dir, 'getdata.json')
+        else:
+            path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'getdata.json'))
+
+        if not os.path.exists(path):
+            return {}
+
+        with open(path, 'r', encoding='utf-8') as fh:
+            data = json.load(fh)
+
+        # `getdata.json` may be in multiple shapes depending on export:
+        # - phpMyAdmin exports as a list containing a 'table' element with a 'data' list
+        # - or it may be a dict with a top-level 'data' list
+        # - or it may already be a flat list of row objects
+        rows = []
+        if isinstance(data, dict) and isinstance(data.get('data'), list):
+            rows = data.get('data')
+        elif isinstance(data, list):
+            # Collect any nested 'data' lists, else treat top-level dicts as rows
+            for elem in data:
+                if isinstance(elem, dict) and isinstance(elem.get('data'), list):
+                    rows.extend(elem.get('data'))
+                elif isinstance(elem, dict) and any(k in elem for k in ('product_id', 'productId', 'prod_id')):
+                    rows.append(elem)
+        elif isinstance(data, dict):
+            # last fallback: treat whole dict as a row
+            rows = [data]
+
+        counts = {}
+        for item in rows:
+            if not isinstance(item, dict):
+                continue
+            pid = item.get('product_id') or item.get('productId') or item.get('prod_id')
+            if pid is None:
+                continue
+            try:
+                pid = int(pid)
+            except Exception:
+                continue
+            counts[pid] = counts.get(pid, 0) + 1
+
+        return counts
+    except Exception:
+        return {}
+
 def _get_vendor_stats(user, date_ranges):
     """Calculate stats for a specific vendor user."""
     # Get all products for this vendor
@@ -80,6 +136,7 @@ def _get_vendor_stats(user, date_ranges):
     product_stats = _get_product_stats(products, date_ranges)
 
     stats = {
+        # include getdata.json counts for this vendor's products
         'total_quotes': quotes.count(),
         'total_rentals': rentals.count(),
         
@@ -106,14 +163,40 @@ def _get_vendor_stats(user, date_ranges):
         # Merge product stats
         **product_stats
     }
+    # Add counts from getdata.json only to the `total_quotes` value
+    try:
+        getdata_counts = _load_getdata_counts()
+        if getdata_counts:
+            product_ids = list(products.values_list('id', flat=True))
+            extra = 0
+            for pid in product_ids:
+                extra += getdata_counts.get(pid, 0)
+            stats['total_quotes'] = stats.get('total_quotes', 0) + extra
+    except Exception:
+        # conservative: if loading/parsing fails, leave DB-derived counts as-is
+        pass
+
     return stats
 
 def _get_dashboard_context():
     date_ranges = _get_date_ranges()
     
     # 1. Overall Stats
+    # Base DB counts
     total_quotes = Quote.objects.count()
     total_rentals = Rental.objects.count()
+
+    # Add counts from getdata.json for products that exist in our DB
+    try:
+        getdata_counts = _load_getdata_counts()
+        if getdata_counts:
+            # keep only product ids that exist in our Product table
+            existing_ids = set(Product.objects.filter(id__in=list(getdata_counts.keys())).values_list('id', flat=True))
+            extra_total = sum(getdata_counts.get(pid, 0) for pid in existing_ids)
+            total_quotes = total_quotes + extra_total
+    except Exception:
+        # ignore and use DB counts only
+        pass
     
     quotes_last_month = Quote.objects.filter(
         created_at__date__gte=date_ranges['last_month_start'],
@@ -224,7 +307,7 @@ def preview_admin_report(request, report_type):
         'email_html': email_html,
         'action_url': f"/reports/send-admin/{report_type}/",
         'title': f"Preview Admin {report_type.title()} Report",
-        'recipient_list': ['ulhas.makeshwar@greentechmh.com', 'manik.thapar@greentechmh.com', 'sumedh.ramteke@mhebazar.com', 'rakesh.a@greentechmh.com', 'marketing.1@mhebazar.com']
+        'recipient_list': ['ulhas.makeshwar@greentechmh.com', 'manik.thapar@greentechmh.com', 'sumedh.ramteke@mhebazar.com', 'rakesh.a@greentechmh.com', 'marketing.1@mhebazar.com','developer@cronbaytechnologies.com']
     })
 
 @user_passes_test(is_admin)
@@ -260,7 +343,7 @@ def preview_vendor_report(request, vendor_id):
         'email_html': email_html,
         'action_url': f"/reports/send-vendor/{vendor.id}/",
         'title': f"Preview Report for {vendor.company_name}",
-        'recipient_list': [vendor.company_email, 'sumedh.ramteke@mhebazar.com', 'rakesh.a@greentechmh.com', 'marketing.1@mhebazar.com']
+        'recipient_list': [vendor.company_email, 'sumedh.ramteke@mhebazar.com', 'rakesh.a@greentechmh.com', 'marketing.1@mhebazar.com','developer@cronbaytechnologies.com']
     })
 
 @user_passes_test(is_admin)
@@ -308,7 +391,7 @@ def preview_all_vendor_reports(request):
         all_recipients.append(vendor.company_email)
 
     # Add CCs to the recipient list display (just once to show they are included)
-    all_recipients.extend(['(CC) sumedh.ramteke@mhebazar.com', '(CC) rakesh.a@greentechmh.com', '(CC) marketing.1@mhebazar.com'])
+    all_recipients.extend(['(CC) sumedh.ramteke@mhebazar.com', '(CC) rakesh.a@greentechmh.com', '(CC) marketing.1@mhebazar.com','(cc) developer@cronbaytechnologies.com'])
 
     return render(request, 'reports/report_preview_bulk.html', {
         'previews': previews,
@@ -362,7 +445,8 @@ def send_admin_report(request, report_type):
         'manik.thapar@greentechmh.com',
         'sumedh.ramteke@mhebazar.com',
         'rakesh.a@greentechmh.com',
-        'marketing.1@mhebazar.com'
+        'marketing.1@mhebazar.com',
+        'developer@cronbaytechnologies.com'
     ]
     
     try:
@@ -445,7 +529,8 @@ def _send_single_vendor_report(vendor):
     cc_emails = [
         'sumedh.ramteke@mhebazar.com',
         'rakesh.a@greentechmh.com',
-        'marketing.1@mhebazar.com'
+        'marketing.1@mhebazar.com',
+        'developer@cronbaytechnologies.com'
     ]
     
     _send_email(subject, 'reports/vendor_monthly_report_email.html', email_context, to_emails, cc_emails)

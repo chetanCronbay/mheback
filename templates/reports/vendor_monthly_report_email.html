@@ -6,262 +6,172 @@
     <title>Monthly Performance Report</title>
     <style>
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: #f4f6f9;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
             padding: 0;
             -webkit-text-size-adjust: none;
             color: #333333;
+            line-height: 1.5;
         }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-        .header {
-            background-color: #ffffff;
-            padding: 20px;
-            text-align: center;
-            border-bottom: 3px solid #f39c12; /* Gold accent */
-        }
-        .logos {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-        }
-        .logo-img {
-            height: 40px; /* Reduced from 60px */
-            object-fit: contain;
-        }
-        .divider {
-            height: 30px;
-            width: 1px;
-            background-color: #e0e0e0;
-            margin: 0 15px;
-            display: inline-block;
-            vertical-align: middle;
-        }
-        .content {
-            padding: 30px;
-        }
-        .greeting {
-            font-size: 16px;
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-        .report-title {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .report-title h2 {
-            margin: 0;
-            color: #2c3e50;
-            font-size: 22px;
-        }
-        .report-title p {
-            margin: 5px 0 0;
-            color: #7f8c8d;
-            font-size: 13px;
-        }
-        .plan-badge {
-            background-color: #fff3cd;
-            color: #856404;
-            padding: 8px 16px;
-            border-radius: 50px;
-            display: inline-block;
-            font-weight: bold;
-            font-size: 12px;
-            margin-bottom: 25px;
-            border: 1px solid #ffeeba;
-        }
-        /* New Table Styles */
-        .stats-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-            border: 1px solid #e9ecef;
-        }
-        .stats-table th, .stats-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #e9ecef;
-        }
-        .stats-table th {
-            background-color: #f8f9fa;
-            color: #7f8c8d;
-            font-size: 11px;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-        .stats-table td {
-            font-size: 14px;
-            color: #2c3e50;
-        }
-        .stats-table tr:last-child td {
-            border-bottom: none;
-        }
-        .highlight-value {
-            font-weight: bold;
-            color: #2c3e50;
-        }
-        .positive-change {
-            color: #27ae60;
-            font-size: 12px;
-            margin-left: 5px;
-        }
-        .type-grid {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .type-tag {
-            background: #f1f3f5;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            color: #495057;
-        }
-        
-        .footer {
-            background-color: #2c3e50;
-            color: #ffffff;
-            padding: 20px;
-            text-align: center;
-            font-size: 11px;
-        }
-        .footer a {
-            color: #f39c12;
-            text-decoration: none;
-        }
-        .cta-button {
-            display: block;
-            width: 180px;
-            margin: 0 auto;
-            background-color: #f39c12;
-            color: #ffffff;
-            text-align: center;
-            padding: 12px 0;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-            margin-top: 20px;
-            font-size: 14px;
-        }
+        /* Reset table styles for better Outlook compatibility */
+        table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        td { padding: 0; }
+        .ReadMsgBody { width: 100%; background-color: #f0f2f5; }
+        .ExternalClass { width: 100%; background-color: #f0f2f5; }
+        .ExternalClass * { line-height: 100%; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="logos">
-                <img src="{{ MHE_LOGO_URL }}" alt="MHE Bazar" class="logo-img">
-                <span class="divider"></span>
-                <img src="{{ VENDOR_LOGO_URL }}" alt="{{ vendor_name }}" class="logo-img">
-            </div>
-        </div>
-        
-        <div class="content">
-            <div class="greeting">
-                Dear <strong>{{ contact_name }}</strong>,
-            </div>
-            
-            <p style="color: #555; line-height: 1.6; font-size: 14px;">
-                We are pleased to share your monthly performance report on MHE Bazar. 
-                Here is a detailed summary of your account activity and product performance for <strong>{{ period_name }}</strong>.
-            </p>
+<body style="margin: 0; padding: 0; background-color: #f0f2f5; font-family: Arial, sans-serif;">
 
-            <div style="text-align: center;">
-                <div class="plan-badge">
-                    <span style="margin-right: 5px;">👑</span> {{ plan_name }}
-                </div>
-            </div>
-
-            <div class="report-title">
-                <h2>Performance Overview</h2>
-                <p>{{ start_date|date:"d M, Y" }} - {{ end_date|date:"d M, Y" }}</p>
-            </div>
-
-            <table class="stats-table">
-                <thead>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed; background-color: #f0f2f5;">
+        <tr>
+            <td align="center" style="padding: 20px 0;">
+                <table border="0" cellpadding="0" cellspacing="0" width="600" style="max-width: 600px; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    
                     <tr>
-                        <th width="50%">Metric</th>
-                        <th width="25%">Last Month</th>
-                        <th width="25%">Total (All Time)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Quotes Received</strong></td>
-                        <td class="highlight-value" style="color: #3498db;">{{ stats.quotes_last_month }}</td>
-                        <td class="highlight-value">{{ stats.total_quotes }}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Rentals Booked</strong></td>
-                        <td class="highlight-value" style="color: #27ae60;">{{ stats.rentals_last_month }}</td>
-                        <td class="highlight-value">{{ stats.total_rentals }}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Approved Products</strong></td>
-                        <td class="highlight-value">
-                            <span class="positive-change">+{{ stats.last_month_approved_count }}</span>
+                        <td align="center" style="background-color: #ffffff; padding: 20px; border-bottom: 3px solid #f39c12;">
+                            <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+                                <tr>
+                                    <td align="center" style="padding-right: 30px; line-height: 0;">
+                                        <img src="{{ MHE_LOGO_URL }}" alt="MHE Bazar" width="150" style="display: block; width: 150px; border: 0; height: auto;">
+                                    </td>
+                                    
+                                    <td align="center" style="padding: 0 15px; line-height: 0;">
+                                        <div style="height: 50px; width: 1px; background-color: #e0e0e0;"></div>
+                                    </td>
+                                    
+                                    <td align="center" style="padding-left: 30px; line-height: 0;">
+                                        <img src="{{ VENDOR_LOGO_URL }}" alt="{{ vendor_name }}" width="150" style="display: block; width: 150px; border: 0; height: auto;">
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
-                        <td class="highlight-value">{{ stats.total_approved }}</td>
                     </tr>
-                </tbody>
-            </table>
+                    
+                    <tr>
+                        <td style="padding: 30px; font-family: Arial, sans-serif; font-size: 14px; color: #333333; line-height: 1.6;">
+                            
+                            <p style="font-size: 16px; margin-top: 0; margin-bottom: 20px; color: #2c3e50;">
+                                Dear <strong style="color: #f39c12;">{{ contact_name }}</strong>,
+                            </p>
+                            
+                            <p style="color: #555; line-height: 1.6; font-size: 14px; margin-bottom: 25px;">
+                                We are pleased to share your monthly performance report on MHE Bazar. 
+                                Here is a detailed summary of your account activity and product performance for <strong>{{ period_name }}</strong>.
+                            </p>
 
-            <div style="margin-bottom: 30px;">
-                <h3 style="font-size: 14px; color: #7f8c8d; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Product Portfolio Breakdown</h3>
-                <table class="stats-table">
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Count</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>New Equipment</td>
-                            <td><strong>{{ stats.total_by_type.new }}</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Used Equipment</td>
-                            <td><strong>{{ stats.total_by_type.used }}</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Rental Fleet</td>
-                            <td><strong>{{ stats.total_by_type.rental }}</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Attachments</td>
-                            <td><strong>{{ stats.total_by_type.attachments }}</strong></td>
-                        </tr>
-                    </tbody>
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center" style="padding-bottom: 25px;">
+                                        <span style="background-color: #fff3cd; color: #856404; padding: 8px 16px; border-radius: 50px; display: inline-block; font-weight: bold; font-size: 12px; border: 1px solid #ffeeba;">
+                                            <span style="margin-right: 5px;">&#128081;</span> {{ plan_name }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center" style="padding-bottom: 5px;">
+                                        <h2 style="margin: 0; color: #2c3e50; font-size: 22px; line-height: 1.2;">Performance Overview</h2>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" style="padding-bottom: 25px;">
+                                        <p style="margin: 5px 0 0; color: #7f8c8d; font-size: 13px;">{{ start_date|date:"d M, Y" }} - {{ end_date|date:"d M, Y" }}</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; margin-bottom: 30px; border: 1px solid #e9ecef;">
+                                <thead>
+                                    <tr style="background-color: #f8f9fa;">
+                                        <th align="left" style="padding: 12px 15px; color: #7f8c8d; font-size: 11px; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #e9ecef; width: 50%;">Metric</th>
+                                        <th align="left" style="padding: 12px 15px; color: #7f8c8d; font-size: 11px; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #e9ecef; width: 25%;">Last Period</th>
+                                        <th align="left" style="padding: 12px 15px; color: #7f8c8d; font-size: 11px; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #e9ecef; width: 25%;">Total (All Time)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #e9ecef; font-size: 14px; color: #2c3e50; font-weight: bold;">Quotes Received</td>
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #e9ecef; font-size: 14px; color: #3498db; font-weight: bold;">{{ stats.quotes_last_month }}</td>
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #e9ecef; font-size: 14px; color: #2c3e50; font-weight: bold;">{{ stats.total_quotes }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #e9ecef; font-size: 14px; color: #2c3e50; font-weight: bold;">Rentals Booked</td>
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #e9ecef; font-size: 14px; color: #27ae60; font-weight: bold;">{{ stats.rentals_last_month }}</td>
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #e9ecef; font-size: 14px; color: #2c3e50; font-weight: bold;">{{ stats.total_rentals }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px 15px; border-bottom: none; font-size: 14px; color: #2c3e50; font-weight: bold;">Approved Products</td>
+                                        <td style="padding: 12px 15px; border-bottom: none; font-size: 14px; color: #2c3e50; font-weight: bold;">
+                                            <span style="color: #27ae60; font-size: 12px; margin-left: 5px;">+{{ stats.last_month_approved_count }}</span>
+                                        </td>
+                                        <td style="padding: 12px 15px; border-bottom: none; font-size: 14px; color: #2c3e50; font-weight: bold;">{{ stats.total_approved }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h3 style="font-size: 14px; color: #7f8c8d; text-transform: uppercase; margin-top: 0; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; font-weight: bold;">Product Portfolio Breakdown</h3>
+                            
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; margin-bottom: 30px; border: 1px solid #e9ecef;">
+                                <thead>
+                                    <tr style="background-color: #f8f9fa;">
+                                        <th align="left" style="padding: 12px 15px; color: #7f8c8d; font-size: 11px; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #e9ecef; width: 50%;">Category</th>
+                                        <th align="left" style="padding: 12px 15px; color: #7f8c8d; font-size: 11px; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #e9ecef; width: 50%;">Count</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #e9ecef; font-size: 14px; color: #2c3e50;">New Equipment</td>
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #e9ecef; font-size: 14px; color: #2c3e50;"><strong>{{ stats.total_by_type.new }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #e9ecef; font-size: 14px; color: #2c3e50;">Used Equipment</td>
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #e9ecef; font-size: 14px; color: #2c3e50;"><strong>{{ stats.total_by_type.used }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #e9ecef; font-size: 14px; color: #2c3e50;">Rental Fleet</td>
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #e9ecef; font-size: 14px; color: #2c3e50;"><strong>{{ stats.total_by_type.rental }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px 15px; border-bottom: none; font-size: 14px; color: #2c3e50;">Attachments</td>
+                                        <td style="padding: 12px 15px; border-bottom: none; font-size: 14px; color: #2c3e50;"><strong>{{ stats.total_by_type.attachments }}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <p style="text-align: center; color: #7f8c8d; font-size: 13px; margin-top: 20px; margin-bottom: 30px;">
+                                Keep your inventory up to date to maximize your reach and engagement.
+                            </p>
+
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://www.mhebazar.in/vendor/dashboard" style="display: inline-block; width: 180px; background-color: #f39c12; color: #ffffff; text-align: center; padding: 12px 0; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px;">Go to Dashboard</a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td align="center" style="background-color: #2c3e50; color: #ffffff; padding: 20px; font-size: 11px; text-align: center; font-family: Arial, sans-serif;">
+                            <p style="margin: 0 0 10px 0; color: #95a5a6;">
+                                You are receiving this email because you are a registered vendor on MHE Bazar.
+                            </p>
+                            <p style="margin: 0 0 5px 0;">&copy; {% now "Y" %} MHE Bazar. All rights reserved.</p>
+                            <p style="margin: 0;">
+                                <a href="https://www.mhebazar.in" style="color: #f39c12; text-decoration: none;">www.mhebazar.in</a> | 
+                                <a href="mailto:contact@mhebazar.com" style="color: #f39c12; text-decoration: none;">contact@mhebazar.com</a>
+                            </p>
+                        </td>
+                    </tr>
                 </table>
-            </div>
-
-            <p style="text-align: center; color: #7f8c8d; font-size: 13px; margin-top: 20px;">
-                Keep your inventory up to date to maximize your reach and engagement.
-            </p>
-
-            <a href="https://www.mhebazar.in/vendor/dashboard" class="cta-button">Go to Dashboard</a>
-        </div>
-
-        <div class="footer">
-            <p>&copy; {% now "Y" %} MHE Bazar. All rights reserved.</p>
-            <p>
-                <a href="https://www.mhebazar.in">www.mhebazar.in</a> | 
-                <a href="mailto:support@mhebazar.com">support@mhebazar.com</a>
-            </p>
-            <p style="color: #95a5a6;">
-                You are receiving this email because you are a registered vendor on MHE Bazar.
-            </p>
-        </div>
-    </div>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>
