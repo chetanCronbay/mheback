@@ -29,7 +29,151 @@ import random
 from django.core.cache import cache
 from products.models import Product, Quote, Rental
 from rest_framework.filters import OrderingFilter
+from django.http import JsonResponse
         
+import json
+import re
+import random
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.core.cache import cache
+from django.core.mail import send_mail
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
+
+
+EMAIL_REGEX = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+
+OTP_TTL = 300          # 5 minutes
+OTP_ATTEMPTS_TTL = 300 # lock attempts window
+MAX_OTP_ATTEMPTS = 5
+
+@csrf_exempt
+def sendotp(request):
+    if request.method != "POST":
+        return JsonResponse(
+            {"success": False, "message": "Only POST method allowed"},
+            status=405
+        )
+
+    try:
+        data = json.loads(request.body)
+        email = data.get("email")
+    except json.JSONDecodeError:
+        email = None
+
+    if not email:
+        return JsonResponse({"success": False, "message": "Email is required"})
+
+    if not re.match(EMAIL_REGEX, email):
+        return JsonResponse({"success": False, "message": "Enter a valid email address"})
+    if User.objects.filter(email=email).exists():
+        return JsonResponse({
+            "success": False,
+            "message": "Email already exists. Please login."
+        }, status=400)
+    if cache.get(f"otp_lock_{email}"):
+        return JsonResponse({
+            "success": False,
+            "message": "OTP already sent. Please wait before retrying."
+        })
+    
+    
+
+    otp = str(random.randint(100000, 999999))
+    cache.set(f"otp_{email}", otp, 300)
+
+    logo_url = "https://www.mhebazar.in/mhe-logo.png"
+    subject = "Your MHE Bazar One-Time Password (OTP)"
+
+    html_content = f"""
+<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,sans-serif;">
+  <div style="max-width:600px;margin:40px auto;background:#ffffff;padding:30px;border-radius:8px;">
+    <div style="text-align:center;margin-bottom:20px;">
+      <img src="{logo_url}" alt="MHE Bazar" width="140" />
+    </div>
+    <h2 style="color:#111;">Verify your email address</h2>
+    <p style="color:#555;">Use the OTP below to complete verification. This OTP is valid for 5 minutes.</p>
+    <div style="font-size:28px;font-weight:bold;letter-spacing:6px;color:#1f7a3f;margin:20px 0;">
+      {otp}
+    </div>
+    <p style="color:#777;font-size:13px;">If you didn’t request this, you can safely ignore this email.</p>
+    <hr style="border:none;border-top:1px solid #eee;margin-top:30px;">
+    <p style="font-size:12px;color:#999;">© MHE Bazar · This is an automated email</p>
+  </div>
+</body>
+</html>
+"""
+
+    email_msg = EmailMultiAlternatives(
+        subject=subject,
+        body=f"Your OTP is {otp}. It expires in 5 minutes.",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[email],
+    )
+    email_msg.attach_alternative(html_content, "text/html")
+    email_msg.send()
+
+    return JsonResponse({
+        "success": True,
+        "message": "OTP sent successfully"
+    })
+
+
+# Optional endpoint to verify OTP
+@csrf_exempt
+def verifyotp(request):
+    if request.method != "POST":
+        return JsonResponse({"success": False, "message": "Only POST method allowed"}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        email = data.get("email")
+        otp_input = data.get("otp")
+    except json.JSONDecodeError:
+        return JsonResponse({"success": False, "message": "Invalid request"})
+
+    if not email or not otp_input:
+        return JsonResponse({"success": False, "message": "Email and OTP are required"})
+
+    cached_otp = cache.get(f"otp_{email}")
+
+    if not cached_otp:
+        return JsonResponse({
+            "success": False,
+            "message": "OTP expired or not found"
+        })
+
+    attempts = cache.get(f"otp_attempts_{email}", 0)
+
+    if attempts >= MAX_OTP_ATTEMPTS:
+        cache.delete(f"otp_{email}")
+        return JsonResponse({
+            "success": False,
+            "message": "Too many failed attempts. Please resend OTP."
+        })
+
+    if cached_otp == otp_input:
+        cache.delete(f"otp_{email}")
+        cache.delete(f"otp_attempts_{email}")
+
+        return JsonResponse({
+            "success": True,
+            "message": "OTP verified successfully"
+        })
+
+    # ❌ Wrong OTP
+    cache.incr(f"otp_attempts_{email}")
+    return JsonResponse({
+        "success": False,
+        "message": "Invalid OTP"
+    })
+
+
+    
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
     """

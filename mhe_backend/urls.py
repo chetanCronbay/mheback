@@ -14,7 +14,7 @@ from products.views import (
 )
 from users.views import (
     MyVendorStatsView, NewsletterSubscriptionViewSet, RoleViewSet, TrainingRegistrationViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin, RegisterView, EmailTokenObtainPairView, VendorDashboardView,
-    VendorViewSet, VendorApplicationView, MyVendorApplicationView, ApprovedVendorListView, VendorStatsView, ForgotPasswordRequestView, ResetPasswordView, VendorNotificationListView
+    VendorViewSet, VendorApplicationView, MyVendorApplicationView, ApprovedVendorListView, VendorStatsView, ForgotPasswordRequestView, ResetPasswordView, VendorNotificationListView,sendotp,verifyotp
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -70,6 +70,9 @@ urlpatterns = [
     path('api/register/', RegisterView.as_view(), name='user-register'),
     path('api/token/', EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/sendotp/', sendotp, name='sendotp'),
+    path('api/verifyotp/', verifyotp, name='verifyotp'),
+
     
     # ✅ Vendor Management Endpoints
     path('api/vendor/apply/', VendorApplicationView.as_view(), name='vendor-apply'),
