@@ -958,7 +958,7 @@ class ApprovedVendorListView(generics.ListAPIView):
                 'user__products', 
                 filter=Q(user__products__is_active=True, user__products__status='approved')
             )
-        )
+        ).filter(product_count__gt=0) 
 
         # --- Manual Filtering Logic ---
         params = self.request.query_params
