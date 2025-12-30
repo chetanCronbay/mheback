@@ -693,6 +693,7 @@ class QuoteViewSet(viewsets.ModelViewSet):
     """
     serializer_class = QuoteSerializer
     permission_classes = [AllowAny]
+    pagination_class = None
     
     # 1. ADDED: Custom FilterSet for advanced filtering
     filterset_class = QuoteFilterSet
@@ -810,6 +811,7 @@ class QuoteViewSet(viewsets.ModelViewSet):
 class RentalViewSet(viewsets.ModelViewSet):
     serializer_class = RentalSerializer
     permission_classes = [AllowAny]
+    pagination_class = None
     
     # 1. ADDED: Custom FilterSet for advanced filtering
     filterset_class = RentalFilterSet
