@@ -686,6 +686,11 @@ class WishlistViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)  # 👈 Yeh line jaroori hai
 
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 20 # Number of items per page
+    page_size_query_param = 'page_size'
+    max_page_size = 10000
+
 class QuoteViewSet(viewsets.ModelViewSet):
     """
     A ViewSet for viewing and managing quotes, supporting advanced filtering 
@@ -693,7 +698,7 @@ class QuoteViewSet(viewsets.ModelViewSet):
     """
     serializer_class = QuoteSerializer
     permission_classes = [AllowAny]
-    pagination_class = None
+    pagination_class = StandardResultsSetPagination
     
     # 1. ADDED: Custom FilterSet for advanced filtering
     filterset_class = QuoteFilterSet
@@ -807,11 +812,15 @@ class QuoteViewSet(viewsets.ModelViewSet):
             'yearly_trend': list(yearly_counts),
         })
 
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 'page_size' # Frontend can send ?page_size=10000
+    max_page_size = 10000
 
 class RentalViewSet(viewsets.ModelViewSet):
     serializer_class = RentalSerializer
     permission_classes = [AllowAny]
-    pagination_class = None
+    pagination_class = LargeResultsSetPagination
     
     # 1. ADDED: Custom FilterSet for advanced filtering
     filterset_class = RentalFilterSet
