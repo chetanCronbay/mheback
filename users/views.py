@@ -41,6 +41,11 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from order_management.models import Order 
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import permissions, status
 
 
 EMAIL_REGEX = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
@@ -720,7 +725,7 @@ class VendorViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['post'])
     def approve(self, request, pk=None):
-        """Approve or reject vendor application (Admin only)."""
+        """Approve or reject/unapprove vendor application (Admin only)."""
         vendor = self.get_object()
         serializer = VendorApprovalSerializer(data=request.data)
         
@@ -731,12 +736,12 @@ class VendorViewSet(viewsets.ModelViewSet):
             try:
                 with transaction.atomic():
                     if action == 'approve':
-                        # Change user role to vendor
+                        # 1. Change user role to Vendor (ID 2)
                         vendor_role = Role.objects.get(id=Role.VENDOR)
                         vendor.user.role = vendor_role
                         vendor.user.save()
                         
-                        # Send approval email
+                        # 2. Send Approval Email
                         send_mail(
                             subject="Vendor Application Approved",
                             message=(
@@ -750,36 +755,57 @@ class VendorViewSet(viewsets.ModelViewSet):
                             recipient_list=[vendor.user.email],
                             fail_silently=True,
                         )
-                        
                         logger.info(f"Vendor application approved for {vendor.user.username}")
                         return Response({'message': 'Vendor application approved successfully.'})
                         
-                    else:  # reject
-                        # Send rejection email
-                        send_mail(
-                            subject="Vendor Application Status",
-                            message=(
+                    else:  # reject or unapprove
+                      
+                        is_already_vendor = vendor.user.role.id == Role.VENDOR
+                        
+                        
+                        user_role = Role.objects.get(id=3) 
+                        vendor.user.role = user_role
+                        vendor.user.save()
+
+                        if is_already_vendor:
+                            
+                            subject = "Vendor Account Status Update"
+                            msg = (
                                 f"Dear {vendor.user.first_name},\n\n"
-                                f"Thank you for your interest in becoming a vendor with us. "
-                                f"After careful review, we are unable to approve your application "
-                                f"for {vendor.company_name} at this time.\n\n"
+                                f"Your vendor status for {vendor.company_name} has been updated to unapproved.\n\n"
                                 f"Reason: {reason}\n\n"
-                                f"You may reapply in the future once you have addressed the concerns mentioned.\n\n"
-                                f"Best regards,\nThe MHE Team"
-                            ),
+                                f"Your account has been reverted to a standard user profile."
+                            )
+                          
+                            response_msg = 'Vendor status reverted to standard user (Data preserved).'
+                        else:
+                            # --- LOGIC FOR REJECTING A NEW APPLICANT ---
+                            subject = "Vendor Application Status"
+                            msg = (
+                                f"Dear {vendor.user.first_name},\n\n"
+                                f"Thank you for your interest in becoming a vendor. After careful review, "
+                                f"we are unable to approve your application for {vendor.company_name} at this time.\n\n"
+                                f"Reason: {reason}\n\n"
+                                f"You may reapply in the future once the mentioned concerns are addressed."
+                            )
+
+                 
+                            vendor.delete()
+                            response_msg = 'Vendor application rejected and removed.'
+
+                        
+                        send_mail(
+                            subject=subject,
+                            message=f"{msg}\n\nBest regards,\nThe MHE Team",
                             from_email=settings.DEFAULT_FROM_EMAIL,
                             recipient_list=[vendor.user.email],
                             fail_silently=True,
                         )
                         
-                        # Delete the vendor application
-                        vendor.delete()
-                        
-                        logger.info(f"Vendor application rejected for {vendor.user.username}")
-                        return Response({'message': 'Vendor application rejected.'})
+                        return Response({'message': response_msg})
                         
             except Exception as e:
-                logger.error(f"Error processing vendor approval: {e}")
+                logger.error(f"Error processing vendor approval/rejection: {e}")
                 return Response(
                     {'error': 'Failed to process vendor application.'},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -1499,3 +1525,74 @@ class NewsletterSubscriptionViewSet(viewsets.ModelViewSet):
             )
         except Exception as e:
             logger.error(f"Failed to send new newsletter subscriber notification email to admin: {e}")
+
+class AdminDashboardSummaryView(APIView):
+    """
+    Consolidated endpoint to fetch all admin dashboard data.
+    Fixes the 500 error by passing request context to serializers.
+    """
+    permission_classes = [permissions.IsAdminUser]
+    # authentication_classes is usually set globally, but add if needed
+    # authentication_classes = [JWTAuthentication]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            # 1. Main Stat Counters
+            stats_data = {
+                "productQuotes": Quote.objects.count(),
+                "directBuys": Order.objects.count(),
+                "rentals": Rental.objects.count(),
+                "trainingRequests": TrainingRegistration.objects.count(),
+                "contactRequests": ContactForm.objects.count(),
+            }
+            
+            # 2. Vendor Aggregates
+            total_v = Vendor.objects.count()
+            approved_v = Vendor.objects.filter(user__role__id=Role.VENDOR).count()
+            vendor_stats = {
+                "total_applications": total_v,
+                "approved_vendors": approved_v,
+                "pending_applications": total_v - approved_v,
+            }
+
+           
+            serializer_context = {'request': request}
+
+            # 4. Pending Vendor List
+            pending_vendors_qs = Vendor.objects.select_related('user').filter(
+                user__role__id=Role.USER  
+            )
+            vendor_apps_data = VendorListSerializer(
+                pending_vendors_qs, 
+                many=True, 
+                context=serializer_context
+            ).data
+
+            # 5. Pending Product List
+            pending_products_qs = Product.objects.select_related('user').filter(
+                is_active=False,
+                status='pending'
+            )
+            pending_products_data = ProductSerializer(
+                pending_products_qs, 
+                many=True, 
+                context=serializer_context
+            ).data
+
+            return Response({
+                "stats": stats_data,
+                "vendorStats": vendor_stats,
+                "vendorApps": vendor_apps_data,
+                "pendingProducts": pending_products_data
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+           
+            import traceback
+            print("--- Dashboard Summary Error ---")
+            traceback.print_exc() 
+            return Response(
+                {"error": str(e)}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+            

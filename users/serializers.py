@@ -181,6 +181,20 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'user_name', 'product', 'stars', 'review', 'review_images']
         read_only_fields = ['user_name', 'user']
 
+        
+    def validate(self, attrs):
+        request = self.context.get("request")
+        user = request.user
+        product = attrs.get("product")
+
+        if request.method == "POST":
+            if Reviews.objects.filter(user=user, product=product).exists():
+                raise serializers.ValidationError({
+                    "detail": "You already reviewed this product"
+                })
+
+        return attrs
+
     def validate_stars(self, value):
         if not (1 <= value <= 5):
             raise serializers.ValidationError("Stars must be between 1 and 5.")
