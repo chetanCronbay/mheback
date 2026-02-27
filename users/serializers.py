@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from .models import VendorContactLog, Vendor
 
 from products.models import Product
 
@@ -484,3 +485,47 @@ class VendorContactLogSerializer(serializers.ModelSerializer):
         model = VendorContactLog
         fields = ['id', 'user', 'vendor_ids']
         read_only_fields = ['user', 'vendor_ids']        
+
+class VendorContactLogAdminSerializer(serializers.ModelSerializer):
+    # --- 1. Full User Details ---
+    user_details = serializers.SerializerMethodField()
+    
+    # --- 2. Full Vendor Details ---
+    vendor_details = serializers.SerializerMethodField()
+
+    class Meta:
+        model = VendorContactLog
+        fields = ['id', 'user_details', 'vendor_details', 'updated_at']
+
+    def get_user_details(self, obj):
+        user = obj.user
+        return {
+            'id': user.id,
+            'full_name': user.get_full_name(),
+            'email': user.email,
+            'phone': user.phone,
+            'role': user.role.name if user.role else 'N/A',
+            'date_joined': user.date_joined,
+            'last_login': user.last_login,
+            # Add any other User model fields here
+        }
+
+    def get_vendor_details(self, obj):
+        ids = obj.vendor_ids or []
+        if not ids:
+            return []
+        
+        # Fetch full vendor objects
+        vendors = Vendor.objects.filter(id__in=ids)
+        
+        # Return list of full details
+        return vendors.values(
+            'id', 
+            'company_name', 
+            'company_email',
+            'company_phone',
+            'company_address',
+            'brand', 
+            'pcode',
+            'gst_no'
+        )

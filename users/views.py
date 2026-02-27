@@ -46,6 +46,7 @@ from order_management.models import Order
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
+from .serializers import VendorContactLogAdminSerializer
 
 
 EMAIL_REGEX = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
@@ -1637,4 +1638,14 @@ class VendorContactLogViewSet(viewsets.ViewSet):
             'success': True, 
             'message': message,
             'vendor_ids': log.vendor_ids
-        }, status=status.HTTP_200_OK)            
+        }, status=status.HTTP_200_OK)  
+
+class AdminVendorTrackingViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Endpoint: GET /api/admin/vendor-tracking/
+    Used by: Admin Panel -> VendorTrackingTable component
+    """
+    # select_related('user') optimizes the query so it doesn't hit the DB for every row
+    queryset = VendorContactLog.objects.select_related('user').all().order_by('-updated_at')
+    serializer_class = VendorContactLogAdminSerializer
+    permission_classes = [IsAdmin] # Strict security: Only Admins can view this              
