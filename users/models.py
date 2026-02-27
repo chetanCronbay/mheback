@@ -296,3 +296,21 @@ class NewsletterSubscription(models.Model):
 
     def __str__(self):
         return self.email
+
+class VendorContactLog(models.Model):
+    """
+    Stores a list of vendor IDs that a specific user has clicked.
+    One row per User.
+    """
+    # OneToOne ensures each user has only ONE row in this table
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='vendor_click_log')
+    
+    # This stores the array: e.g., [1, 20, 45]
+    # Note: Using JSONField is the standard way to store arrays in MySQL/PostgreSQL with Django
+    vendor_ids = models.JSONField(default=list, blank=True) 
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.username} clicked {len(self.vendor_ids)} vendors"
+

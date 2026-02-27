@@ -3,7 +3,7 @@ from rest_framework.decorators import action, authentication_classes, permission
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -226,13 +226,15 @@ class UserViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             # 💥 Apply the new Origin/Referer check only for the listing endpoint
             return [IsInternalOrTrustedOrigin()]
+        if self.action == 'me':
+            return [permissions.IsAuthenticated()]
         
         # All other actions (retrieve, create, update, delete, me) use the original permission
         return [IsOwnerOrAdmin()]
     
     
     authentication_classes = [JWTAuthentication, CsrfExemptSessionAuthentication, BasicAuthentication]
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser,JSONParser]
 
     filter_backends = [
         filters.SearchFilter,
@@ -1597,3 +1599,42 @@ class AdminDashboardSummaryView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
             
+
+#tracking the user that what vendor they cliked
+class VendorContactLogViewSet(viewsets.ViewSet):
+    """
+    Endpoint: POST /api/track-vendor-click/
+    Body: { "vendor_id": 123 }
+    Logic: Appends 123 to the user's list of clicked vendors.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def create(self, request):
+        vendor_id = request.data.get('vendor_id')
+        
+        if not vendor_id:
+            return Response({'error': 'Vendor ID is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 1. Get or Create the single log entry for this user
+        log, created = VendorContactLog.objects.get_or_create(user=request.user)
+
+        # 2. Check if this vendor_id is already in the array
+        # We ensure vendor_id is treated as an integer
+        try:
+            v_id = int(vendor_id)
+        except ValueError:
+            return Response({'error': 'Invalid ID'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 3. Append only if not already present (Prevent duplicates)
+        if v_id not in log.vendor_ids:
+            log.vendor_ids.append(v_id)
+            log.save()
+            message = "Vendor added to history"
+        else:
+            message = "Vendor already in history"
+
+        return Response({
+            'success': True, 
+            'message': message,
+            'vendor_ids': log.vendor_ids
+        }, status=status.HTTP_200_OK)            

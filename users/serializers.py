@@ -14,7 +14,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from products.models import Product
 
-from .models import NewsletterSubscription, TrainingRegistration, User, UserBanner, Role, ContactForm, Reviews, ReviewImages, Vendor
+from .models import NewsletterSubscription, TrainingRegistration, User, UserBanner, Role, ContactForm, Reviews, ReviewImages, Vendor, VendorContactLog
 from django.core.exceptions import ValidationError
 import logging
 
@@ -478,3 +478,9 @@ class NewsletterSubscriptionSerializer(serializers.ModelSerializer):
         model = NewsletterSubscription
         fields = '__all__'
         read_only_fields = ['subscribed_at']
+
+class VendorContactLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VendorContactLog
+        fields = ['id', 'user', 'vendor_ids']
+        read_only_fields = ['user', 'vendor_ids']        

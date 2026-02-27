@@ -14,7 +14,7 @@ from products.views import (
 )
 from users.views import (
     AdminDashboardSummaryView, MyVendorStatsView, NewsletterSubscriptionViewSet, RoleViewSet, TrainingRegistrationViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin, RegisterView, EmailTokenObtainPairView, VendorDashboardView,
-    VendorViewSet, VendorApplicationView, MyVendorApplicationView, ApprovedVendorListView, VendorStatsView, ForgotPasswordRequestView, ResetPasswordView, VendorNotificationListView,sendotp,verifyotp
+    VendorViewSet, VendorApplicationView, MyVendorApplicationView, ApprovedVendorListView, VendorStatsView, ForgotPasswordRequestView, ResetPasswordView, VendorNotificationListView,sendotp,verifyotp,VendorContactLogViewSet
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -46,6 +46,7 @@ router.register(r'reviews', ReviewViewSet, basename='review')
 
 router.register(r'training-registrations', TrainingRegistrationViewSet, basename='training-registration')
 router.register(r'newsletter-subscriptions', NewsletterSubscriptionViewSet, basename='newsletter-subscription')
+router.register(r'track-vendor-click', VendorContactLogViewSet, basename='track-vendor-click')
 
 # You need to add this line to your existing router registration section
 router.register(r'products-search', ProductSearchViewSet, basename='product-search')
