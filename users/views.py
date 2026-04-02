@@ -533,6 +533,7 @@ class VendorApplicationView(generics.CreateAPIView):
                     f"Email: {vendor.user.email}\n"
                     f"Company: {vendor.company_name}\n"
                     f"Company Email: {vendor.company_email}\n"
+                    f"Address: {vendor.company_address}\n"
                     f"Company Phone: {vendor.company_phone}\n"
                     f"Brand: {vendor.brand}\n\n"
                     f"Please review the application in the admin panel."
