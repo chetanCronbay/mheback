@@ -25,7 +25,7 @@ import django_filters
 from django.conf import settings
 import logging
 from django.db.models import Q 
-
+# from users.models import Vendor
 logger = logging.getLogger(__name__)
 
 # class QuoteThrottle(UserRateThrottle):
@@ -231,42 +231,91 @@ class ProductViewSet(viewsets.ModelViewSet):
                      logger.error(f"CRITICAL INSERTION ERROR for product {product.id}: {e}")
 
 
-    # --- MODIFIED: perform_create (FIXED IMMUTABLE & JSON DECODE ERRORS) ---
+    #  perform_create 
+     
     def perform_create(self, serializer):
-        # 🚨 FIX: Create a mutable copy of request.data
         mutable_data = self.request.data.copy()
         
-        # 1. Extract YouTube links safely (handles QueryDict and Dict)
+        # 1. Extract YouTube links safely
         youtube_links_list = mutable_data.get('youtube_links', ['[]'])
         youtube_links_json = youtube_links_list[0] if isinstance(youtube_links_list, list) and youtube_links_list else '[]'
 
-        # Remove the field from mutable data if it was present
         if 'youtube_links' in mutable_data:
             mutable_data.pop('youtube_links') 
+        # target vendors for Admins(if product is uploaded by the admin on behalf of a vendor)
+        target_user = self.request.user
+        request_user_id = mutable_data.get('user')
+        if hasattr(self.request.user, 'role') and self.request.user.role.id == Role.ADMIN and request_user_id:
+            try:
+                from django.contrib.auth import get_user_model
+                User = get_user_model()
+                target_user = User.objects.get(id=request_user_id)
+            except (User.DoesNotExist, ValueError):
+                pass # Fallback to requester
         
-        # 2. Save the main product
-        product = serializer.save(user=self.request.user)
+        # Save with designated owner
+        product = serializer.save(user=target_user)
 
-        # 3. Process and save the new YouTube links
+        # 3. 🚨 NEW: Manually map and enforce `product_details` JSON saving
+        # product_details_str = mutable_data.get('product_details')
+        # if product_details_str:
+        #     import json
+        #     try:
+        #          if isinstance(product_details_str, list):
+        #              product_details_str = product_details_str[0]
+        #          parsed_details = json.loads(product_details_str)
+        #          if isinstance(parsed_details, dict):
+        #              product.product_details = parsed_details
+        #              product.save(update_fields=['product_details'])
+        #     except (json.JSONDecodeError, TypeError) as e:
+        #          logger.error(f"Failed to decode product_details for new product. Error: {e}")
+
+        # 4. Process and save the new YouTube links
         self._process_youtube_links(product, youtube_links_json)
+
         
     # --- MODIFIED: perform_update (FIXED IMMUTABLE & JSON DECODE ERRORS) ---
+        # 🚨 REPLACE YOUR EXISTING perform_update WITH THIS
     def perform_update(self, serializer):
-        # 🚨 FIX: Create a mutable copy of request.data
         mutable_data = self.request.data.copy()
 
-        # 1. Extract YouTube links safely (handles QueryDict and Dict)
+        # 1. Extract YouTube links safely 
         youtube_links_list = mutable_data.get('youtube_links', ['[]'])
         youtube_links_json = youtube_links_list[0] if isinstance(youtube_links_list, list) and youtube_links_list else '[]'
         
-        # Remove the field from mutable data if it was present
         if 'youtube_links' in mutable_data:
             mutable_data.pop('youtube_links')
 
-        # 2. Save the main product
-        product = serializer.save()
 
-        # 3. Process and save the new YouTube links
+
+          # Allow Admins to transfer ownership during update
+        save_kwargs = {}
+        request_user_id = mutable_data.get('user')
+        if hasattr(self.request.user, 'role') and self.request.user.role.id == Role.ADMIN and request_user_id:
+             try:
+                 from django.contrib.auth import get_user_model
+                 User = get_user_model()
+                 save_kwargs['user'] = User.objects.get(id=request_user_id)
+             except (User.DoesNotExist, ValueError):
+                 pass
+        product = serializer.save(**save_kwargs)
+
+
+        # 3. 🚨 NEW: Manually map and enforce `product_details` JSON saving
+        # product_details_str = mutable_data.get('product_details')
+        # if product_details_str:
+        #     import json
+        #     try:
+        #          if isinstance(product_details_str, list):
+        #              product_details_str = product_details_str[0]
+        #          parsed_details = json.loads(product_details_str)
+        #          if isinstance(parsed_details, dict):
+        #              product.product_details = parsed_details
+        #              product.save(update_fields=['product_details'])
+        #     except (json.JSONDecodeError, TypeError) as e:
+        #          logger.error(f"Failed to decode product_details for product {product.id}. Error: {e}")
+
+        # 4. Process and save the new YouTube links
         self._process_youtube_links(product, youtube_links_json)
 
     def get_queryset(self):
@@ -730,6 +779,13 @@ class QuoteViewSet(viewsets.ModelViewSet):
 
         if user.role.id == Role.ADMIN:
             return base_queryset.all().order_by('-created_at')
+        # if user.role.name == 'Vendor':
+        #     # --- THE FIX: Query the database to check if they are blocked ---
+        #     from users.models import Vendor  # Make sure this is imported!
+        #     is_blocked = Vendor.objects.filter(user=user, is_enquiries_blocked=True).exists()
+            
+        #     if is_blocked:
+        #         return Quote.objects.none() # Intentionally hide data
         
         if user.role.name == 'Vendor':
             return base_queryset.filter(product__user=user).order_by('-created_at')
@@ -846,6 +902,10 @@ class RentalViewSet(viewsets.ModelViewSet):
 
         if user.role.id == Role.ADMIN:
             return base_queryset.all().order_by('-created_at')
+        # is_blocked = Vendor.objects.filter(user=user, is_enquiries_blocked=True).exists()
+            
+        # if is_blocked:
+        #         return Rental.objects.none() # Intentionally hide data # Intentionally hide data
         elif user.role.name == 'Vendor':
             return base_queryset.filter(product__user=user).order_by('-created_at')
         return base_queryset.filter(user=user).order_by('-created_at')
