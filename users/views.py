@@ -48,6 +48,12 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 from .serializers import VendorContactLogAdminSerializer
 
+from django.conf import settings
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+
+
 
 EMAIL_REGEX = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
 
@@ -1650,3 +1656,45 @@ class AdminVendorTrackingViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = VendorContactLog.objects.select_related('user').all().order_by('-updated_at')
     serializer_class = VendorContactLogAdminSerializer
     permission_classes = [IsAdmin] # Strict security: Only Admins can view this              
+ 
+# This will save to the root of your Django project on AWS
+FILE_PATH = os.path.join(settings.BASE_DIR, 'whatsapp-clicks.json')
+
+@api_view(['POST', 'GET'])
+@permission_classes([AllowAny]) # Allow any user to ping the tracker
+def track_whatsapp_clicks(request):
+    # Ensure the file exists
+    if not os.path.exists(FILE_PATH):
+        with open(FILE_PATH, 'w') as f:
+            json.dump({"count": 0, "users": []}, f)
+
+    # Read current data safely
+    with open(FILE_PATH, 'r') as f:
+        data = json.load(f)
+
+    if request.method == 'GET':
+        return Response({"count": data["count"]})
+
+    if request.method == 'POST':
+        user_id = request.data.get('userId')
+        
+        if not user_id:
+            return Response({"error": "User ID is missing"}, status=400)
+
+        is_new_user = False
+        
+        # Check uniqueness
+        if user_id not in data["users"]:
+            data["users"].append(user_id)
+            data["count"] += 1
+            is_new_user = True
+            
+            # Save permanently to AWS Disk
+            with open(FILE_PATH, 'w') as f:
+                json.dump(data, f, indent=2)
+                
+        return Response({
+            "success": True, 
+            "count": data["count"], 
+            "isNewUser": is_new_user
+        }, status=200)

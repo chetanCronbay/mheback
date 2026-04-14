@@ -14,7 +14,7 @@ from products.views import (
 )
 from users.views import (
     AdminDashboardSummaryView, MyVendorStatsView, NewsletterSubscriptionViewSet, RoleViewSet, TrainingRegistrationViewSet, UserViewSet, ContactFormViewSet, ReviewViewSet, GoogleLogin, RegisterView, EmailTokenObtainPairView, VendorDashboardView,
-    VendorViewSet, VendorApplicationView, MyVendorApplicationView, ApprovedVendorListView, VendorStatsView, ForgotPasswordRequestView, ResetPasswordView, VendorNotificationListView,sendotp,verifyotp,VendorContactLogViewSet,AdminVendorTrackingViewSet
+    VendorViewSet, VendorApplicationView, MyVendorApplicationView, ApprovedVendorListView, VendorStatsView, ForgotPasswordRequestView, ResetPasswordView, VendorNotificationListView,sendotp,verifyotp,VendorContactLogViewSet,AdminVendorTrackingViewSet,track_whatsapp_clicks
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -79,6 +79,8 @@ urlpatterns = [
     # ✅ Vendor Management Endpoints
     path('api/vendor/apply/', VendorApplicationView.as_view(), name='vendor-apply'),
     path('api/vendor/my-application/', MyVendorApplicationView.as_view(), name='my-vendor-application'),
+        path('api/track-whatsapp/', track_whatsapp_clicks, name="track_whatsapp"),
+
     path('api/vendor/approved/', ApprovedVendorListView.as_view(), name='approved-vendors'),
     path('api/vendor/stats/', VendorStatsView.as_view(), name='vendor-stats'),
     path('api/vendor/notifications/', VendorNotificationListView.as_view(), name='vendor-notifications'),
