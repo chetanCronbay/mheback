@@ -19,33 +19,88 @@ class ProductSearchSerializer(serializers.ModelSerializer):
 
 class CategorySerializer(serializers.ModelSerializer):
     subcategories = serializers.SerializerMethodField()
-    cat_image = serializers.ImageField(required=False, allow_null=True)
-    cat_banner = serializers.ImageField(required=False, allow_null=True)
     product_count = serializers.SerializerMethodField()
+    
+    cat_image = serializers.SerializerMethodField()
+    cat_banner = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
         fields = '__all__'
 
+    def get_cat_image(self, obj):
+        request = self.context.get('request')
+        try:
+            url = obj.cat_image.url
+        except:
+            return None
+
+        if request:
+            url = request.build_absolute_uri(url)
+
+        return url.replace('http://', 'https://')
+
+    def get_cat_banner(self, obj):
+        request = self.context.get('request')
+        try:
+            url = obj.cat_banner.url
+        except:
+            return None
+
+        if request:
+            url = request.build_absolute_uri(url)
+
+        return url.replace('http://', 'https://')
+
     def get_subcategories(self, obj):
-        return SubcategorySerializer(obj.subcategories.all(), many=True).data
+        return SubcategorySerializer(
+            obj.subcategories.all(),
+            many=True,
+            context=self.context  # 🔥 pass context
+        ).data
     
     def get_product_count(self, obj):
-        return obj.products.count() 
+        return obj.products.count()
+    
 
 class SubcategorySerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name', read_only=True)
-    sub_image = serializers.ImageField(required=False, allow_null=True)
-    sub_banner = serializers.ImageField(required=False, allow_null=True)
+    
+    sub_image = serializers.SerializerMethodField()
+    sub_banner = serializers.SerializerMethodField()
+    
     product_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Subcategory
         fields = '__all__'
 
-    def get_product_count(self, obj):
-        return obj.products.count() 
+    def get_sub_image(self, obj):
+        request = self.context.get('request')
+        try:
+            url = obj.sub_image.url
+        except:
+            return None
 
+        if request:
+            url = request.build_absolute_uri(url)
+
+        return url.replace('http://', 'https://')
+
+    def get_sub_banner(self, obj):
+        request = self.context.get('request')
+        try:
+            url = obj.sub_banner.url
+        except:
+            return None
+
+        if request:
+            url = request.build_absolute_uri(url)
+
+        return url.replace('http://', 'https://')
+
+    def get_product_count(self, obj):
+        return obj.products.count()
 class ProductImageSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()  # 👈 override image
     is_video = serializers.SerializerMethodField()

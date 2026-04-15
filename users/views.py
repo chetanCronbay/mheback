@@ -53,6 +53,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+import os
+import json
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
 
 EMAIL_REGEX = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
@@ -1658,43 +1663,58 @@ class AdminVendorTrackingViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAdmin] # Strict security: Only Admins can view this              
  
 # This will save to the root of your Django project on AWS
-FILE_PATH = os.path.join(settings.BASE_DIR, 'whatsapp-clicks.json')
+FILE_PATH = "whatsapp_clicks.json"
+
+
+def safe_write(data):
+    temp_path = FILE_PATH + ".tmp"
+
+    # Write to temp file first
+    with open(temp_path, 'w') as f:
+        json.dump(data, f, indent=2)
+
+    # Replace original file (safer than direct write)
+    os.replace(temp_path, FILE_PATH)
+
 
 @api_view(['POST', 'GET'])
-@permission_classes([AllowAny]) # Allow any user to ping the tracker
+@permission_classes([AllowAny])
 def track_whatsapp_clicks(request):
-    # Ensure the file exists
-    if not os.path.exists(FILE_PATH):
-        with open(FILE_PATH, 'w') as f:
-            json.dump({"count": 0, "users": []}, f)
 
-    # Read current data safely
-    with open(FILE_PATH, 'r') as f:
-        data = json.load(f)
+    # Ensure file exists
+    if not os.path.exists(FILE_PATH):
+        safe_write({"count": 0, "users": []})
+
+    # Read safely
+    try:
+        with open(FILE_PATH, 'r') as f:
+            data = json.load(f)
+    except Exception:
+        # fallback if corrupted
+        data = {"count": 0, "users": []}
 
     if request.method == 'GET':
         return Response({"count": data["count"]})
 
     if request.method == 'POST':
         user_id = request.data.get('userId')
-        
+
         if not user_id:
             return Response({"error": "User ID is missing"}, status=400)
 
         is_new_user = False
-        
+
         # Check uniqueness
         if user_id not in data["users"]:
             data["users"].append(user_id)
             data["count"] += 1
             is_new_user = True
-            
-            # Save permanently to AWS Disk
-            with open(FILE_PATH, 'w') as f:
-                json.dump(data, f, indent=2)
-                
+
+            # ✅ safer write
+            safe_write(data)
+
         return Response({
-            "success": True, 
-            "count": data["count"], 
+            "success": True,
+            "count": data["count"],
             "isNewUser": is_new_user
         }, status=200)

@@ -68,7 +68,7 @@ class BlogViewSet(viewsets.ModelViewSet):
             else:
                 sliced_qs = queryset.none()
 
-            serializer = self.get_serializer(sliced_qs, many=True)
+            serializer = self.get_serializer(sliced_qs, many=True,context={'request': request} )
             response = Response(serializer.data)
             response['Cache-Control'] = 'public, max-age=300'
             return response
@@ -76,12 +76,12 @@ class BlogViewSet(viewsets.ModelViewSet):
         # Otherwise fall back to DRF's pagination/response machinery
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
+            serializer = self.get_serializer(page, many=True,context={'request': request} )
             response = self.get_paginated_response(serializer.data)
             response['Cache-Control'] = 'public, max-age=300'
             return response
 
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = self.get_serializer(queryset, many=True,context={'request': request} )
         response = Response(serializer.data)
         response['Cache-Control'] = 'public, max-age=300'
         return response
@@ -108,7 +108,7 @@ class BlogViewSet(viewsets.ModelViewSet):
         return updated_html
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data,context={'request': request} )
         serializer.is_valid(raise_exception=True)
         
         description_html = serializer.validated_data.pop('description', '')
@@ -128,7 +128,7 @@ class BlogViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer = self.get_serializer(instance, data=request.data, partial=partial,context={'request': request} )
         serializer.is_valid(raise_exception=True)
         
         description_html = serializer.validated_data.pop('description', instance.description)
