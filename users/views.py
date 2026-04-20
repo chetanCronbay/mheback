@@ -59,6 +59,13 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+import os
+import json
+from datetime import datetime
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+
 
 EMAIL_REGEX = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
 
@@ -1662,55 +1669,93 @@ class AdminVendorTrackingViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = VendorContactLogAdminSerializer
     permission_classes = [IsAdmin] # Strict security: Only Admins can view this              
  
-# This will save to the root of your Django project on AWS
 FILE_PATH = "whatsapp_clicks.json"
-
 
 def safe_write(data):
     temp_path = FILE_PATH + ".tmp"
-
-    # Write to temp file first
     with open(temp_path, 'w') as f:
         json.dump(data, f, indent=2)
-
-    # Replace original file (safer than direct write)
     os.replace(temp_path, FILE_PATH)
 
+# Robust IP Catcher designed for AWS Load Balancers and Proxies
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    x_real_ip = request.META.get('HTTP_X_REAL_IP')
+    
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0].strip()
+    elif x_real_ip:
+        ip = x_real_ip.strip()
+    else:
+        ip = request.META.get('REMOTE_ADDR', '').strip()
+        
+    # Remove port numbers if AWS attaches them
+    if ip and ':' in ip and ip.count(':') == 1: 
+        ip = ip.split(':')[0]
+        
+    return ip
 
 @api_view(['POST', 'GET'])
 @permission_classes([AllowAny])
 def track_whatsapp_clicks(request):
-
-    # Ensure file exists
+    # 1. Ensure file exists with the complete structure
     if not os.path.exists(FILE_PATH):
-        safe_write({"count": 0, "users": []})
+        safe_write({"count": 0, "users": [], "ips": [], "daily_counts": {}})
 
-    # Read safely
+    # 2. Read safely
     try:
         with open(FILE_PATH, 'r') as f:
             data = json.load(f)
     except Exception:
-        # fallback if corrupted
-        data = {"count": 0, "users": []}
+        data = {"count": 0, "users": [], "ips": [], "daily_counts": {}}
 
+    # 3. Handle legacy JSON files (upgrades old files automatically)
+    if "daily_counts" not in data:
+        data["daily_counts"] = {}
+    if "ips" not in data:
+        data["ips"] = []
+
+    # 4. GET Request: Return data for the frontend graph
     if request.method == 'GET':
-        return Response({"count": data["count"]})
+        return Response({
+            "count": data["count"],
+            "daily_counts": data["daily_counts"]
+        })
 
+    # 5. POST Request: Handle new clicks
     if request.method == 'POST':
+        user_ip = get_client_ip(request)
         user_id = request.data.get('userId')
 
         if not user_id:
             return Response({"error": "User ID is missing"}, status=400)
 
         is_new_user = False
+        today_date = datetime.now().strftime('%Y-%m-%d')
 
-        # Check uniqueness
-        if user_id not in data["users"]:
-            data["users"].append(user_id)
+        # Check if we have seen this IP or this ID before
+        is_known_ip = (user_ip in data["ips"]) if user_ip else False
+        is_known_user = (user_id in data["users"])
+        
+        # Only count if BOTH the IP and the LocalStorage ID are brand new
+        if not is_known_ip and not is_known_user:
+            
+            # Save the new details to block future duplicates
+            if user_ip:
+                data["ips"].append(user_ip)
+            if user_id not in data["users"]:
+                data["users"].append(user_id)
+            
             data["count"] += 1
             is_new_user = True
+            
+            # Add to the date graph data
+            if today_date in data["daily_counts"]:
+                data["daily_counts"][today_date] += 1
+            else:
+                data["daily_counts"][today_date] = 1
 
-            # ✅ safer write
+            # Save to file
             safe_write(data)
 
         return Response({
