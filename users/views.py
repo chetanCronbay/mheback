@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, filters, status, generics
+from rest_framework import request, viewsets, permissions, filters, status, generics
 from rest_framework.decorators import action, authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
@@ -50,7 +50,7 @@ from .serializers import VendorContactLogAdminSerializer
 
 from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
 import os
@@ -1667,8 +1667,11 @@ class AdminVendorTrackingViewSet(viewsets.ReadOnlyModelViewSet):
     # select_related('user') optimizes the query so it doesn't hit the DB for every row
     queryset = VendorContactLog.objects.select_related('user').all().order_by('-updated_at')
     serializer_class = VendorContactLogAdminSerializer
-    permission_classes = [IsAdmin] # Strict security: Only Admins can view this              
- 
+    permission_classes = [IsAdmin] # Strict security: Only Admins can view this  
+
+
+
+#whatsapp click tracking 
 FILE_PATH = "whatsapp_clicks.json"
 
 def safe_write(data):
@@ -1695,8 +1698,8 @@ def get_client_ip(request):
         
     return ip
 
-@api_view(['POST', 'GET'])
-@permission_classes([AllowAny])
+@api_view(['POST', 'GET','DELETE'])
+@permission_classes([IsAdminUser])
 def track_whatsapp_clicks(request):
     # 1. Ensure file exists with the complete structure
     if not os.path.exists(FILE_PATH):
@@ -1763,3 +1766,18 @@ def track_whatsapp_clicks(request):
             "count": data["count"],
             "isNewUser": is_new_user
         }, status=200)
+    
+    # 5. DELETE Request: Clear all data
+    if request.method == 'DELETE':
+     data = {
+        "count": 0,
+        "users": [],
+        "ips": [],
+        "daily_counts": {}
+    }
+     safe_write(data)
+
+     return Response({
+        "success": True,
+        "message": "All WhatsApp data cleared"
+    })
