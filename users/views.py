@@ -1698,7 +1698,7 @@ def get_client_ip(request):
         
     return ip
 
-@api_view(['POST', 'GET','DELETE'])
+@api_view(['POST', 'GET'])
 @permission_classes([AllowAny])
 def track_whatsapp_clicks(request):
     # 1. Ensure file exists with the complete structure
@@ -1767,17 +1767,4 @@ def track_whatsapp_clicks(request):
             "isNewUser": is_new_user
         }, status=200)
     
-    # 5. DELETE Request: Clear all data
-    if request.method == 'DELETE':
-     data = {
-        "count": 0,
-        "users": [],
-        "ips": [],
-        "daily_counts": {}
-    }
-     safe_write(data)
-
-     return Response({
-        "success": True,
-        "message": "All WhatsApp data cleared"
-    })
+ 
