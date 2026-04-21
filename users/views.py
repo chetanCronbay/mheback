@@ -1699,7 +1699,7 @@ def get_client_ip(request):
     return ip
 
 @api_view(['POST', 'GET','DELETE'])
-@permission_classes([IsAdminUser])
+@permission_classes([AllowAny])
 def track_whatsapp_clicks(request):
     # 1. Ensure file exists with the complete structure
     if not os.path.exists(FILE_PATH):
