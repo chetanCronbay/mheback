@@ -450,3 +450,9 @@ LOGGING = {
 RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_live_RQtgKfM1NmkmLD')
 RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'Wp1ooz5P6EG0a8xt46updcVG')
 
+# Tell Django to trust the domain passed by your .htaccess file
+USE_X_FORWARDED_HOST = True
+ 
+# Tell Django to trust the 'https' scheme passed by your .htaccess file
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
