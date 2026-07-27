@@ -168,6 +168,11 @@ class Product(models.Model):
         default=0,
         help_text="Available stock quantity"
     )
+
+    offer = models.FileField(upload_to='product_offers/', null=True, blank=True)
+
+
+    
     
     STATUS_CHOICES = [
         ('pending', 'Pending'),
@@ -254,6 +259,50 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.product.name}"
+    
+class DocumentDownload(models.Model):
+    """Tracks each time a logged-in user downloads a product's brochure or offer."""
+
+    DOCUMENT_TYPE_CHOICES = (
+        ('offer', 'Offer'),
+        ('brochure', 'Brochure'),
+    )
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='document_downloads',
+        help_text="Logged-in user who downloaded the document"
+    )
+    # The vendor is simply the product's owner (Product.user), kept here
+    # denormalized so downloads survive a product being reassigned/deleted differently.
+    vendor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='product_document_downloads',
+        help_text="Vendor who owns the product (product.user at download time)"
+    )
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='document_downloads'
+    )
+    document_type = models.CharField(max_length=10, choices=DOCUMENT_TYPE_CHOICES)
+    file_name = models.CharField(max_length=255)
+    downloaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-downloaded_at']
+        indexes = [
+            models.Index(fields=['vendor']),
+            models.Index(fields=['user']),
+            models.Index(fields=['product']),
+            models.Index(fields=['downloaded_at']),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.user} downloaded {self.document_type} for {self.product_id}"
+
 
 class Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='cart_items')

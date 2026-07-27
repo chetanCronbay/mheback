@@ -332,6 +332,8 @@ CORS_ALLOWED_ORIGINS: List[str] = []
 if not DEBUG:
     # IMPORTANT: Replace with your actual production frontend domains
     CORS_ALLOWED_ORIGINS = [
+            "http://localhost:3000", # For local testing
+            "http://localhost:3001", # For local testing
         "https://www.mhebazar.in",
         "https://mheback.onrender.com", # If your backend itself needs to make CORS requests to itself
         'http://162.240.152.29:8000',

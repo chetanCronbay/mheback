@@ -380,9 +380,51 @@ class ProductViewSet(viewsets.ModelViewSet):
             "results": [{"manufacturer": name} for name in manufacturers]
         })
     def get_permissions(self):
-        if self.action in ['add_to_cart', 'add_to_wishlist']:
+        if self.action in ['add_to_cart', 'add_to_wishlist', 'track_download', 'document_downloads']:
             return [IsAuthenticated()]
         return super().get_permissions()
+
+    @action(detail=True, methods=['post'], url_path='track-download')
+    def track_download(self, request, pk=None):
+        """Log a brochure/offer download by a logged-in user."""
+        product = self.get_object()
+        document_type = request.data.get('document_type')
+
+        if document_type not in ('offer', 'brochure'):
+            return Response({"detail": "Invalid document_type."}, status=400)
+
+        file_field = product.offer if document_type == 'offer' else product.brochure
+        if not file_field:
+            return Response(
+                {"detail": f"No {document_type} uploaded for this product."},
+                status=404
+            )
+
+        DocumentDownload.objects.create(
+            user=request.user,
+            vendor=product.user,
+            product=product,
+            document_type=document_type,
+            file_name=file_field.name.split('/')[-1],
+        )
+        logger.info(
+            f"Document download tracked: user={request.user.id} "
+            f"product={product.id} type={document_type}"
+        )
+        return Response({"detail": "Download recorded."}, status=201)
+
+    @action(detail=False, methods=['get'], url_path='document-downloads')
+    def document_downloads(self, request):
+        """List download history — vendor-scoped for vendors, all for admins."""
+        user = request.user
+        qs = DocumentDownload.objects.select_related('user', 'vendor', 'product')
+
+        is_admin = hasattr(user, 'role') and user.role.id == Role.ADMIN
+        if not is_admin:
+            qs = qs.filter(vendor=user)
+
+        serializer = DocumentDownloadSerializer(qs, many=True)
+        return Response(serializer.data)
     
     @action(detail=False, methods=['patch'], url_path='bulk-update-status')
     def bulk_update_status(self, request):
@@ -425,6 +467,30 @@ class ProductViewSet(viewsets.ModelViewSet):
             product.save()
         serializer = self.get_serializer(product)
         return Response(serializer.data)
+    
+    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    def upload_offer(self, request, pk=None):
+        product = self.get_object()
+        offer = request.FILES.get('offer')
+        if offer:
+            product.offer = offer
+            product.save()
+        serializer = self.get_serializer(product)
+        return Response(serializer.data)
+    @action(detail=True, methods=['delete'], url_path='delete-offer')
+    def delete_offer(self, request, pk=None):
+        product = self.get_object()
+        if product.offer:
+            product.offer.delete()
+            product.save()
+            return Response({
+                "detail": "Offer deleted successfully.",
+                "status": "success"
+            })
+        return Response({
+            "detail": "No offer found.",
+            "status": "not_found"
+        }, status=404)
     
     @action(detail=True, methods=['post'])
     def add_to_cart(self, request, pk=None):

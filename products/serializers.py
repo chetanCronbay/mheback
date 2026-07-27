@@ -5,7 +5,7 @@ from products.filters import CustomDateRangeFilter, CustomPeriodFilter
 from users.models import Vendor
 from .models import (
     Category, Subcategory, Product, ProductImage,
-    Cart, Wishlist, Quote, Rental
+    Cart, Wishlist, Quote, Rental, DocumentDownload
 )
 
 class ProductSearchSerializer(serializers.ModelSerializer):
@@ -160,6 +160,34 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_average_rating(self, obj):
         return obj.get_average_rating()
+    
+class DocumentDownloadSerializer(serializers.ModelSerializer):
+    product_name = serializers.CharField(source='product.name', read_only=True)
+    vendor_name = serializers.SerializerMethodField()
+    user_name = serializers.SerializerMethodField()
+    user_email = serializers.EmailField(source='user.email', read_only=True)
+
+    class Meta:
+        model = DocumentDownload
+        fields = [
+            'id', 'user', 'user_name', 'user_email',
+            'vendor', 'vendor_name',
+            'product', 'product_name',
+            'document_type', 'file_name', 'downloaded_at',
+        ]
+
+    def get_vendor_name(self, obj) -> str:
+        # Vendor.user is a ForeignKey (not OneToOne) with related_name='vendor',
+        # so obj.vendor.vendor is a manager, not a single instance — same pattern
+        # as QuoteSerializer.get_vendor_details' vendor_user.vendor.first().
+        vendor_profile = obj.vendor.vendor.first()
+        if vendor_profile:
+            return vendor_profile.company_name or vendor_profile.brand or obj.vendor.username
+        return obj.vendor.get_full_name() or obj.vendor.username
+
+    def get_user_name(self, obj) -> str:
+        return obj.user.get_full_name() or obj.user.username
+
 
 class ProductUserMapSerializer(serializers.ModelSerializer):
     """
