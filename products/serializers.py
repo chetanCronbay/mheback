@@ -160,7 +160,27 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_average_rating(self, obj):
         return obj.get_average_rating()
-    
+        
+    def to_representation(self, instance):
+        """
+        Override to_representation to ensure file URLs are only returned
+        if the physical files actually exist in the storage.
+        This prevents 404 errors on the frontend for missing media.
+        """
+        data = super().to_representation(instance)
+        
+        # Check if brochure exists on disk
+        if instance.brochure and hasattr(instance.brochure, 'storage'):
+            if not instance.brochure.storage.exists(instance.brochure.name):
+                data['brochure'] = None
+                
+        # Check if offer exists on disk
+        if instance.offer and hasattr(instance.offer, 'storage'):
+            if not instance.offer.storage.exists(instance.offer.name):
+                data['offer'] = None
+                
+        return data
+
 class DocumentDownloadSerializer(serializers.ModelSerializer):
     product_name = serializers.CharField(source='product.name', read_only=True)
     vendor_name = serializers.SerializerMethodField()
