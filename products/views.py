@@ -1343,6 +1343,8 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
         # --- P0: PRODUCTS (Capture exact match and calculate PPS) ---
         product_fields = ['name', 'model', 'manufacturer']
         product_filter = create_char_filter(product_fields)
+        if query.isdigit():
+            product_filter |= Q(id=int(query))
 
         products = Product.objects.filter(
             product_filter, user_id__in=approved_ids, is_active=True, status='approved'
@@ -1351,13 +1353,17 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
             vendor_company_name=Subquery(Vendor.objects.filter(user=OuterRef('user')).values('company_name')[:1]),
             category_name=F('category__name'),
             subcategory_name=F('subcategory__name'),
-        ).values('id', 'name', 'model', 'manufacturer', 'vendor_brand', 'vendor_company_name', 'category_name', 'subcategory_name', 'user_id', 'category_id').distinct()
+            primary_image=Subquery(ProductImage.objects.filter(product=OuterRef('pk')).values('image')[:1]),
+        ).values('id', 'name', 'model', 'manufacturer', 'vendor_brand', 'vendor_company_name', 'category_name', 'subcategory_name', 'primary_image', 'user_id', 'category_id').distinct()
 
         for p in products:
             vendor_name = p['vendor_brand'] or p['vendor_company_name'] or ''
             product_url_slug = create_slug(f"{p['name']} {p['model'] or ''} {p['manufacturer'] or ''}")
             combined_name_lower = f"{p['name'].lower()} {p['model'].lower() if p['model'] else ''} {p['manufacturer'].lower() if p['manufacturer'] else ''}"
             score = calculate_score(combined_name_lower)
+            
+            if query.isdigit() and str(p['id']) == query:
+                score += 10000 # Massive score boost for exact ID match
             
             product_priority_score = PRODUCT_MATCH_PRIORITY['name']
             
@@ -1393,6 +1399,7 @@ class UniversalSearchViewSet(viewsets.GenericViewSet):
                     'product_tags': { 'vendor': vendor_name, 'category': p['category_name'] or '', 'subcategory': p['subcategory_name'] or '', 'model': p['model'] or ''},
                     'user_id': p['user_id'], 'category_id': p['category_id'],
                     'product_priority_score': product_priority_score, 
+                    'image': request.build_absolute_uri(settings.MEDIA_URL + p['primary_image']) if p.get('primary_image') else None,
                 }
                 result_item_tuple = (PRIORITY['product'], score, item)
                 all_results_with_score.append(result_item_tuple)

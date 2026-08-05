@@ -332,6 +332,13 @@ class Quote(models.Model):
         ('rejected', 'Rejected'),
     )
 
+    SOURCE_CHOICES = (
+        ('website', 'Website'),
+        ('phone', 'Phone'),
+        ('whatsapp', 'WhatsApp'),
+        ('external_leads', 'External Leads'),
+    )
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='quotes', null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     message = models.TextField()
@@ -340,6 +347,7 @@ class Quote(models.Model):
     email = models.EmailField(max_length=200, blank=False, null=True)
     phone = models.CharField(max_length=100, blank=False, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    source = models.CharField(max_length=20, choices=SOURCE_CHOICES, default='website')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     last_request_time = models.DateTimeField(auto_now=True)
@@ -361,11 +369,19 @@ class Rental(models.Model):
         ('returned', 'Returned'),
     )
 
+    SOURCE_CHOICES = (
+        ('website', 'Website'),
+        ('phone', 'Phone'),
+        ('whatsapp', 'WhatsApp'),
+        ('external_leads', 'External Leads'),
+    )
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='rentals', null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    source = models.CharField(max_length=20, choices=SOURCE_CHOICES, default='website')
     notes = models.TextField(blank=True, null=True)
     full_name = models.CharField(max_length=100, blank=False, null=True)
     address = models.CharField(max_length=500, blank=True, null=True)
