@@ -93,7 +93,16 @@ class EmailService:
         except AttributeError:
             pass 
 
-        # 2. Initialize default context with placeholders
+        # 2. Check if this is a Generic Vendor Lead
+        is_generic = False
+        if enquiry_type == 'quote':
+            is_generic = '[GENERIC VENDOR LEAD]' in (instance.message or '')
+        elif enquiry_type == 'rental':
+            is_generic = '[GENERIC VENDOR LEAD]' in (instance.notes or '')
+        
+        display_product_name = "Offline General Enquiry" if is_generic else instance.product.name
+
+        # 3. Initialize default context with placeholders
         context = {
             f'{enquiry_type}': instance,
             'product_url': get_product_url(instance.product),
@@ -103,7 +112,8 @@ class EmailService:
             
             # --- SAFE VARIABLES for templates ---
             'customer_name': instance.full_name, 
-            'product_name': instance.product.name,
+            'product_name': display_product_name,
+            'is_generic': is_generic,
             
             # Vendor Details
             'vendor_company_name': vendor_info['company_name'],
@@ -114,7 +124,7 @@ class EmailService:
                 'Customer_Name': instance.full_name,
                 'Email': instance.email,
                 'Phone': instance.phone,
-                'Product': instance.product.name,
+                'Product': display_product_name,
                 'Vendor_Company': vendor_info['company_name'],
                 'Submitted_On': instance.created_at.strftime("%d %b, %Y %I:%M %p"),
                 'Status': instance.status.capitalize(),
@@ -154,6 +164,11 @@ class EmailService:
                     company_address = 'N/A (See Message)'
 
             context['full_details']['Company_Address'] = company_address or 'N/A'
+            
+            # Strip the generic lead marker for the email body
+            if is_generic:
+                cleaned_message = cleaned_message.replace('[GENERIC VENDOR LEAD]', '').strip()
+                
             context['full_details']['Message'] = cleaned_message or 'N/A'
 
             
@@ -194,6 +209,8 @@ class EmailService:
                     
             # Final cleanup of extra newlines/spaces
             cleaned_notes = cleaned_notes.strip()
+            if is_generic:
+                cleaned_notes = cleaned_notes.replace('[GENERIC VENDOR LEAD]', '').strip()
             # --- END NOTES CLEANING AND EXTRACTION LOGIC ---
             
             
@@ -217,7 +234,7 @@ class EmailService:
         """Send quote confirmation email to customer (uses quote.email)."""
         try:
             context = EmailService._build_enquiry_context(quote, 'quote')
-            subject = f"Confirmation: Your Quote Request for {quote.product.name}"
+            subject = f"Confirmation: Your Quote Request for {context['product_name']}"
             recipient_email = quote.email 
             
             if not recipient_email:
@@ -245,7 +262,7 @@ class EmailService:
                  logger.warning(f"Skipping vendor quote notification: Vendor email not found for product {quote.product.id}")
                  return False
 
-            subject = f"Action Required: New Quote Request for {quote.product.name}"
+            subject = f"Action Required: New Quote Request for {context['product_name']}"
             
             return EmailService.send_template_email(
                 template_name='quote_vendor_notification',
@@ -259,10 +276,10 @@ class EmailService:
     
     @staticmethod
     def send_quote_admin_notification(quote) -> bool:
-        """Send quote notification email to admin."""
+        """Send quote notification email to MHE administrators."""
         try:
             context = EmailService._build_enquiry_context(quote, 'quote')
-            subject = f"ALERT: New Quote Request - {quote.product.name}"
+            subject = f"New Quote Request: {context['product_name']}"
             
             admin_emails = [settings.ADMIN_EMAIL] if isinstance(settings.ADMIN_EMAIL, str) else settings.ADMIN_EMAIL
             
@@ -302,7 +319,7 @@ class EmailService:
         """Send rental confirmation email to customer (uses rental.email)."""
         try:
             context = EmailService._build_enquiry_context(rental, 'rental')
-            subject = f"Confirmation: Your Rental Request for {rental.product.name}"
+            subject = f"Confirmation: Your Rental Request for {context['product_name']}"
             recipient_email = rental.email
             
             if not recipient_email:
@@ -330,7 +347,7 @@ class EmailService:
                  logger.warning(f"Skipping vendor rental notification: Vendor email not found for product {rental.product.id}")
                  return False
 
-            subject = f"Action Required: New Rental Request for {rental.product.name}"
+            subject = f"Action Required: New Rental Request for {context['product_name']}"
             
             return EmailService.send_template_email(
                 template_name='rental_vendor_notification',
@@ -344,10 +361,10 @@ class EmailService:
     
     @staticmethod
     def send_rental_admin_notification(rental) -> bool:
-        """Send rental notification email to admin."""
+        """Send rental notification email to MHE administrators."""
         try:
             context = EmailService._build_enquiry_context(rental, 'rental')
-            subject = f"ALERT: New Rental Request - {rental.product.name}"
+            subject = f"New Rental Request: {context['product_name']}"
             
             admin_emails = [settings.ADMIN_EMAIL] if isinstance(settings.ADMIN_EMAIL, str) else settings.ADMIN_EMAIL
             
