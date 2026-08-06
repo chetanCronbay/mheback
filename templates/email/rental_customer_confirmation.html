@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmation: Your Rental Request for {{ product_name }}</title>
+    <title>{% if is_generic %}Confirmation: Your Rental Enquiry with {{ vendor_company_name }}{% else %}Confirmation: Your Rental Request for {{ product_name }}{% endif %}</title>
     <style>
         body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
         table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
@@ -50,7 +50,11 @@
 
                         <p style="font-size: 16px;">Dear <strong>{{ customer_name }}</strong>,</p>
                         
+                        {% if is_generic %}
+                        <p style="font-size: 16px;">We successfully received your rental enquiry with <span class="emphasis-text">{{ vendor_company_name }}</span>. Our team has forwarded your details to the vendor, and they are currently verifying availability for your specified dates.</p>
+                        {% else %}
                         <p style="font-size: 16px;">We successfully received your request to rent the <span class="emphasis-text">{{ product_name }}</span>. Our team has forwarded your details to the vendor, and they are currently verifying availability for your specified dates.</p>
+                        {% endif %}
                         
                         <div class="rental-period">
                             <h3 style="margin-top: 0; color: #007bff;">Your Rental & Delivery Details:</h3>
@@ -60,8 +64,10 @@
                                 <tr><th>Email</th><td>{{ full_details.Email }}</td></tr>
                                 <tr><th>Mobile No.</th><td><strong>{{ full_details.Phone }}</strong></td></tr>
                                 <tr><th>Company Name</th><td>{{ full_details.Company_Name }}</td></tr>
+                                {% if not is_generic %}
                                 <tr><th>Product Name</th><td><strong>{{ full_details.Product }}</strong></td></tr>
                                 <tr><th>Product Link</th><td><a href="{{ product_url }}" style="color: #007bff;">{{ product_url }}</a></td></tr>
+                                {% endif %}
                                 <tr><th>Vendor</th><td>{{ full_details.Vendor_Company }}</td></tr>
                                 <tr><th>Location (Address)</th><td>{{ full_details.Company_Address }}</td></tr>
                                 <tr><th>Start Date</th><td><strong>{{ full_details.Start_Date }}</strong></td></tr>
@@ -87,7 +93,9 @@
                         <p style="margin-top: 25px; font-size: 16px;">The Vendor, <strong>{{ vendor_company_name }}</strong>, will confirm your booking and availability within <span class="emphasis-text">24 hours</span>. You will receive an update as soon as the status changes.</p>
                         
                         <p style="text-align: center;">
+                            {% if not is_generic %}
                             <a href="{{ product_url }}" class="action-button">View Product Details</a>
+                            {% endif %}
                             <a href="{{ website_url }}" class="action-button" style="background-color: #dc3545;">Visit Website</a>
                         </p>
                     </td>

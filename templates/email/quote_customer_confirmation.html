@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmation: Your Quote Request for {{ product_name }}</title>
+    <title>{% if is_generic %}Confirmation: Your Enquiry with {{ vendor_company_name }}{% else %}Confirmation: Your Quote Request for {{ product_name }}{% endif %}</title>
     <style>
         body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
         table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
@@ -46,7 +46,11 @@
                     <td class="content">
                         <p style="font-size: 16px;">Dear <strong>{{ customer_name }}</strong>,</p>
                         
+                        {% if is_generic %}
+                        <p style="font-size: 16px;">Thank you for your valuable inquiry with <span class="emphasis-text">{{ vendor_company_name }}</span>. Your request has been successfully registered and placed in our priority processing queue. You can be assured of a professional and timely response.</p>
+                        {% else %}
                         <p style="font-size: 16px;">Thank you for your valuable inquiry for the <span class="emphasis-text">{{ product_name }}</span>. Your request has been successfully registered and placed in our priority processing queue. You can be assured of a professional and timely response.</p>
+                        {% endif %}
                         
                         <h3 style="margin-top: 30px; color: #007bff; border-bottom: 2px solid #dc3545; padding-bottom: 5px;">Your Inquiry Details:</h3>
                         
@@ -55,8 +59,10 @@
                             <tr><th>Email</th><td>{{ full_details.Email }}</td></tr>
                             <tr><th>Mobile No.</th><td><strong>{{ full_details.Phone }}</strong></td></tr>
                             <tr><th>Company Name</th><td>{{ full_details.Company_Name }}</td></tr>
+                            {% if not is_generic %}
                             <tr><th>Product Name</th><td><strong>{{ full_details.Product }}</strong></td></tr>
                             <tr><th>Product Link</th><td><a href="{{ product_url }}" style="color: #007bff;">{{ product_url }}</a></td></tr>
+                            {% endif %}
                             <tr><th>Vendor</th><td>{{ full_details.Vendor_Company }}</td></tr>
                             <tr><th>Location (Address)</th><td>{{ full_details.Company_Address }}</td></tr>
                             <tr><th>Submitted On</th><td>{{ full_details.Submitted_On }}</td></tr>
@@ -72,7 +78,9 @@
                         <p style="margin-top: 25px; font-size: 16px;">Our dedicated vendor, <strong>{{ vendor_company_name }}</strong>, will personally review your requirements and provide a comprehensive quotation within <span class="emphasis-text">1-2 business days</span>. We appreciate your patience.</p>
                         
                         <p style="text-align: center;">
+                            {% if not is_generic %}
                             <a href="{{ product_url }}" class="action-button" style="background-color: #007bff;">View Product Details</a>
+                            {% endif %}
                             <a href="{{ website_url }}" class="action-button">Visit MHE Bazar</a>
                         </p>
                     </td>
