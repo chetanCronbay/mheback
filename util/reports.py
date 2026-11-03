@@ -44,6 +44,12 @@ def _report_period(date_ranges):
 def _sent_key(period, vendor_id):
     return f'vendor_reports:sent:{period}:{vendor_id}'
 
+
+def _admin_emails():
+    """MHE's own inbox for report copies and summaries: ADMIN_EMAIL (contact@mhebazar.com), as a list."""
+    admin = settings.ADMIN_EMAIL
+    return [admin] if isinstance(admin, str) else list(admin)
+
 def is_admin(user):
     return user.is_authenticated and (user.is_superuser or user.role.id == Role.ADMIN)
 
@@ -373,7 +379,7 @@ def preview_vendor_report(request, vendor_id):
         'email_html': email_html,
         'action_url': f"/reports/send-vendor/{vendor.id}/",
         'title': f"Preview Report for {vendor.company_name}",
-        'recipient_list': [vendor.company_email, 'sumedh.ramteke@mhebazar.com', 'rakesh.a@greentechmh.com', 'marketing.1@mhebazar.com','developer@cronbaytechnologies.com']
+        'recipient_list': [vendor.company_email, 'sumedh.ramteke@mhebazar.com', 'rakesh.a@greentechmh.com', 'marketing.1@mhebazar.com','developer@cronbaytechnologies.com', *_admin_emails()]
     })
 
 @user_passes_test(is_admin)
@@ -426,7 +432,8 @@ def preview_all_vendor_reports(request):
         all_recipients.append(vendor.company_email)
 
     # Add CCs to the recipient list display (just once to show they are included)
-    all_recipients.extend(['(CC) sumedh.ramteke@mhebazar.com', '(CC) rakesh.a@greentechmh.com', '(CC) marketing.1@mhebazar.com','(cc) developer@cronbaytechnologies.com'])
+    all_recipients.extend(['(CC) sumedh.ramteke@mhebazar.com', '(CC) rakesh.a@greentechmh.com', '(CC) marketing.1@mhebazar.com','(cc) developer@cronbaytechnologies.com',
+                           *(f'(CC) {email}' for email in _admin_emails())])
 
     return render(request, 'reports/report_preview_bulk.html', {
         'previews': previews,
@@ -601,8 +608,9 @@ def _send_vendor_reports_in_background(vendor_ids, notify_email):
 
 
 def _email_bulk_summary(status, notify_email):
-    """Tell the admin who started the run how it went."""
-    if not notify_email:
+    """Tell MHE's inbox (ADMIN_EMAIL) and the admin who started the run how it went."""
+    recipients = list(dict.fromkeys(email for email in [*_admin_emails(), notify_email] if email))
+    if not recipients:
         return
     failed = status['failed']
     lines = [
@@ -617,7 +625,7 @@ def _email_bulk_summary(status, notify_email):
     try:
         send_mail(
             f"Vendor monthly reports: {status['sent']} sent, {len(failed)} failed",
-            "\n".join(lines), settings.DEFAULT_FROM_EMAIL, [notify_email],
+            "\n".join(lines), settings.DEFAULT_FROM_EMAIL, recipients,
         )
     except Exception:
         logger.exception("Couldn't email the bulk vendor report summary")
@@ -657,8 +665,9 @@ def _send_single_vendor_report(vendor, connection=None, date_ranges=None, getdat
         'sumedh.ramteke@mhebazar.com',
         'rakesh.a@greentechmh.com',
         'marketing.1@mhebazar.com',
-        'developer@cronbaytechnologies.com'
+        'developer@cronbaytechnologies.com',
+        *_admin_emails(),  # contact@mhebazar.com
     ]
-    
+
     _send_email(subject, 'reports/vendor_monthly_report_email.html', email_context, to_emails, cc_emails, connection=connection)
     cache.set(_sent_key(_report_period(date_ranges), vendor.id), timezone.now().isoformat(), timeout=SENT_MARKER_SECONDS)

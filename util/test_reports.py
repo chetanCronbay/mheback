@@ -26,6 +26,7 @@ class InlineThread:
 
 
 @override_settings(
+    ADMIN_EMAIL="contact@mhebazar.com",
     EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
     CACHES={"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}},
 )
@@ -68,8 +69,11 @@ class SendAllVendorReportsTests(TestCase):
         self.assertEqual(status["failed"], ["Vendor 2: no company email address"])
         self.assertIsNone(cache.get(reports.BULK_LOCK_KEY))  # the button is free again
 
+        for report in self.reports_sent():
+            self.assertIn("contact@mhebazar.com", report.cc)  # MHE's inbox gets a copy of every report
+
         [summary] = self.summaries()
-        self.assertEqual(summary.to, ["boss@example.com"])
+        self.assertEqual(summary.to, ["contact@mhebazar.com", "boss@example.com"])
         self.assertIn("2 of 3 sent, 1 failed", summary.body)
         self.assertIn("Vendor 2: no company email address", summary.body)
 
@@ -89,6 +93,8 @@ class SendAllVendorReportsTests(TestCase):
 
     def test_single_send_counts_as_sent(self):
         self.client.post(f"/reports/send-vendor/{self.vendors[0].id}/")
+        [single] = self.reports_sent()
+        self.assertIn("contact@mhebazar.com", single.cc)  # one-by-one sends are copied too
         mail.outbox = []
         self.client.post(self.url)
         self.assertEqual([m.to[0] for m in self.reports_sent()], ["two@vendor.com"])
