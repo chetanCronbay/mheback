@@ -279,7 +279,7 @@ class EmailService:
         """Send quote notification email to MHE administrators."""
         try:
             context = EmailService._build_enquiry_context(quote, 'quote')
-            subject = f"New Quote Request: {context['product_name']}"
+            subject = f"ALERT: New Quote Request - {context['product_name']}"
             
             admin_emails = [settings.ADMIN_EMAIL] if isinstance(settings.ADMIN_EMAIL, str) else settings.ADMIN_EMAIL
             
@@ -364,7 +364,7 @@ class EmailService:
         """Send rental notification email to MHE administrators."""
         try:
             context = EmailService._build_enquiry_context(rental, 'rental')
-            subject = f"New Rental Request: {context['product_name']}"
+            subject = f"ALERT: New Rental Request - {context['product_name']}"
             
             admin_emails = [settings.ADMIN_EMAIL] if isinstance(settings.ADMIN_EMAIL, str) else settings.ADMIN_EMAIL
             
