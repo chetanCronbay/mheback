@@ -58,6 +58,20 @@
                 You are about to send emails to <strong>{{ previews|length }} vendors</strong>. Please review the recipient list and sample previews below.
             </div>
 
+            {% if bulk_running %}
+            <div class="alert alert-info">
+                <i class="fas fa-spinner fa-spin me-1"></i> Vendor reports are being sent right now. See the progress on the
+                <a href="{% url 'vendor-report-dashboard' %}">dashboard</a>.
+            </div>
+            {% endif %}
+
+            {% if already_sent %}
+            <div class="alert alert-success">
+                <strong>{{ already_sent|length }} vendor{{ already_sent|length|pluralize }} already got this month's report</strong>
+                and will be skipped: {{ already_sent|join:", " }}.
+            </div>
+            {% endif %}
+
             <div class="mb-4">
                 <label class="fw-bold">All Recipients:</label>
                 <div class="recipient-list">
@@ -81,9 +95,15 @@
             {% endfor %}
 
             <div class="text-end mt-4 sticky-bottom bg-white p-3 border-top">
-                <form action="{{ action_url }}" method="POST">
+                <form action="{{ action_url }}" method="POST" onsubmit="this.querySelector('button[type=submit]').disabled = true;">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-lg" onclick="return confirm('Are you absolutely sure you want to send emails to ALL {{ previews|length }} vendors?');">
+                    {% if already_sent %}
+                    <div class="form-check d-inline-block me-3 text-start align-middle">
+                        <input class="form-check-input" type="checkbox" name="resend" value="1" id="resend">
+                        <label class="form-check-label" for="resend">Send again to the {{ already_sent|length }} who already got it</label>
+                    </div>
+                    {% endif %}
+                    <button type="submit" class="btn btn-danger btn-lg" onclick="return confirm('Send this month's report to the vendors{% if already_sent %} (skipping those who already got it, unless ticked){% endif %}? It runs in the background and takes a few minutes.');">
                         <i class="fas fa-mail-bulk me-2"></i>Confirm & Send All Emails
                     </button>
                 </form>

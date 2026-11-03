@@ -81,6 +81,25 @@
             {% endfor %}
         {% endif %}
 
+        {% if bulk_status %}
+            <div class="alert {% if bulk_status.state == 'running' %}alert-info{% elif bulk_status.failed %}alert-warning{% else %}alert-success{% endif %}" role="status">
+                {% if bulk_status.state == 'running' %}
+                    <i class="fas fa-spinner fa-spin me-2"></i><strong>Sending vendor reports:</strong>
+                    {{ bulk_status.sent }} of {{ bulk_status.total }} sent{% if bulk_status.failed %}, {{ bulk_status.failed|length }} failed{% endif %}.
+                    This page refreshes by itself.
+                    <script>setTimeout(function () { location.reload(); }, 8000);</script>
+                {% else %}
+                    <i class="fas fa-envelope-open-text me-2"></i><strong>Last "send to all vendors"</strong>
+                    ({{ bulk_status.finished_at|date:"d M Y, H:i" }}): {{ bulk_status.sent }} of {{ bulk_status.total }} sent{% if bulk_status.failed %}, {{ bulk_status.failed|length }} failed{% endif %}{% if bulk_status.skipped %}; {{ bulk_status.skipped }} skipped (already had it){% endif %}.
+                {% endif %}
+                {% if bulk_status.failed %}
+                    <ul class="mb-0 mt-2 small">
+                        {% for item in bulk_status.failed %}<li>{{ item }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endif %}
+
         <!-- Admin Actions -->
         <div class="card mb-4 border-0 shadow-sm">
             <div class="card-body d-flex flex-wrap gap-3 align-items-center justify-content-between">
